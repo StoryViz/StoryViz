@@ -14,7 +14,7 @@ module.exports.publicDir = publicDir;
 app.use(logger()); // Morgan
 app.use(favicon(path.join(publicDir, 'favicon.ico')));
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(publicDir));
+app.use(express.static(publicDir)); // Serve files from /public on /
 
 // Routes
 // app.use('/', require('./routes/index').indexRouter);
@@ -22,4 +22,3 @@ app.use('/api', require('./routes/api').apiRouter);
 
 app.listen(port);
 console.log('Server running on', port);
-
