@@ -14,9 +14,9 @@
 			{"id": 10, "name": "Jared"},
 			{"id": 11, "name": "Joel Cox"},
 			{"id": 12, "name": "John"},
-			{"id": 13, "name": "Michael"},
+			{"id": 13, "name": "Michael S."},
 			{"id": 14, "name": "Park"},
-			{"id": 15, "name": "Mike"},
+			{"id": 15, "name": "Mike B."},
 			{"id": 16, "name": "Michelle"},
 			{"id": 17, "name": "Mitch"},
 			{"id": 18, "name": "Nelson"},
@@ -26,11 +26,11 @@
 			{"id": 22, "name": "Tom"},
 			{"id": 23, "name": "Tyler"},
 			{"id": 24, "name": "Vish"},
-			{"id": 25, "name": "Will"},
+			{"id": 25, "name": "Will V."},
 			{"id": 26, "name": "Walker"},
-			{"id": 27, "name": "Will"},
-			{"id": 28, "name": "Will"},
-			{"id": 29, "name": "Xianhui"},
+			{"id": 27, "name": "Will J."},
+			{"id": 28, "name": "Will L."},
+			{"id": 29, "name": "Xianhui"}
 		],
 	"links":
 		[
@@ -85,5 +85,5 @@
 			{"source": 16, "target": 17, "type": "knows"},
 			{"source": 5, "target": 0, "type": "knows"},
 			{"source": 15, "target": 26, "type": "knows"}
-		]	
+		]
 }

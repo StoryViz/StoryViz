@@ -1,3 +1,12 @@
 span.test {
 	font-size: 24;
 }
+.link {
+  stroke: #9ecae1;
+  stroke-width: 1.5px;
+}
+
+.node {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
