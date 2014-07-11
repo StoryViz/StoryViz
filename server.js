@@ -11,7 +11,7 @@ var publicDir = path.join(__dirname, 'public');
 module.exports.publicDir = publicDir;
 
 // Middlewares
-app.use(logger()); // Morgan
+app.use(logger('dev')); // Morgan
 app.use(favicon(path.join(publicDir, 'favicon.ico')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(publicDir)); // Serve files from /public on /
