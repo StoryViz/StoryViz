@@ -14,7 +14,7 @@ db.query(clearDb,{}, function(){});
 /**
  * Retrieve info from the DB in JSON, formatted the way D3 expects
  * @param  {Object} params A hash of parameters. 'All' returns the entire
- *                         graph, or accept in array of IDs on params.id to 
+ *                         graph, or accept an array of IDs on params.id to 
  *                         show those IDs and their first-degree connections. 
  *                         (to support isolation view for a single node, and
  *                         for clicking nodes to increase scope in isolation
@@ -67,4 +67,3 @@ function saveRelationship(params) {
 //     console.log(succ);
 //   });
 // });
-
