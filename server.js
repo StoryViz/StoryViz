@@ -1,13 +1,17 @@
 var express = require('express');
 var path    = require('path');
 var logger  = require('morgan'); // Logging middleware
+var favicon = require('serve-favicon');
 
 var app     = express();
 var port    = process.env.PORT || 8000;
 
+var publicDir = path.join(__dirname, 'public');
+
 // Middlewares
 app.use(logger()); // Morgan
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(favicon(publicDir + '/favicon.ico'));
+app.use(express.static(publicDir));
 
 // Routes
 // app.use('/', require('./routes/index').indexRouter);
