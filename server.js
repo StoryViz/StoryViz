@@ -7,10 +7,11 @@ var app     = express();
 var port    = process.env.PORT || 8000;
 
 var publicDir = path.join(__dirname, 'public');
+module.exports.publicDir = publicDir;
 
 // Middlewares
 app.use(logger()); // Morgan
-app.use(favicon(publicDir + '/favicon.ico'));
+app.use(favicon(path.join(publicDir, 'favicon.ico')));
 app.use(express.static(publicDir));
 
 // Routes
@@ -19,3 +20,4 @@ app.use('/api', require('./routes/api').apiRouter);
 
 app.listen(port);
 console.log('Server running on', port);
+
