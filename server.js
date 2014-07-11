@@ -1,10 +1,11 @@
-var express = require('express');
-var path    = require('path');
-var logger  = require('morgan'); // Logging middleware
-var favicon = require('serve-favicon');
+var express    = require('express');
+var path       = require('path');
+var bodyParser = require('body-parser'); // for handling POST data
+var favicon    = require('serve-favicon');
+var logger     = require('morgan'); // Logging middleware
 
-var app     = express();
-var port    = process.env.PORT || 8000;
+var app  = express();
+var port = process.env.PORT || 8000;
 
 var publicDir = path.join(__dirname, 'public');
 module.exports.publicDir = publicDir;
@@ -12,6 +13,7 @@ module.exports.publicDir = publicDir;
 // Middlewares
 app.use(logger()); // Morgan
 app.use(favicon(path.join(publicDir, 'favicon.ico')));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(publicDir));
 
 // Routes
