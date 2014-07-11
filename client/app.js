@@ -1,14 +1,14 @@
 angular.module('storyviz', [
   'storyviz.services',
   'storyviz.story',
-  'storyviz.directives',
+  // 'storyviz.directives',
   'ui.router'
   ])
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
-  $stateProvider
-    .state('main', {
-      url: '/',
-      templateUrl: 'index.html',
-      controller: 'StoryCtrl'
-    });
+  // $stateProvider
+  //   .state('main', {
+  //     url: '/',
+  //     templateUrl: 'index.html',
+  //     controller: 'StoryCtrl'
+  //   });
 });
