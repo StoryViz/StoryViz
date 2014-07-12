@@ -20,16 +20,23 @@ var Character = function(node) {
 // Static methods:
 
 Character.getById = function (id, callback) {
+  // var query = [
+  // 'START n=node(',
+  // id,
+  // ') RETURN n'
+  // ].join('\n');
+
   var query = [
-  'START n=node(',
+  'MATCH (character:Character)',
+  'WHERE id(character)=',
   id,
-  ') RETURN n'
+  'RETURN character'
   ].join('\n');
 
-  db.query(query, null, function(err, node) {
+  db.query(query, null, function(err, results) {
     if (err) { return callback(err); }
-    
-    callback(null, new Character(node));
+
+    callback(null, new Character(results[0].character));
   });
 };
 
