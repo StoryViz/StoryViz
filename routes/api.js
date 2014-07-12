@@ -1,5 +1,6 @@
-var express    = require('express');
-var path       = require('path');
+var express = require('express');
+var path    = require('path');
+var q       = require('q');
 
 var apiHelpers = require('../db/api_helpers');
 var publicDir   = require('../helpers/path_helpers').publicDir;
@@ -13,6 +14,8 @@ apiRouter.get('/', function(req, res) {
 
 .get('/dummy', function(req, res) {
   res.set('Content-Type', 'application/json');
+  // res.charset = 'utf-8';
+  
   res.sendfile(path.join(publicDir, 'dummyJSON.json'));
 
   // Real world will be something like:
@@ -28,31 +31,39 @@ apiRouter.get('/', function(req, res) {
 
 .get('/names/all', function(req, res) {
   res.set('Content-Type', 'application/json');
+  // res.set('charset', 'utf-8');
 
-  apiHelpers.retrieveData({}, function(err, data) {
-    if(err) { console.log(err); res.send(500); }
+  var result = {nodes: [], links: []};
 
-    else {
-      var names = data.map(function(d) {
-        return {id: d.id, name: d.name};
-      });
-
-      var relationships = [];
-      var count = names.length;
+  q.ninvoke(apiHelpers, 'retrieveData', {})
+    .then(function(data) {
       data.forEach(function(d) {
-        d._node.outgoing('knows', function(err, r) {
-          relationships.push({from: r[0].start.id, to: r[0].end.id});
-          if(--count <= 0) {
-            var result = {nodes: names, links: relationships};
-            res.send(JSON.stringify(result));
+        result.nodes.push({id: d.id, name: d.name});
+      });
+      
+      var outgoingDef = q.defer();
+      
+      var count = 0;
+      var total = result.nodes.length;
+
+      data.forEach(function(d) {
+        d._node.outgoing('knows', function(err, rel) {
+          // todo: handle error
+          if(err) { console.log('error in outgoing call:', err);}
+
+          result.links.push({from: rel[0].start.id, to: rel[0].end.id});
+          if(++count >= total) {
+            outgoingDef.resolve(data);
           }
         });
       });
-      
-      // TODO: ALSO RETURN RELATIONSHIPS AS LINKS ARRAY
 
-    }
-  });
+      return outgoingDef.promise;
+    })
+
+    .then(function(data) {
+      res.send(JSON.stringify(result));
+    }).done();
 })
 
 .post('/', function(req, res) {
