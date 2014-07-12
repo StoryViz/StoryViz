@@ -1,3 +1,7 @@
+// The character class is a model for the data associated with a character in 
+// the DB. These methods interact with the DB directly, and are called by the
+// api_helpers.
+
 var neo4j = require('neo4j');
 
 // todo: put this on a process variable:
@@ -5,7 +9,7 @@ var neo4j = require('neo4j');
 //       process.env['GRAPHENEDB_URL'] || localhost...
 var db = new neo4j.GraphDatabase('http://localhost:7474');
 
-// console.log(db);
+
 // adapted from github.com/aseemk/node-neo4j-template
 
 /**
@@ -17,15 +21,9 @@ var Character = function(node) {
   this._node = node;
 };
 
-// Static methods:
+// Static methods-- for retrieving Characters and relationships:
 
 Character.getById = function (id, callback) {
-  // var query = [
-  // 'START n=node(',
-  // id,
-  // ') RETURN n'
-  // ].join('\n');
-
   var query = [
   'MATCH (character:Character)',
   'WHERE id(character)=',
@@ -58,29 +56,39 @@ Character.getAll = function(callback) {
   });
 };
 
+// Character.getAllRelationshipsOnly = function(callback) {
+//   var query = 'MATCH (a)-[r:`knows`]->(b) RETURN r';
+
+//   db.query(query, {}, function(err, results) {
+//     if(err) { return callback(err); }
+
+//     callback(null, results);
+//   });
+// };
+
 Character.create = function (data, callback) {
-    var node = db.createNode(data);
-    var character = new Character(node);
+  var node = db.createNode(data);
+  var character = new Character(node);
 
-    var query = [
-        'CREATE (character:Character {data})',
-        'RETURN character',
-    ].join('\n');
+  var query = [
+      'CREATE (character:Character {data})',
+      'RETURN character',
+  ].join('\n');
 
-    // Where data is just {name: "name"}, for now.
-    var params = {
-        data: data
-    };
+  // Where data is just {name: "name"}, for now.
+  var params = {
+      data: data
+  };
 
-    db.query(query, params, function (err, results) {
-        if (err) { return callback(err); }
+  db.query(query, params, function (err, results) {
+      if (err) { return callback(err); }
 
-        var character = new Character(results[0].character);
-        callback(null, character);
-    });
+      var character = new Character(results[0].character);
+      callback(null, character);
+  });
 };
 
-// Instance properties and methods:
+// Instance properties and methods-- for operating on a single Character:
 
 Object.defineProperty(Character.prototype, 'id', {
   get: function() {
