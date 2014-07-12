@@ -1,5 +1,6 @@
 // Methods in this file are called by the API router directly. They talk to 
-// the character model to create and retrieve information from the DB.
+// the character model to create and retrieve information from the DB. They do
+// not talk to the DB directly.
 
 var q = require('q');
 
@@ -20,14 +21,22 @@ var Character  = require('../models/character_model').Character;
 function retrieveData(params, callback) {
   if(params === undefined || params.all || Object.keys(params).length === 0) {
     Character.getAll(function(err, data) {
-      if(err) { callback(err); }
-      console.log('sending', data);
+      if(err) { return callback(err); }
+      
       callback(null, data);
     });
   } else if (params.id) {
 
   }
 }
+
+// function _getAllRelationshipsOnly(callback) {
+//   Character.getAllRelationshipsOnly(function(err, data) {
+//     if(err) { return callback(err); }
+      
+//     callback(null, data);
+//   });
+// }
 
 /**
  * Persist a new node to the DB
@@ -38,11 +47,9 @@ function retrieveData(params, callback) {
 function saveNewCharacter(params, callback) {
   if(params.name) {
     Character.create(params, function(err, newCharacter) {
-      if(err) { callback(err); }
+      if(err) { return callback(err); }
 
-      else {
-        callback(null, newCharacter);
-      }
+      callback(null, newCharacter);
     });
   } else {
     callback('saveNewCharacter requires first argument ' +
@@ -91,4 +98,5 @@ module.exports = {
   retrieveData: retrieveData,
   saveNewCharacter: saveNewCharacter,
   saveRelationship: saveRelationship
+  // _getAllRelationshipsOnly: _getAllRelationshipsOnly // for mocking
 };

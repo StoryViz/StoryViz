@@ -28,18 +28,30 @@ apiRouter.get('/', function(req, res) {
 
 .get('/names/all', function(req, res) {
   res.set('Content-Type', 'application/json');
-  apiHelpers.retrieveData({}, function(err,data) {
-    if(err) { console.log(err); }
 
-    var response = {nodes: [data[0]]};
-    var names = data.map(function(e) {
-      return {id: e.id, name: e.name};
-    });
+  apiHelpers.retrieveData({}, function(err, data) {
+    if(err) { console.log(err); res.send(500); }
 
-    // TODO: ALSO RETURN RELATIONSHIPS AS LINKS ARRAY
+    else {
+      var names = data.map(function(d) {
+        return {id: d.id, name: d.name};
+      });
 
-    res.send(JSON.stringify(names));
+      var relationships = [];
+      var count = names.length;
+      data.forEach(function(d) {
+        d._node.outgoing('knows', function(err, r) {
+          relationships.push({from: r[0].start.id, to: r[0].end.id});
+          if(--count <= 0) {
+            var result = {nodes: names, links: relationships};
+            res.send(JSON.stringify(result));
+          }
+        });
+      });
+      
+      // TODO: ALSO RETURN RELATIONSHIPS AS LINKS ARRAY
 
+    }
   });
 })
 

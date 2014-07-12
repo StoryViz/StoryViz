@@ -2,7 +2,6 @@
 
 var neo4j = require('neo4j');
 var path  = require('path');
-var q     = require('q');
 
 var db = new neo4j.GraphDatabase('http://localhost:7474');
 
