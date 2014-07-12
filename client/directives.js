@@ -25,18 +25,19 @@ angular.module('storyviz.directives', ['d3'])
             .attr('width', width)
             .attr('height', height);
 
-          var graphData = scope.data.data;
+          // var graphData = scope.data.data;
 
           var force = d3.layout.force()
-            .nodes(graphData.nodes)
-            .links(graphData.links)
+            // .nodes(graphData.nodes)
+            // .links(graphData.links)
             .charge(-150)
             .linkDistance(50)
             .size([width, height]);
-            // console.log("links: ", graphData.links);
-            // console.log("nodes: ", graphData.nodes);
 
-          scope.render = function() {
+          scope.render = function(graphData) {
+
+            force.nodes(graphData.nodes)
+                .links(graphData.links);
 
             var node = svg.selectAll('.node')
                 .data(graphData.nodes)
@@ -73,7 +74,12 @@ angular.module('storyviz.directives', ['d3'])
                   .attr("cy", function(d) { return d.y; });
             });
           };
-          scope.render();
+
+          scope.$watch('data', function(newValue) {
+            if (newValue !== undefined) {
+              scope.render(newValue.data);
+            }
+          });
         });
       }
     };
