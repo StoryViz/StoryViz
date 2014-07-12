@@ -24,8 +24,6 @@ function retrieveData(params) {
   }
 }
 
-
-
 /**
  * Persist a new node to the DB
  * @param  {Object}   params Parameters to save on the node. For now, just name.
@@ -54,14 +52,16 @@ function saveNewCharacter(params, callback) {
  * @param  {Function} callback 
  */
 function saveRelationship(params, callback) {
-  if (params.from !== undefined && params.to !== undefined && params.type !== undefined) {
-    console.log('creating from', params.from, 'to', params.to);
+  if (params.from !== undefined 
+      && params.to !== undefined 
+      && params.type !== undefined) {
+
     var toDef   = q.defer();
     var fromDef = q.defer();
 
     q.all([toDef.promise, fromDef.promise])
       .spread(function(a, b) {
-        a.follow(b, params.type, function() { a.save(); });
+        a.follow(b, params.type, function() { a.save() });
         b.follow(a, params.type, function() { b.save(); });
       }).catch(function(err) {
         callback(err);
@@ -87,4 +87,3 @@ module.exports = {
   saveNewCharacter: saveNewCharacter,
   saveRelationship: saveRelationship
 };
-
