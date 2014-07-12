@@ -22,7 +22,7 @@ var Character = function(node) {
 Character.getById = function (id, callback) {
   db.getNodeById(id, function (err, node) {
     if (err) { return callback(err); }
-    
+
     callback(null, new Character(node));
   });
 };
@@ -63,6 +63,7 @@ Character.create = function (data, callback) {
         if (err) { return callback(err); }
 
         var character = new Character(results[0].character);
+        console.log('got', character);
         callback(null, character);
     });
 };
@@ -86,14 +87,14 @@ Object.defineProperty(Character.prototype, 'name', {
 
 Character.prototype.save = function(callback) {
   this._node.save(function(err) {
-    callback(err);
+    if(callback) { callback(err); }
   });
 };
 
 Character.prototype.follow = function(other, type, callback) {
   type || (type = 'knows');
   this._node.createRelationshipTo(other._node, type, {}, function(err, rel) {
-    callback(err);
+    if(callback) { callback(err); }
   });
 };
 
