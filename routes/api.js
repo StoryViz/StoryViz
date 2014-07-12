@@ -17,16 +17,6 @@ apiRouter.get('/', function(req, res) {
   // res.charset = 'utf-8';
   
   res.sendfile(path.join(publicDir, 'dummyJSON.json'));
-
-  // Real world will be something like:
-  // var params = req.query
-  // // ... operate on query ...
-  // db.query(params, function(err, data) {
-  //   if(err) { res.send(500,'Internal Server Error'); }
-  //   else {
-  //    res.send(200, JSON.stringify(data));
-  //   }
-  // });
 })
 
 .get('/names/all', function(req, res) {
@@ -68,16 +58,6 @@ apiRouter.get('/', function(req, res) {
 
 .post('/', function(req, res) {
   req.pipe(res); // for testing
-
-  // Real world will be something like: 
-  // var params = req.body // from bodyparser middleware
-  // ... operate on body ...
-  // db.addNode(params, function(err, data) {
-  //   if(err) { res.send(500,'Internal Server Error'); }
-      // else {
-           // res.send(201, <ID of created user or whatever info we need>);
-      // }
-  // });
 });
 
 module.exports.apiRouter = apiRouter;
