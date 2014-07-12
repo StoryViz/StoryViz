@@ -20,9 +20,15 @@ var Character = function(node) {
 // Static methods:
 
 Character.getById = function (id, callback) {
-  db.getNodeById(id, function (err, node) {
-    if (err) { return callback(err); }
+  var query = [
+  'START n=node(',
+  id,
+  ') RETURN n'
+  ].join('\n');
 
+  db.query(query, null, function(err, node) {
+    if (err) { return callback(err); }
+    
     callback(null, new Character(node));
   });
 };
@@ -63,7 +69,6 @@ Character.create = function (data, callback) {
         if (err) { return callback(err); }
 
         var character = new Character(results[0].character);
-        console.log('got', character);
         callback(null, character);
     });
 };
