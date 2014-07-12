@@ -1,8 +1,9 @@
 var express    = require('express');
 var path       = require('path');
 
-var db         = require('../db/db_helpers');
-var publicDir  = require('../server').publicDir;
+var api_helpers = require('../db/api_helpers');
+var publicDir   = require('../helpers/path_helpers').publicDir;
+
 
 var apiRouter = express.Router();
 
