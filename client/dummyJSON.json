@@ -28,13 +28,8 @@
 			{"id": 24, "name": "Vish"},
 			{"id": 25, "name": "Will V."},
 			{"id": 26, "name": "Walker"},
-<<<<<<< HEAD:public/dummyJSON.json
-			{"id": 27, "name": "Will"},
-			{"id": 28, "name": "Will"},
-=======
 			{"id": 27, "name": "Will J."},
 			{"id": 28, "name": "Will L."},
->>>>>>> master:client/dummyJSON.json
 			{"id": 29, "name": "Xianhui"}
 		],
 	"links":
