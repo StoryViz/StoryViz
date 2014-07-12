@@ -3,7 +3,7 @@ angular.module('storyviz.directives', ['d3'])
     return {
       restrict: 'E',
       scope: {
-        data: '='
+        data: '=data'
       },
       link:function(scope, element) {
         d3Service.d3().then(function(d3) {
@@ -24,34 +24,35 @@ angular.module('storyviz.directives', ['d3'])
             .append('svg')
             .attr('width', width)
             .attr('height', height);
-          var vishmich = [{name: 'vish'}, {name: 'michelle'}];
-          var rel = [{source: 0, target: 1}];
+
+          var graphData = scope.data.data;
 
           var force = d3.layout.force()
-            .nodes(vishmich)
-            .links(rel)
+            .nodes(graphData.nodes)
+            .links(graphData.links)
             .charge(-150)
             .linkDistance(50)
             .size([width, height]);
+            // console.log("links: ", graphData.links);
+            // console.log("nodes: ", graphData.nodes);
 
           scope.render = function() {
 
             var node = svg.selectAll('.node')
-                .data(vishmich)
+                .data(graphData.nodes)
               .enter()
                 .append('svg:circle')
                 .attr('class', 'node')
                 .attr('r', 10);
+            // node.append("title")
+            //   .text(function(d) { return d.name; });
 
             var link = svg.selectAll('.link')
-                .data(rel)
+                .data(graphData.links)
               .enter()
                 .insert('line', '.node')
                 .attr('class', 'link')
-                .style("stroke-width", 10);
-            console.log(link);
-            console.log(node);
-
+                .style("stroke-width", 3);
             // link.enter()
             //   .insert('line', '.node')
             //   .attr('class', 'link');
