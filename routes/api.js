@@ -2,7 +2,7 @@ var express = require('express');
 var path    = require('path');
 var q       = require('q');
 
-var apiHelpers = require('../db/api_helpers');
+var apiHelpers = require('../helpers/api_helpers');
 var publicDir   = require('../helpers/path_helpers').publicDir;
 
 
