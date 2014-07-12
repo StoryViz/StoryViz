@@ -1,4 +1,6 @@
-var fs    = require('fs');
+// Methods in this file are called by the API router directly. They talk to 
+// the character model to create and retrieve information from the DB.
+var q     = require('q');
 
 var publicDir  = require('../server').publicDir;
 var Character  = require('../models/character_model').Character;
@@ -22,6 +24,8 @@ function retrieveData(params) {
   }
 }
 
+
+
 /**
  * Persist a new node to the DB
  * @param  {Object}   params Parameters to save on the node. For now, just name.
@@ -34,7 +38,7 @@ function saveNewCharacter(params, callback) {
       if(err) { callback(err); }
 
       else {
-        callback(null, newCharacter.id);
+        callback(null, newCharacter);
       }
     });
   } else {
@@ -50,10 +54,31 @@ function saveNewCharacter(params, callback) {
  * @param  {Function} callback 
  */
 function saveRelationship(params, callback) {
-  if(params.fromId && params.toId && params.type) {
-    
+  if (params.from !== undefined && params.to !== undefined && params.type !== undefined) {
+    console.log('creating from', params.from, 'to', params.to);
+    var toDef   = q.defer();
+    var fromDef = q.defer();
+
+    q.all([toDef.promise, fromDef.promise])
+      .spread(function(a, b) {
+        a.follow(b, params.type, function() { a.save(); });
+        b.follow(a, params.type, function() { b.save(); });
+      }).catch(function(err) {
+        callback(err);
+      });
+
+    Character.getById(params.to, function(err, node) {
+      if (err) { toDef.reject(err); }
+      toDef.resolve(node);
+    }); 
+
+    Character.getById(params.from, function(err, node) {
+      if (err) { fromDef.reject(err); }
+      fromDef.resolve(node);
+    });
+
   } else {
-    // callback('')
+    callback('saveRelationship requires from, to, and type properties.');
   }
 }
 
