@@ -1,7 +1,7 @@
 var fs    = require('fs');
 
 var publicDir  = require('../server').publicDir;
-var Character  = require('../models/character_model');
+var Character  = require('../models/character_model').Character;
 
 /**
  * Retrieve info from the DB in JSON, formatted the way D3 expects
@@ -57,16 +57,9 @@ function saveRelationship(params, callback) {
   }
 }
 
-// var group = [
-// db.createNode({name: 'mitch', age: 27}),
-// db.createNode({name: 'vish'}),
-// db.createNode({name: 'michelle'})
-// ];
+module.exports = {
+  retrieveData: retrieveData,
+  saveNewCharacter: saveNewCharacter,
+  saveRelationship: saveRelationship
+};
 
-
-// group.forEach(function(member){
-//   member.save(function(err, succ){
-//     if(err) {console.log(err);}
-//     console.log(succ);
-//   });
-// });

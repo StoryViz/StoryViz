@@ -9,7 +9,7 @@ var publicDir = require('./helpers/path_helpers').publicDir;
 var mock   = require('./db/mock_db');
 var logger = require('morgan'); // Logging middleware
 
-// Clear the DB on reset for testing.
+// For testing: Clear the DB on reset, then add new users.
 mock.mockDB();
 
 var app  = express();
