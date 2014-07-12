@@ -64,7 +64,9 @@ apiRouter.get('/', function(req, res) {
 
     .then(function(data) {
       res.send(JSON.stringify(result));
-    }).catch(function(err) {
+    })
+
+    .catch(function(err) {
       console.log('error', err);
       res.send(500);
     }).done();
