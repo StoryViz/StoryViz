@@ -1,6 +1,7 @@
 node_modules
 ._.DS_Store
 .DS_Store
-client/bower_components
+bower_components
 
 notes.txt
+iisnode.yml

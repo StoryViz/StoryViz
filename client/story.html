@@ -1,0 +1,19 @@
+<div ng-controller='StoryController'>
+  <div>
+    <!-- Slider Bar -->
+    <div class="row">
+      <div class="small-2 medium-1 columns"></div>
+      <div class="small-10 medium-11 columns">
+        <h3 style="font-family:Optima">Chapter <h4 class="subheader" id="sliderOutput" class="label">0</h4></h3>
+        <div class="range-slider" data-slider data-options="start: 0; end: 400;">
+          <span class="range-slider-handle"></span>
+          <span class="range-slider-active-segment"></span>
+          <input type="hidden">
+        </div>
+        <a href="#" class="button small" id="playChapters">Play</a>
+      </div>
+    </div>
+
+  </div>
+  <story-graph data='data'></story-graph>
+</div>

@@ -1,0 +1,23 @@
+<html ng-app='storyviz'>
+	<head>
+		<link rel="stylesheet" type="text/css" href="stylesheets/main.css">
+	</head>
+	<body>
+       <div class="navigation">
+          <ul class="nav">
+            <li><a ui-sref="story">Stories</a></li>
+            <li><a ui-sref="/">Most Popular</a></li>
+          </ul>
+      </div>
+    <div ui-view>
+
+    </div>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-ui-router.min.js"></script>
+    <script src="app.js"></script>
+    <script src="story.js"></script>
+    <script src="services.js"></script>
+    <script src="directives.js"></script>
+    <script src="d3services.js"></script>
+  </body>
+</html>
