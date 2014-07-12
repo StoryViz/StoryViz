@@ -25,9 +25,11 @@ apiRouter.get('/', function(req, res) {
 
   var result = {nodes: [], links: []};
 
+  // Retrieve info on the full DB
   q.ninvoke(apiHelpers, 'retrieveData', {})
     .then(function(data) {
       data.forEach(function(d) {
+        // push character names and IDs into the result
         result.nodes.push({id: d.id, name: d.name});
       });
       
@@ -39,16 +41,18 @@ apiRouter.get('/', function(req, res) {
       for(var i = 0, len = data.length; i < len; i++) {
         var d = data[i];
 
-        // get all the node's outgoing relations
+        // get all the character's outgoing relations...
         d._node.outgoing('knows', function(err, rel) {
           if(err) { return outgoingDef.reject(err); }
-
+          // ...if there are none, resolve immediately...
           if(rel.length === 0) { return outgoingDef.resolve(data); }
 
+          // ...otherwise push them all into the result.
           for(var i = 0, len = rel.length; i < len; i++) {
             result.links.push({from: rel[i].start.id, to: rel[i].end.id});  
           }
           
+          // if all the callbacks have returned, we can resolve the promise.
           if(++count >= total) {
             outgoingDef.resolve(data);
           }
@@ -60,6 +64,9 @@ apiRouter.get('/', function(req, res) {
 
     .then(function(data) {
       res.send(JSON.stringify(result));
+    }).catch(function(err) {
+      console.log('error', err);
+      res.send(500);
     }).done();
 })
 
