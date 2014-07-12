@@ -1,6 +1,7 @@
 // Methods in this file are called by the API router directly. They talk to 
 // the character model to create and retrieve information from the DB.
-var q     = require('q');
+
+var q = require('q');
 
 var publicDir  = require('../server').publicDir;
 var Character  = require('../models/character_model').Character;
@@ -16,9 +17,13 @@ var Character  = require('../models/character_model').Character;
  *                         view)
  * @return {String}        Conveniently-formatted JSON
  */
-function retrieveData(params) {
+function retrieveData(params, callback) {
   if(params === undefined || params.all || Object.keys(params).length === 0) {
-    // return whole graph
+    Character.getAll(function(err, data) {
+      if(err) { callback(err); }
+      console.log('sending', data);
+      callback(null, data);
+    });
   } else if (params.id) {
 
   }

@@ -1,7 +1,7 @@
 var express    = require('express');
 var path       = require('path');
 
-var api_helpers = require('../db/api_helpers');
+var apiHelpers = require('../db/api_helpers');
 var publicDir   = require('../helpers/path_helpers').publicDir;
 
 
@@ -9,9 +9,9 @@ var apiRouter = express.Router();
 
 apiRouter.get('/', function(req, res) {
   res.send('StoryViz JSON API');
-});
+})
 
-apiRouter.get('/dummy', function(req, res) {
+.get('/dummy', function(req, res) {
   res.set('Content-Type', 'application/json');
   res.sendfile(path.join(publicDir, 'dummyJSON.json'));
 
@@ -24,6 +24,23 @@ apiRouter.get('/dummy', function(req, res) {
   //    res.send(200, JSON.stringify(data));
   //   }
   // });
+})
+
+.get('/names/all', function(req, res) {
+  res.set('Content-Type', 'application/json');
+  apiHelpers.retrieveData({}, function(err,data) {
+    if(err) { console.log(err); }
+
+    var response = {nodes: [data[0]]};
+    var names = data.map(function(e) {
+      return {id: e.id, name: e.name};
+    });
+
+    // TODO: ALSO RETURN RELATIONSHIPS AS LINKS ARRAY
+
+    res.send(JSON.stringify(names));
+
+  });
 })
 
 .post('/', function(req, res) {

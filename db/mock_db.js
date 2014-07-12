@@ -1,3 +1,5 @@
+// Methods in this file generate mock data into the DB for testing.
+
 var neo4j = require('neo4j');
 var path  = require('path');
 var q     = require('q');
@@ -39,7 +41,8 @@ function mockDB() {
         if (completed === 30) {
           newCharacters.forEach(function(character) {
             var source = character.id;
-            var target = newCharacters[Math.floor(Math.random() * newCharacters.length)].id;
+            var target = newCharacters[Math.floor(Math.random() * 
+                                        newCharacters.length)].id;
             var type = 'knows';
 
             api.saveRelationship({
