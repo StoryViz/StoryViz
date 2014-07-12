@@ -2,13 +2,19 @@ var express    = require('express');
 var path       = require('path');
 var bodyParser = require('body-parser'); // for handling POST data
 var favicon    = require('serve-favicon');
-var logger     = require('morgan'); // Logging middleware
+
+var publicDir = require('./helpers/path_helpers').publicDir;
+
+// Dev dependencies
+var mock   = require('./db/mock_db');
+var logger = require('morgan'); // Logging middleware
+
+// Clear the DB on reset for testing.
+mock.mockDB();
 
 var app  = express();
 var port = process.env.PORT || 8000;
 
-var publicDir = path.join(__dirname, 'public');
-module.exports.publicDir = publicDir;
 
 // Middlewares
 app.use(logger('dev')); // Morgan
