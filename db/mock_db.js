@@ -5,7 +5,7 @@ var path  = require('path');
 
 var db = new neo4j.GraphDatabase('http://localhost:7474');
 
-var api        = require('./api_helpers');
+var api        = require('../helpers/api_helpers');
 var publicDir  = require('../helpers/path_helpers').publicDir;
 var dummyJSON  = require(path.join(publicDir, 'dummyJSON.json'));
 
