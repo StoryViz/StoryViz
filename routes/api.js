@@ -39,16 +39,19 @@ apiRouter.get('/', function(req, res) {
       for(var i = 0, len = data.length; i < len; i++) {
         var d = data[i];
 
+        // get all the node's outgoing relations
         d._node.outgoing('knows', function(err, rel) {
           if(err) { return outgoingDef.reject(err); }
 
           if(rel.length === 0) { return outgoingDef.resolve(data); }
 
-          result.links.push({from: rel[0].start.id, to: rel[0].end.id});
+          for(var i = 0, len = rel.length; i < len; i++) {
+            result.links.push({from: rel[i].start.id, to: rel[i].end.id});  
+          }
+          
           if(++count >= total) {
             outgoingDef.resolve(data);
           }
-
         });
       }
 
