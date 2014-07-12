@@ -21,7 +21,7 @@ apiRouter.get('/', function(req, res) {
 
 .get('/names/all', function(req, res) {
   res.set('Content-Type', 'application/json');
-  // res.set('charset', 'utf-8');
+  res.set('charset', 'utf-8');
 
   var result = {nodes: [], links: []};
 
@@ -36,17 +36,21 @@ apiRouter.get('/', function(req, res) {
       var count = 0;
       var total = result.nodes.length;
 
-      data.forEach(function(d) {
+      for(var i = 0, len = data.length; i < len; i++) {
+        var d = data[i];
+
         d._node.outgoing('knows', function(err, rel) {
-          // todo: handle error
-          if(err) { console.log('error in outgoing call:', err);}
+          if(err) { return outgoingDef.reject(err); }
+
+          if(rel.length === 0) { return outgoingDef.resolve(data); }
 
           result.links.push({from: rel[0].start.id, to: rel[0].end.id});
           if(++count >= total) {
             outgoingDef.resolve(data);
           }
+
         });
-      });
+      }
 
       return outgoingDef.promise;
     })
