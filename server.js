@@ -15,6 +15,11 @@ mock.mockDB();
 var app  = express();
 var port = process.env.PORT || 8000;
 
+<<<<<<< HEAD
+=======
+var publicDir = path.join(__dirname, 'client');
+module.exports.publicDir = publicDir;
+>>>>>>> master
 
 // Middlewares
 app.use(logger('dev')); // Morgan
