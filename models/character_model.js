@@ -24,6 +24,13 @@ var Character = function(node) {
 
 // Static methods-- for retrieving Characters and relationships:
 
+/**
+ * Search for a character in the DB by database ID. 
+ * @param  {Number}   id       The ID of the character in the database
+ * @param  {Function} callback Callback for errors and results. Provides an 
+ *                                      instance of the Character class 
+ *                                      representing the new character.
+ */
 Character.getById = function (id, callback) {
   var query = [
   'MATCH (character:Character)',
@@ -42,7 +49,12 @@ Character.getById = function (id, callback) {
     .done();
 };
 
-
+/**
+ * Retrieve all characters from the database
+ * @param  {Function} callback Callback for errors and results. provides an
+ *                                      array containing Character instances
+ *                                      representing the characters.
+ */
 Character.getAll = function(callback) {
   var query = [
       'MATCH (character:Character)',
@@ -73,6 +85,16 @@ Character.getAll = function(callback) {
 //   });
 // };
 
+/**
+ * Create a Character instance using the provided data.
+ * @param  {Object}   data     The data to be stored on the character's db node.
+ *                             ie. name.
+ * @param  {Function} callback Callback for errors and results. Provides a new
+ *                             Character instance containing the new character'
+ *                             information in the DB. Error contains any error
+ *                             messages from the DB, if the creation is
+ *                             unsuccessful.
+ */
 Character.create = function (data, callback) {
   var node = db.createNode(data);
   var character = new Character(node);
@@ -100,12 +122,15 @@ Character.create = function (data, callback) {
 
 // Instance properties and methods-- for operating on a single Character:
 
+// getter for a character instance's ID
 Object.defineProperty(Character.prototype, 'id', {
   get: function() {
     return this._node.id;
   }
 });
 
+// Getter and setter for a character instance's ID. Call .save() after to 
+// persist changes to the DB.
 Object.defineProperty(Character.prototype, 'name', {
   get: function() {
     return this._node.data.name;
@@ -115,16 +140,28 @@ Object.defineProperty(Character.prototype, 'name', {
   }
 });
 
+
+/**
+ * Persist any changes to a character instance back to the DB. 
+ * @param  {Function} callback Provides any error message from the server.
+ */
 Character.prototype.save = function(callback) {
   this._node.save(function(err) {
-    if(callback) { callback(err); }
+    if(callback) { return callback(err); }
   });
 };
 
+/**
+ * Create and persist a relationship to another character.
+ * @param  {Character}   other    A character instance, ie. the result of
+ *                                Character.getById.
+ * @param  {String}   type     The type of relationship. Defaults to 'knows'.
+ * @param  {Function} callback Provides any error message from the server.
+ */
 Character.prototype.follow = function(other, type, callback) {
   type || (type = 'knows');
   this._node.createRelationshipTo(other._node, type, {}, function(err, rel) {
-    if(callback) { callback(err); }
+    if(callback) { return callback(err); }
   });
 };
 

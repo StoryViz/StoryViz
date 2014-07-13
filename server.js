@@ -6,7 +6,7 @@ var favicon    = require('serve-favicon');
 var publicDir = require('./helpers/path_helpers').publicDir;
 
 // Dev dependencies
-var mock   = require('./db/mock_db');
+var mock   = require('./db/mock_db'); // fill DB with fake characters
 var logger = require('morgan'); // Logging middleware
 
 // For testing: Clear the DB on reset, then add new users.
