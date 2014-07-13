@@ -8,17 +8,7 @@ angular.module('storyviz.directives', ['d3'])
       link:function(scope, element) {
         d3Service.d3().then(function(d3) {
 
-          // var tick = function() {
-          //   node.attr("x", function(d) { return d.x - 20; })
-          //       .attr("y", function(d) { return d.y - 20; })
-
-          //   link.attr("x1", function(d) { return d.source.x; })
-          //       .attr("y1", function(d) { return d.source.y; })
-          //       .attr("x2", function(d) { return d.target.x; })
-          //       .attr("y2", function(d) { return d.target.y; });
-          // };
-
-          var width = 500;
+          var width = 1000;
           var height = 500;
           var svg = d3.select(element[0])
             .append('svg')
@@ -26,6 +16,8 @@ angular.module('storyviz.directives', ['d3'])
             .attr('height', height);
 
           // var graphData = scope.data.data;
+          var color = d3.scale.category20();
+
 
           var force = d3.layout.force()
             // .nodes(graphData.nodes)
@@ -36,22 +28,36 @@ angular.module('storyviz.directives', ['d3'])
 
           scope.render = function(graphData) {
 
-            force.nodes(graphData.nodes)
-                .links(graphData.links);
+            var drawGraph = function() {
+              force.nodes(graphData.nodes)
+                .links(graphData.links)
+                .on("tick", tick)
+                .start();
+            }
 
-            var node = svg.selectAll('.node')
+            var gnodes = svg.selectAll('g.gnode')
                 .data(graphData.nodes)
-              .enter()
-                .append('svg:circle')
+                .enter()
+                .append('g')
+                .classed('gnode', true);
+
+            var node = gnodes.append('circle')
                 .attr('class', 'node')
-                .attr('r', 10);
-            // node.append("title")
-            //   .text(function(d) { return d.name; });
+                .attr('r', 10)
+                .style('fill', function(d){return color(d.id)})
+                .call(force.drag);
+
+
+            var labels = gnodes.append("text")
+              // .attr("text-anchor", "middle")
+              // .attr("dy", ".1em")
+              .text(function(d) { return d.name; });
+             console.log(labels);
 
             var link = svg.selectAll('.link')
                 .data(graphData.links)
               .enter()
-                .insert('line', '.node')
+                .insert('line', '.gnode')
                 .attr('class', 'link')
                 .style("stroke-width", 3);
             // link.enter()
@@ -63,16 +69,19 @@ angular.module('storyviz.directives', ['d3'])
             //   .attr('class', 'node')
             //   .attr('r', 30);
 
-            force.start();
-            force.on("tick", function() {
+            // force.start();
+            function tick() {
               link.attr("x1", function(d) { return d.source.x; })
                   .attr("y1", function(d) { return d.source.y; })
                   .attr("x2", function(d) { return d.target.x; })
                   .attr("y2", function(d) { return d.target.y; });
-
-              node.attr("cx", function(d) { return d.x; })
-                  .attr("cy", function(d) { return d.y; });
-            });
+              gnodes.attr("transform", function(d) { 
+                return 'translate(' + [d.x, d.y] + ')'; 
+              });
+              // node.attr("cx", function(d) { return d.x; })
+              //     .attr("cy", function(d) { return d.y; });
+            };
+          drawGraph();
           };
 
           scope.$watch('data', function(newValue) {
