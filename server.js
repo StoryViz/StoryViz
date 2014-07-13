@@ -17,7 +17,6 @@ var port = process.env.PORT || 8000;
 
 
 
-
 // Middlewares
 app.use(logger('dev')); // Morgan
 app.use(favicon(path.join(publicDir, 'favicon.ico')));
