@@ -1,18 +1,27 @@
-var express = require('express');
-var path    = require('path');
-var logger  = require('morgan'); // Logging middleware
-var favicon = require('serve-favicon');
+var express    = require('express');
+var path       = require('path');
+var bodyParser = require('body-parser'); // for handling POST data
+var favicon    = require('serve-favicon');
 
-var app     = express();
-var port    = process.env.PORT || 8000;
+var publicDir = require('./helpers/path_helpers').publicDir;
 
-var publicDir = path.join(__dirname, 'client');
-module.exports.publicDir = publicDir;
+// Dev dependencies
+var mock   = require('./db/mock_db'); // fill DB with fake characters
+var logger = require('morgan'); // Logging middleware
+
+// For testing: Clear the DB on reset, then add new users.
+mock.mockDB();
+
+var app  = express();
+var port = process.env.PORT || 8000;
+
+
 
 // Middlewares
-app.use(logger()); // Morgan
+app.use(logger('dev')); // Morgan
 app.use(favicon(path.join(publicDir, 'favicon.ico')));
-app.use(express.static(publicDir));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(publicDir)); // Serve files from /public on /
 
 // Routes
 // app.use('/', require('./routes/index').indexRouter);
@@ -20,4 +29,3 @@ app.use('/api', require('./routes/api').apiRouter);
 
 app.listen(port);
 console.log('Server running on', port);
-
