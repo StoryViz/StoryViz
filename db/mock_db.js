@@ -20,6 +20,9 @@ function mockDB() {
   ].join('\n');
 
   // clear the DB
+  // 
+  // This is ugly code that's here for testing purposes-- don't base anything 
+  // that you care about on it.
   db.query(clearDb, {}, function(err, succ) {
     console.log('DB cleared.');
     console.log('adding fake data to db...');
