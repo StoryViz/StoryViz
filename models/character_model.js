@@ -3,6 +3,7 @@
 // api_helpers.
 
 var neo4j = require('neo4j');
+var q     = require('q');
 
 // todo: put this on a process variable:
 //       process.env['NEO4J_URL'] ||
@@ -31,11 +32,14 @@ Character.getById = function (id, callback) {
   'RETURN character'
   ].join('\n');
 
-  db.query(query, null, function(err, results) {
-    if (err) { return callback(err); }
-
-    callback(null, new Character(results[0].character));
-  });
+  q.ninvoke(db, 'query', query, null)
+    .then(function(results) {
+      callback(null, new Character(results[0].character));
+    })
+    .catch(function(err) {
+      callback(err);
+    })
+    .done();
 };
 
 
@@ -45,15 +49,18 @@ Character.getAll = function(callback) {
       'RETURN character',
   ].join('\n');
 
-  db.query(query, null, function (err, results) {
-      if (err) { return callback(err); }
-
-      var characters = results.map(function (result) {
-          return new Character(result.character);
+  q.ninvoke(db, 'query', query, null)
+    .then(function(results) {
+      var characters = results.map(function(result) {
+        return new Character(result.character);
       });
 
       callback(null, characters);
-  });
+    })
+    .catch(function(err) {
+      callback(err);
+    })
+    .done();
 };
 
 // Character.getAllRelationshipsOnly = function(callback) {
@@ -80,12 +87,15 @@ Character.create = function (data, callback) {
       data: data
   };
 
-  db.query(query, params, function (err, results) {
-      if (err) { return callback(err); }
-
+  q.ninvoke(db, 'query', query, params)
+    .then(function(results) {
       var character = new Character(results[0].character);
       callback(null, character);
-  });
+    })
+    .catch(function(err) {
+      return callback(err);
+    })
+    .done();
 };
 
 // Instance properties and methods-- for operating on a single Character:
