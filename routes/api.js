@@ -49,7 +49,7 @@ apiRouter.get('/', function(req, res) {
 
           // ...otherwise push them all into the result.
           for(var i = 0, len = rel.length; i < len; i++) {
-            result.links.push({from: rel[i].start.id, to: rel[i].end.id});  
+            result.links.push({source: rel[i].start.id, target: rel[i].end.id, type: 'knows'});  
           }
           
           // if all the callbacks have returned, we can resolve the promise.
