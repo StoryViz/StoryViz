@@ -30,9 +30,7 @@
     <control controlID="7" controlTypeID="com.balsamiq.mockups::IconLabel" x="1031" y="108" w="-1" h="-1" measuredW="24" measuredH="39" zOrder="4" locked="false" isInGroup="-1">
       <controlProperties>
         <color>0</color>
-        <href>SwitchView%26bm%3BSwitchView.bmml%26bm%3BSwitchView.bmml%26bm%3BSwitchView.bmml</href>
         <icon>XIcon%7Csmall</icon>
-        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22713%2C99%2C737%2C138%22%20href%3D%22SwitchView.bmml%22%20alt%3D%22SwitchView%22%20id%3D%227%22/%3E</map>
         <text>Kills</text>
       </controlProperties>
     </control>
@@ -193,31 +191,52 @@
         <text>Home%2C%20Harry%20Potter%2C%20Romance</text>
       </controlProperties>
     </control>
-    <control controlID="35" controlTypeID="com.balsamiq.mockups::IconLabel" x="667" y="108" w="-1" h="-1" measuredW="24" measuredH="39" zOrder="29" locked="false" isInGroup="-1">
+    <control controlID="35" controlTypeID="com.balsamiq.mockups::List" x="318" y="176" w="126" h="27" measuredW="100" measuredH="126" zOrder="29" locked="false" isInGroup="-1">
+      <controlProperties>
+        <alternateRowColor>14803425</alternateRowColor>
+        <color>12303802</color>
+        <italic>true</italic>
+        <text>from...</text>
+      </controlProperties>
+    </control>
+    <control controlID="36" controlTypeID="com.balsamiq.mockups::IconLabel" x="667" y="108" w="-1" h="-1" measuredW="24" measuredH="39" zOrder="30" locked="false" isInGroup="-1">
       <controlProperties>
         <color>0</color>
         <icon>CheckMarkIcon%7Csmall</icon>
         <text>All</text>
       </controlProperties>
     </control>
-    <control controlID="36" controlTypeID="com.balsamiq.mockups::Button" x="318" y="54" w="103" h="29" measuredW="95" measuredH="27" zOrder="30" locked="false" isInGroup="-1">
+    <control controlID="37" controlTypeID="com.balsamiq.mockups::Button" x="318" y="54" w="103" h="29" measuredW="95" measuredH="27" zOrder="31" locked="false" isInGroup="-1">
       <controlProperties>
         <color>6710886</color>
         <text>All%20Chapters</text>
       </controlProperties>
     </control>
-    <control controlID="37" controlTypeID="com.balsamiq.mockups::Button" x="318" y="151" w="127" h="27" measuredW="108" measuredH="27" zOrder="31" locked="false" isInGroup="-1">
+    <control controlID="39" controlTypeID="com.balsamiq.mockups::NumericStepper" x="318" y="198" w="126" h="-1" measuredW="89" measuredH="24" zOrder="32" locked="false" isInGroup="-1">
       <controlProperties>
-        <href>AddCharacterV2%26bm%3BAddCharacterV2.bmml%26bm%3BAddCharacterV2.bmml%26bm%3BAddCharacterV2.bmml</href>
-        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%220%2C142%2C127%2C169%22%20href%3D%22AddCharacterV2.bmml%22%20alt%3D%22AddCharacterV2%22%20id%3D%2237%22/%3E</map>
-        <text>Add%20Character</text>
+        <text>Romance</text>
       </controlProperties>
     </control>
-    <control controlID="38" controlTypeID="com.balsamiq.mockups::Button" x="318" y="173" w="127" h="27" measuredW="119" measuredH="27" zOrder="32" locked="false" isInGroup="-1">
+    <control controlID="40" controlTypeID="com.balsamiq.mockups::List" x="318" y="220" w="126" h="27" measuredW="100" measuredH="126" zOrder="33" locked="false" isInGroup="-1">
       <controlProperties>
-        <href>AddRelationshipV2%26bm%3BAddRelationshipV2.bmml%26bm%3BAddRelationshipV2.bmml%26bm%3BAddRelationshipV2.bmml</href>
-        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%220%2C164%2C127%2C191%22%20href%3D%22AddRelationshipV2.bmml%22%20alt%3D%22AddRelationshipV2%22%20id%3D%2238%22/%3E</map>
+        <alternateRowColor>14803425</alternateRowColor>
+        <color>12303802</color>
+        <italic>true</italic>
+        <text>to...</text>
+      </controlProperties>
+    </control>
+    <control controlID="41" controlTypeID="com.balsamiq.mockups::Button" x="318" y="243" w="127" h="27" measuredW="119" measuredH="27" zOrder="34" locked="false" isInGroup="-1">
+      <controlProperties>
+        <href>RomanceView%26bm%3BRomanceView.bmml%26bm%3BRomanceView.bmml%26bm%3BRomanceView.bmml</href>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%220%2C234%2C127%2C261%22%20href%3D%22RomanceView.bmml%22%20alt%3D%22RomanceView%22%20id%3D%2241%22/%3E</map>
         <text>Add%20Relationship</text>
+      </controlProperties>
+    </control>
+    <control controlID="42" controlTypeID="com.balsamiq.mockups::Button" x="318" y="151" w="127" h="27" measuredW="108" measuredH="27" zOrder="35" locked="false" isInGroup="-1">
+      <controlProperties>
+        <href>AddCharacterV2%26bm%3BAddCharacterV2.bmml%26bm%3BAddCharacterV2.bmml%26bm%3BAddCharacterV2.bmml</href>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%220%2C142%2C127%2C169%22%20href%3D%22AddCharacterV2.bmml%22%20alt%3D%22AddCharacterV2%22%20id%3D%2242%22/%3E</map>
+        <text>Add%20Character</text>
       </controlProperties>
     </control>
   </controls>
