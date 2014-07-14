@@ -3,7 +3,7 @@ angular.module('storyviz.story', [])
       $scope.data = {};
 
       // gets dummy data
-      $scope.getAllChars = function() {
+/*      $scope.getAllChars = function() {
         Story.getAllChars()
           .then(function(data) {
             //data is an object with node and link properties
@@ -14,14 +14,40 @@ angular.module('storyviz.story', [])
             throw err;
           });
       };
-      $scope.getAllChars();
+      $scope.getAllChars();*/
 
       // get all names and relationships
       $scope.getAll = function() {
         Story.getAll()
           .then(function(data) {
+            console.log("response, links", data.data.links);
+            console.log("response, nodes", data.data.nodes);
+            
+            var nodes = data.data.nodes;
+            var nodeStorage = {};
+
+            // Save array index of each node in nodeStorage object
+            for (var i = 0; i < nodes.length; i++) {
+              nodeStorage[nodes[i].id] = i;
+            }
+
+            var links = data.data.links;
+            var linkStorage = [];
+            
+            for (var j = 0; j < links.length; j++) {
+              var newLink = {};
+
+              // Change source to refer to array index instead of character id
+              var charIDSource = links[j].source;
+              var charIDTarget = links[j].target;
+              newLink.source = nodeStorage[charIDSource];
+              newLink.target = nodeStorage[charIDTarget];
+              linkStorage.push(newLink);
+            }
+
             //data is an object with node and link properties
-            $scope.data = data;
+            // $scope.data = data;
+            $scope.data = {nodes: nodes, links: linkStorage};
           })
           .catch(function(err) {
             console.log(err);
