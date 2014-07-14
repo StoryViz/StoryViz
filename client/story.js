@@ -20,28 +20,24 @@ angular.module('storyviz.story', [])
       $scope.getAll = function() {
         Story.getAll()
           .then(function(data) {
-            console.log("response, links", data.data.links);
-            console.log("response, nodes", data.data.nodes);
-            
             var nodes = data.data.nodes;
-            var nodeStorage = {};
-
-            // Save array index of each node in nodeStorage object
-            for (var i = 0; i < nodes.length; i++) {
-              nodeStorage[nodes[i].id] = i;
-            }
-
+            var nodeIndexStorage = {};
             var links = data.data.links;
             var linkStorage = [];
-            
+
+            // Save array index of each node in nodeIndexStorage object
+            for (var i = 0; i < nodes.length; i++) {
+              nodeIndexStorage[nodes[i].id] = i;
+            }
+
             for (var j = 0; j < links.length; j++) {
               var newLink = {};
 
               // Change source to refer to array index instead of character id
               var charIDSource = links[j].source;
               var charIDTarget = links[j].target;
-              newLink.source = nodeStorage[charIDSource];
-              newLink.target = nodeStorage[charIDTarget];
+              newLink.source = nodeIndexStorage[charIDSource];
+              newLink.target = nodeIndexStorage[charIDTarget];
               linkStorage.push(newLink);
             }
 
