@@ -20,7 +20,8 @@
     "express": "^4.5.1",
     "serve-favicon": "^2.0.1",
     "neo4j": "^1.1.0",
-    "body-parser": "^1.4.3"
+    "body-parser": "^1.4.3",
+    "q": "^1.0.1"
   },
   "devDependencies": {
     "morgan": "^1.1.1"
