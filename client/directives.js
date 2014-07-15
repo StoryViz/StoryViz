@@ -86,7 +86,6 @@ angular.module('storyviz.directives', ['d3'])
               
               // set up linkIndex and linkNumer, because it may possible multiple links share the same source and target node
               setLinkIndexAndNum();
-
               force.nodes(graphData.nodes)
                 .links(graphData.links)
                 .on("tick", tick)
@@ -200,12 +199,13 @@ angular.module('storyviz.directives', ['d3'])
               //   };
               // // drawGraph();
           };
-
-          scope.$watchGroup(['data', 'data.nodes', 'data.links'], function(newValue) {
+          
+          scope.$watchGroup(['data','data.nodes', 'data.links'], function(newValue) {
             if (newValue !== undefined) {
-              scope.render(scope.data.data);
+              scope.render(scope.data);
             }
           });
+
         });
       }
     };

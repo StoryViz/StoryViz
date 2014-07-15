@@ -1,7 +1,7 @@
 <div ng-controller='StoryController'>
   <div>
     <!-- Slider Bar -->
-    <div class="row">
+    <div style="top: 30%" class="row">
       <div class="small-2 medium-1 columns"></div>
       <div class="small-10 medium-11 columns">
         <h3 style="font-family:Optima">Chapter <h4 class="subheader" id="sliderOutput" class="label">0</h4></h3>
@@ -13,6 +13,23 @@
         <a href="#" class="button small" id="playChapters">Play</a>
       </div>
     </div>
+
+    <!-- Input Form -->
+    <form>
+      <div class="row">
+        <div class="large-4 columns">
+          <div class="row collapse">
+            <div class="small-10 columns">
+              <input ng-model="newCharacter.name" type="text" placeholder="New character...">
+              <div> {{ newCharacter.name }} </div>
+            </div>
+            <div class="small-2 columns">
+              <a ng-click="addChar()" class="button postfix">Add</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
 
   </div>
   <story-graph data='data'></story-graph>

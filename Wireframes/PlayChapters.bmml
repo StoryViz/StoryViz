@@ -87,7 +87,9 @@
     <control controlID="21" controlTypeID="com.balsamiq.mockups::Button" x="436" y="54" w="132" h="29" measuredW="132" measuredH="27" zOrder="12" locked="false" isInGroup="-1">
       <controlProperties>
         <color>6710886</color>
+        <href>PlayChapter2%26bm%3BPlayChapter2.bmml%26bm%3BPlayChapter2.bmml%26bm%3BPlayChapter2.bmml</href>
         <icon>RightFillTriangleIcon%7Csmall</icon>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22118%2C45%2C250%2C74%22%20href%3D%22PlayChapter2.bmml%22%20alt%3D%22PlayChapter2%22%20id%3D%2221%22/%3E</map>
         <text>Play%20Chapters</text>
       </controlProperties>
     </control>
@@ -177,6 +179,20 @@
       <controlProperties>
         <color>6710886</color>
         <text>All%20Chapters</text>
+      </controlProperties>
+    </control>
+    <control controlID="40" controlTypeID="com.balsamiq.mockups::Button" x="321" y="151" w="127" h="27" measuredW="108" measuredH="27" zOrder="28" locked="false" isInGroup="-1">
+      <controlProperties>
+        <href>AddCharacterV2%26bm%3BAddCharacterV2.bmml%26bm%3BAddCharacterV2.bmml%26bm%3BAddCharacterV2.bmml</href>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%223%2C142%2C130%2C169%22%20href%3D%22AddCharacterV2.bmml%22%20alt%3D%22AddCharacterV2%22%20id%3D%2240%22/%3E</map>
+        <text>Add%20Character</text>
+      </controlProperties>
+    </control>
+    <control controlID="41" controlTypeID="com.balsamiq.mockups::Button" x="321" y="173" w="127" h="27" measuredW="119" measuredH="27" zOrder="29" locked="false" isInGroup="-1">
+      <controlProperties>
+        <href>AddRelationshipV2%26bm%3BAddRelationshipV2.bmml%26bm%3BAddRelationshipV2.bmml%26bm%3BAddRelationshipV2.bmml</href>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%223%2C164%2C130%2C191%22%20href%3D%22AddRelationshipV2.bmml%22%20alt%3D%22AddRelationshipV2%22%20id%3D%2241%22/%3E</map>
+        <text>Add%20Relationship</text>
       </controlProperties>
     </control>
   </controls>

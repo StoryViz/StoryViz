@@ -4,7 +4,6 @@
 
 var q = require('q');
 
-var publicDir  = require('../server').publicDir;
 var Character  = require('../models/character_model').Character;
 
 /**
