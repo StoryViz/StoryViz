@@ -6,9 +6,26 @@ span.test {
   stroke-width: 1.5px;
 }
 
+#knows {
+  stroke: #9ecae1;
+}
+
+#loves {
+  stroke: IndianRed;
+}
+
+#kills {
+  stroke: black;
+}
+
 .node {
   stroke: #fff;
   stroke-width: 1.5px;
+}
+
+.nodeLabels {
+  font-family:  "Avenir";
+  font-size: 12px;
 }
 
 body {
