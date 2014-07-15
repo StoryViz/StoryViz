@@ -8,7 +8,7 @@ angular.module('storyviz.story', [])
       $scope.characterRelationships = {};
 
       // newCharacter stores node data for character being added
-      $scope.newCharacter = {name: 'MichelleDoppelganger'};
+      $scope.newCharacter = {};
 
       // newRelationship stores link data for relationship being added
       $scope.newRelationship = {};
@@ -72,7 +72,7 @@ angular.module('storyviz.story', [])
       };
 
       // Add new character
-      // setChar will be called from view (e.g. on click)
+      // addChar called from view on click
       $scope.addChar = function() {
         // $scope.name should be set through data binding 
         // in view (e.g. input field)
@@ -87,7 +87,7 @@ angular.module('storyviz.story', [])
       };
 
       // Test adding a character
-      $scope.addChar();
+      // $scope.addChar();
 
       // Add new relationship
       $scope.addRel = function() {
