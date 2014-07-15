@@ -27,6 +27,7 @@ angular.module('storyviz.directives', ['d3'])
             .size([width, height]);
 
           scope.render = function(graphData) {
+            console.dir(graphData);
             var drawGraph = function() {
               force.nodes(graphData.nodes)
                 .links(graphData.links)
@@ -82,13 +83,13 @@ angular.module('storyviz.directives', ['d3'])
             };
           drawGraph();
           };
-
-          scope.$watch('data', function(newValue) {
+          
+          scope.$watchGroup(['data','data.nodes', 'data.links'], function(newValue) {
             if (newValue !== undefined) {
-              // scope.render(newValue.data);
-              scope.render(newValue);
+              scope.render(scope.data);
             }
           });
+
         });
       }
     };
