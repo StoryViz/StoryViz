@@ -1,5 +1,10 @@
 <html ng-app='storyviz'>
 	<head>
+    <!-- Foundation CSS CDN -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/foundation/5.0.2/css/foundation.min.css">
+    <!-- Modernizr CDN -->
+    <script src="//cdn.jsdelivr.net/foundation/5.0.2/js/vendor/custom.modernizr.js"></script>
+
 		<link rel="stylesheet" type="text/css" href="stylesheets/main.css">
 	</head>
 	<body>
@@ -12,9 +17,14 @@
     <div ui-view>
 
     </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <!-- Foundation JS CDN -->
+    <script src="//cdn.jsdelivr.net/foundation/5.0.2/js/foundation.min.js"></script>
+    <!-- Initialize Foundation -->
+    <script>$(document).foundation();</script>
+    
     <script src="js/angular.min.js"></script>
     <script src="js/angular-ui-router.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script src="app.js"></script>
     <script src="story.js"></script>
     <script src="services.js"></script>
