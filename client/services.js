@@ -12,18 +12,21 @@ angular.module('storyviz.services', [])
         return $http.get('/api/names/all');
     },
 
-    // Warning: post requests currently not handled by server
-
     // create new character
-    setChar: function(name) {
-        return $http.post('/api/names/create', {name: name});
+    addChar: function(name) {
+        var data = $.param({name: name});
+        return $http({
+            method: 'POST',
+            url: '/api/names',
+            data: data,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
     },
 
     // create new relationship
-    setRelationship: function(from, to, type) {
+    addRel: function(from, to, type) {
         return $http.post('/api/names/follow', {from: from, to: to, type: type});
     }
-
 
   };
   return storyManager;

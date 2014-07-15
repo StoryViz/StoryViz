@@ -79,8 +79,21 @@ apiRouter.get('/', function(req, res) {
 
 // Todo: handle POST requests to server for creating/updating nodes and links.
 // see apiHelpers.saveNewCharacter and saveRelationship.
-.post('/', function(req, res) {
+/*.post('/', function(req, res) {
   req.pipe(res); // for testing
+})*/
+
+.post('/names', function(req, res) {
+  // save new character to db
+  q.ninvoke(apiHelpers, 'saveNewCharacter', req.body)
+    .then(function(data) {
+      res.send(200);
+    })
+    .catch(function(err) {
+      console.log('error', err);
+      res.send(500);
+    }).done();
+
 });
 
 module.exports.apiRouter = apiRouter;

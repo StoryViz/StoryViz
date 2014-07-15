@@ -2,6 +2,20 @@ angular.module('storyviz.story', [])
   .controller('StoryController', function($scope, Story) {
       $scope.data = {};
 
+      // stores all relationships for each character
+      // enables isolation of a single character and their
+      // relationships
+      $scope.characterRelationships = {};
+
+      // newCharacter stores node data for character being added
+      $scope.newCharacter = {name: 'MichelleDoppelganger'};
+
+      // newRelationship stores link data for relationship being added
+      $scope.newRelationship = {};
+
+      // character stores node data for selected character
+      $scope.selectedCharacter = {};
+
       // gets dummy data
 /*      $scope.getAllChars = function() {
         Story.getAllChars()
@@ -16,7 +30,7 @@ angular.module('storyviz.story', [])
       };
       $scope.getAllChars();*/
 
-      // get all names and relationships
+      // Get all characters and relationships
       $scope.getAll = function() {
         Story.getAll()
           .then(function(data) {
@@ -53,13 +67,18 @@ angular.module('storyviz.story', [])
 
       $scope.getAll();
 
+      $scope.getCharacterRelationships = function() {
+        // $scope.selectedCharacter.id;
+      };
+
+      // Add new character
       // setChar will be called from view (e.g. on click)
-      $scope.setChar = function() {
+      $scope.addChar = function() {
         // $scope.name should be set through data binding 
         // in view (e.g. input field)
-        Story.setChar($scope.name)
+        Story.addChar($scope.newCharacter.name)
           .then(function(response) {
-            console.log("response from setChar: ", response);
+            console.log("Response from addChar: ", response);
           })
           .catch(function(err) {
             console.log(err);
@@ -67,18 +86,22 @@ angular.module('storyviz.story', [])
           });
       };
 
-      $scope.setRelationship = function() {
+      // Test adding a character
+      $scope.addChar();
+
+      // Add new relationship
+      $scope.addRel = function() {
         // $scope.from, $scope.to, and $scope.type
          // should be set through data binding 
         // in view (e.g. input field)
-        Story.setRelationship($scope.from, $scope.to, $scope.type)
+/*        Story.addRel($scope.from, $scope.to, $scope.type)
           .then(function(response) {
-            console.log("response from setRelationship: ", response);
+            console.log("response from addRelationship: ", response);
           })
           .catch(function(err) {
             console.log(err);
             throw err;
-          });
+          });*/
       };
-      
+      console.log('addRel invoked from story controller');
   });
