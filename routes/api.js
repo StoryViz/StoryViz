@@ -47,14 +47,16 @@ apiRouter.get('/', function(req, res) {
         var d = data[i];
 
         // get all the character's outgoing relations...
-        d._node.outgoing('knows', function(err, rel) {
+        d._node.outgoing('', function(err, rel) {
           if(err) { return outgoingDef.reject(err); }
           // ...if there are none, resolve immediately...
           if(rel.length === 0) { return outgoingDef.resolve(data); }
 
           // ...otherwise push them all into the result.
           for(var i = 0, len = rel.length; i < len; i++) {
-            result.links.push({source: rel[i].start.id, target: rel[i].end.id, type: 'knows'});  
+            result.links.push({source: rel[i].start.id, 
+              target: rel[i].end.id, 
+              type: rel[i]._data.type});  
           }
           
           // if all the callbacks have returned, we can resolve the promise.
