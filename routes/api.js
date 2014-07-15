@@ -13,13 +13,6 @@ apiRouter.get('/', function(req, res) {
   res.send('StoryViz JSON API');
 })
 
-.get('/dummy', function(req, res) {
-  res.set('Content-Type', 'application/json');
-  // res.charset = 'utf-8';
-  
-  res.sendfile(path.join(publicDir, 'dummyJSON.json'));
-})
-
 // Returns all names and relationships in the DB, in the form:
 // {nodes: [{id: 5, name: 'mitch'}], links: [{source: 11, target: 24, type: 'knows'}]}
 // where node ID and link source/target are the IDs of the actual nodes in the 
@@ -79,17 +72,16 @@ apiRouter.get('/', function(req, res) {
     }).done();
 })
 
-// Todo: handle POST requests to server for creating/updating nodes and links.
 // see apiHelpers.saveNewCharacter and saveRelationship.
-/*.post('/', function(req, res) {
-  req.pipe(res); // for testing
-})*/
 
 .post('/names', function(req, res) {
   // save new character to db
-  q.ninvoke(apiHelpers, 'saveNewCharacter', req.body)
+  q.ninvoke(apiHelpers, 'saveNewCharacter', req.body
+  )
     .then(function(data) {
-      res.send(200);
+      console.dir("new character saved: ");
+      var node = {name: data.name, id: data.id};
+      res.send(node);
     })
     .catch(function(err) {
       console.log('error', err);

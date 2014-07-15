@@ -16,20 +16,6 @@ angular.module('storyviz.story', [])
       // character stores node data for selected character
       $scope.selectedCharacter = {};
 
-      // gets dummy data
-/*      $scope.getAllChars = function() {
-        Story.getAllChars()
-          .then(function(data) {
-            //data is an object with node and link properties
-            $scope.data = data;
-          })
-          .catch(function(err) {
-            console.log(err);
-            throw err;
-          });
-      };
-      $scope.getAllChars();*/
-
       // Get all characters and relationships
       $scope.getAll = function() {
         Story.getAll()
@@ -55,8 +41,6 @@ angular.module('storyviz.story', [])
               linkStorage.push(newLink);
             }
 
-            //data is an object with node and link properties
-            // $scope.data = data;
             $scope.data = {nodes: nodes, links: linkStorage};
           })
           .catch(function(err) {
@@ -78,16 +62,15 @@ angular.module('storyviz.story', [])
         // in view (e.g. input field)
         Story.addChar($scope.newCharacter.name)
           .then(function(response) {
-            console.log("Response from addChar: ", response);
+
+            // concat used instead of push in order to trigger change
+            $scope.data.nodes = $scope.data.nodes.concat(response.data);
           })
           .catch(function(err) {
             console.log(err);
             throw err;
           });
       };
-
-      // Test adding a character
-      // $scope.addChar();
 
       // Add new relationship
       $scope.addRel = function() {
