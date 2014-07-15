@@ -1,17 +1,49 @@
 <html ng-app='storyviz'>
 	<head>
+    <!-- Foundation CSS CDN -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/foundation/5.0.2/css/foundation.min.css">
+    <!-- Modernizr CDN -->
+    <script src="//cdn.jsdelivr.net/foundation/5.0.2/js/vendor/custom.modernizr.js"></script>
+
 		<link rel="stylesheet" type="text/css" href="stylesheets/main.css">
 	</head>
 	<body>
-       <div class="navigation">
-          <ul class="nav">
-            <li><a ui-sref="story">Stories</a></li>
-            <li><a ui-sref="/">Most Popular</a></li>
-          </ul>
-      </div>
-    <div ui-view>
+      <nav class="top-bar" data-topbar>
+        <ul class="title-area">
+          <li class="name">
+            <h1><a href="#">Home</a></h1>
+          </li>
+           <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+          <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+        </ul>
 
-    </div>
+        <section class="top-bar-section">
+          <!-- Right Nav Section -->
+          <ul class="right">
+            <li class="active"><a ui-sref="/">Most Popular</a></li>
+            <li class="has-dropdown">
+              <a href="#">Right Button Dropdown</a>
+              <ul class="dropdown">
+                <li><a href="#">First link in dropdown</a></li>
+              </ul>
+            </li>
+          </ul>
+
+          <!-- Left Nav Section -->
+          <ul class="left">
+            <li><a ui-sref="story">Stories</a></li>
+          </ul>
+        </section>
+      </nav>
+
+    <!-- Story View inserted here -->
+    <div ui-view></div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <!-- Foundation JS CDN -->
+    <script src="//cdn.jsdelivr.net/foundation/5.0.2/js/foundation.min.js"></script>
+    <!-- Initialize Foundation -->
+    <script>$(document).foundation();</script>
+    
     <script src="js/angular.min.js"></script>
     <script src="js/angular-ui-router.min.js"></script>
     <script src="app.js"></script>
