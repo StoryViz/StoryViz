@@ -8,10 +8,10 @@ angular.module('storyviz.services', [])
     },
 
     // create new character
-    addChar: function(name) {
+    addChar: function(newChar) {
 
         // jQuery's param method serializes object for ajax request
-        var data = $.param({name: name});
+        var data = $.param(newChar);
         return $http({
             method: 'POST',
             url: '/api/names',
