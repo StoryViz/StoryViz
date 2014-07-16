@@ -24,7 +24,7 @@ angular.module('storyviz.services', [])
     addRel: function(relationship) {
         // var url = '/api/names/:' + from.id;
 
-        var url = '/api/names/' + 1;
+        var url = '/api/names/new-relationship';
         var data = $.param({json: JSON.stringify(relationship)});
 
         return $http({
