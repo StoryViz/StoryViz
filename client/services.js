@@ -36,7 +36,5 @@ angular.module('storyviz.services', [])
     }
 
   };
-
-  };
   return storyManager;
 });
