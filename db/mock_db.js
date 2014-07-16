@@ -45,9 +45,8 @@ function mockDB() {
           });      
         });    
       });  
-
     });
-    
+  
     
     
 
@@ -67,7 +66,6 @@ function mockDB() {
     //         var target = newCharacters[Math.floor(Math.random() * 
     //                                     newCharacters.length)].id;
     //         var type = 'knows';
-
     //         api.saveRelationship({
     //           from: source,
     //           to: target,
