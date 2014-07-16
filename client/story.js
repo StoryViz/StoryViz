@@ -62,7 +62,7 @@ angular.module('storyviz.story', [])
     $scope.addChar = function() {
       // $scope.name should be set through data binding 
       // in view (e.g. input field)
-      Story.addChar($scope.newChar.name)
+      Story.addChar($scope.newChar)
         .then(function(response) {
 
           // concat used instead of push in order to trigger change
