@@ -40,7 +40,7 @@ var Character = function(node) {
  */
 Character.getById = function (id, callback) {
   var query = [
-  'MATCH (character:Character)',
+  'MATCH (character:CHARACTER)',
   'WHERE id(character)=',
   id,
   'RETURN character'
@@ -64,7 +64,7 @@ Character.getById = function (id, callback) {
  */
 Character.getAll = function(callback) {
   var query = [
-      'MATCH (character:Character)',
+      'MATCH (character:CHARACTER)',
       'RETURN character',
   ].join('\n');
 
@@ -81,16 +81,6 @@ Character.getAll = function(callback) {
     })
     .done();
 };
-
-// Character.getAllRelationshipsOnly = function(callback) {
-//   var query = 'MATCH (a)-[r:`knows`]->(b) RETURN r';
-
-//   db.query(query, {}, function(err, results) {
-//     if(err) { return callback(err); }
-
-//     callback(null, results);
-//   });
-// };
 
 /**
  * Create a Character instance using the provided data.
@@ -114,10 +104,10 @@ Character.create = function (data, chapter, callback) {
   // chapter or it will not show up in any view. Front-end should POST to
   // api/names with the character's name, and the current chapter to form
   // an initial association.
-
+  console.log('adding: ' + data.name);
   //todo: Get chapter into data object somehow
   var query = [
-      'CREATE (c:Character {data})',
+      'CREATE (c:CHARACTER {data})',
       'CREATE (c)-[:CHAPTER]->(:CHAPTER {num: ' + chapter + '})',
       'RETURN c'
   ].join('\n');
