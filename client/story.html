@@ -20,13 +20,16 @@
         <!-- Add Character -->
         <div class="large-3 columns">
           <div class="row collapse">
-            <div class="small-8 columns">
+            <div class="small-12 columns">
               <input ng-model="newChar.name" type="text" placeholder="New character...">
-              <div> {{ newChar.name }} </div>
+              <input ng-model="newChar.chapter" type="text" placeholder="Chapter introduced in...">
             </div>
-            <div class="small-4 columns">
+<!--             <div class="small-4 columns">
               <a ng-click="addChar()" class="button postfix">Add</a>
-            </div>
+            </div> -->
+          </div>
+          <div class="small-4 columns">
+            <a ng-click="addChar()" class="button small">Add</a>
           </div>
         </div>
         <!-- Add Relationship -->
