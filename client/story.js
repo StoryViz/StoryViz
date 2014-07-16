@@ -76,17 +76,31 @@ angular.module('storyviz.story', [])
 
     // Add new relationship
     $scope.addRel = function() {
-      // $scope.from, $scope.to, and $scope.type
-       // should be set through data binding 
-      // in view (e.g. input field)
-/*        Story.addRel($scope.from, $scope.to, $scope.type)
+      // from, to, and, type are set through data binding in view 
+      var relationship = {
+        from: $scope.newRel.from.id,
+        type: $scope.newRel.type,
+        to: $scope.newRel.to.id,
+      };
+
+      // To Do: move inside addRel
+      var newLink = {
+        source: $scope.newRel.from.index,
+        type: $scope.newRel.type,
+        target: $scope.newRel.to.index
+      };
+
+      $scope.data.links = $scope.data.links.concat(newLink);
+
+      Story.addRel(relationship)
         .then(function(response) {
-          console.log("response from addRelationship: ", response);
+          console.log('controller received response');
+          console.dir(response);
         })
         .catch(function(err) {
           console.log(err);
           throw err;
-        });*/
+        });
     };
-    console.log('addRel invoked from story controller');
+
   });
