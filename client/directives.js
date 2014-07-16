@@ -110,7 +110,6 @@ angular.module('storyviz.directives', ['d3'])
               //       anchorNode.append("svg:text").text(function(d) {
               //       d.label
               //     }).style("fill", "#666").style("font-family", "Arial").style("font-size", 12);
-
       //             var updateNode = function() {
       //   this.attr("transform", function(d) {
       //     return "translate(" + d.x + "," + d.y + ")";
@@ -168,7 +167,6 @@ angular.module('storyviz.directives', ['d3'])
                 .attr("dy", ".3em")
                 .text(function(d) { return d.name; })
                 // .call(force.drag);
-          
               // Use elliptical arc path segments to doubly-encode directionality.
               console.log(lTotalLinkNum);
               function tick() {
@@ -216,6 +214,7 @@ angular.module('storyviz.directives', ['d3'])
    // anchorNode.attr("transform", function(d) {
    //                    return "translate(" + d.x + "," + d.y + ")";
    //                });
+
 
 
         // anchorNode.call(updateNode);
