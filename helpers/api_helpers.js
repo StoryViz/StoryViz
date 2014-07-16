@@ -73,10 +73,16 @@ function saveRelationship(params, callback) {
     
     // TODO: not bi-directioal, re-work query for time.
     q.all([toDef.promise, fromDef.promise])
-      .spread(function(a, b) {
-        a.follow(b, params.type, function() { a.save() });
-        b.follow(a, params.type, function() { b.save(); });
-      }).catch(function(err) {
+      .then(function(result) {
+        result[0].relateTo(result[1], params.type, 1, function(err) {
+          console.log(err);
+        });
+      })
+      // .spread(function(a, b) {
+      //   a.relateTo(b, params.type, 1, function(err) {console.log(err);});
+      // })
+
+      .catch(function(err) {
         callback(err);
       });
 
