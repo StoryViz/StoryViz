@@ -10,23 +10,59 @@
           <span class="range-slider-active-segment"></span>
           <input type="hidden">
         </div>
-        <a href="#" class="button small" id="playChapters">Play</a>
+        <a class="button small" id="play-chapters">Play</a>
       </div>
     </div>
 
     <!-- Input Form -->
     <form>
       <div class="row">
-        <div class="large-4 columns">
+        <!-- Add Character -->
+        <div class="large-3 columns">
           <div class="row collapse">
-            <div class="small-10 columns">
-              <input ng-model="newCharacter.name" type="text" placeholder="New character...">
+            <div class="small-8 columns">
+              <input ng-model="newChar.name" type="text" placeholder="New character...">
               <div> {{ newCharacter.name }} </div>
             </div>
-            <div class="small-2 columns">
+            <div class="small-4 columns">
               <a ng-click="addChar()" class="button postfix">Add</a>
             </div>
           </div>
+        </div>
+        <!-- Add Relationship -->
+        <div class="large-3 columns">
+          <!-- From -->
+          <div class="row collapse">
+            <div class="small-4 columns">
+              <span class="prefix radius">From</span>
+            </div>
+            <div class="small-8 columns">
+              <select ng-model="newRel.from" ng-options="node.name for node in data.nodes" required>
+                <option value="">Choose person</option>
+              </select>
+            </div>
+          </div>
+          <!-- Type -->
+          <select ng-model="newRel.type" ng-options="type for type in relationshipTypes" required>
+            <option value="">Choose relationship</option>
+          </select>
+
+          <!-- To -->
+          <div class="row collapse">
+            <div class="small-4 columns">
+              <span class="prefix radius">To</span>
+            </div>
+            <div class="small-8 columns">
+              <select ng-model="newRel.to" ng-options="node.name for node in data.nodes" required>
+                <option value="">Choose person</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="large-6 columns">
+            <a ng-click="addRel()" class="button small">Add</a>
+          </div>
+
         </div>
       </div>
     </form>
