@@ -10,8 +10,15 @@ var q     = require('q');
 //       process.env['GRAPHENEDB_URL'] || localhost...
 var db = new neo4j.GraphDatabase('http://localhost:7474');
 
+// tell DB to enforce unique character names, in the case that we're booting with
+// a new DB. If DB exists and this was already set, it will silently fail.
+var uniqueNameQuery = [
+  'CREATE CONSTRAINT ON (c:CHARACTER)',
+  'ASSERT c.name IS UNIQUE'
+].join('\n');
+db.query(uniqueNameQuery, null, function(){});
 
-// adapted from github.com/aseemk/node-neo4j-template
+// adapted from (now barely resembling) github.com/aseemk/node-neo4j-template
 
 /**
  * Represents a character node in the DB
@@ -33,7 +40,7 @@ var Character = function(node) {
  */
 Character.getById = function (id, callback) {
   var query = [
-  'MATCH (character:Character)',
+  'MATCH (character:CHARACTER)',
   'WHERE id(character)=',
   id,
   'RETURN character'
@@ -55,19 +62,32 @@ Character.getById = function (id, callback) {
  *                                      array containing Character instances
  *                                      representing the characters.
  */
-Character.getAll = function(callback) {
+Character.getAll = function(chapter, callback) {
   var query = [
-      'MATCH (character:Character)',
-      'RETURN character',
+   'MATCH (source:CHARACTER)-[:CHAPTER]->(chap:CHAPTER {num:' + chapter +'})',
+   'OPTIONAL MATCH (chap)-[t]->(target:CHARACTER)',
+   'RETURN source, type(t), target'
   ].join('\n');
 
   q.ninvoke(db, 'query', query, null)
     .then(function(results) {
-      var characters = results.map(function(result) {
-        return new Character(result.character);
-      });
+      // {source: <character>, target: <character>, type: 'knows'}
+      var r = {nodes: [], links: []};
+      results.forEach(function(result) {
 
-      callback(null, characters);
+        // TODO: uniq the nodes array.
+        thisCharacter = new Character(result.source);
+        r.nodes.push(thisCharacter);
+        
+        if(result.target) {
+          r.links.push({
+            source: thisCharacter, 
+            target: new Character(result.target),
+            type: result['type(t)']
+          });
+        }
+      });
+      callback(null, r);
     })
     .catch(function(err) {
       callback(err);
@@ -75,33 +95,37 @@ Character.getAll = function(callback) {
     .done();
 };
 
-// Character.getAllRelationshipsOnly = function(callback) {
-//   var query = 'MATCH (a)-[r:`knows`]->(b) RETURN r';
-
-//   db.query(query, {}, function(err, results) {
-//     if(err) { return callback(err); }
-
-//     callback(null, results);
-//   });
-// };
-
 /**
  * Create a Character instance using the provided data.
  * @param  {Object}   data     The data to be stored on the character's db node.
  *                             ie. name.
+ * @param  {Number}   chapter  Chapter number to create the character in.
  * @param  {Function} callback Callback for errors and results. Provides a new
  *                             Character instance containing the new character'
  *                             information in the DB. Error contains any error
  *                             messages from the DB, if the creation is
  *                             unsuccessful.
+ *                             
  */
-Character.create = function (data, callback) {
+Character.create = function (data, chapter, callback) {
+  if(chapter === undefined) { 
+    return callback('Character.create needs both data and an initial chapter');
+  }
+
   var node = db.createNode(data);
   var character = new Character(node);
 
+  // When a character is first created, it needs to be associated with a 
+  // chapter or it will not show up in any view. Front-end should POST to
+  // api/names with the character's name, and the current chapter to form
+  // an initial association.
+
+  //todo: Get chapter into data object somehow
   var query = [
-      'CREATE (character:Character {data})',
-      'RETURN character',
+      'CREATE (c:CHARACTER {data})',
+      'CREATE (c)-[:CHAPTER]->(:CHAPTER {num: ' + 
+        chapter + ', character: c.name})',
+      'RETURN c'
   ].join('\n');
 
   // Where data is just {name: "name"}, for now.
@@ -111,11 +135,12 @@ Character.create = function (data, callback) {
 
   q.ninvoke(db, 'query', query, params)
     .then(function(results) {
-      var character = new Character(results[0].character);
+      var character = new Character(results[0].c);
       callback(null, character);
     })
-    .catch(function(err) {
-      return callback(err);
+    .catch(function(err, res) {
+      // will error if character name is non-unique.
+      callback(err);
     })
     .done();
 };
@@ -140,7 +165,6 @@ Object.defineProperty(Character.prototype, 'name', {
   }
 });
 
-
 /**
  * Persist any changes to a character instance back to the DB. 
  * @param  {Function} callback Provides any error message from the server.
@@ -156,13 +180,34 @@ Character.prototype.save = function(callback) {
  * @param  {Character}   other    A character instance, ie. the result of
  *                                Character.getById.
  * @param  {String}   type     The type of relationship. Defaults to 'knows'.
+ * @param  {Number}   chapter  The chapter in which to create the relationship.
  * @param  {Function} callback Provides any error message from the server.
  */
-Character.prototype.follow = function(other, type, callback) {
+Character.prototype.relateTo = function(other, type, chapter, callback) {
+  // TODO: this could probably be a static method and save a couple db lookups.
+  if(chapter === undefined) { return callback('relateTo needs a chapter.')}
   type || (type = 'knows');
-  this._node.createRelationshipTo(other._node, type, {}, function(err, rel) {
-    if(callback) { return callback(err); }
-  });
+  
+  // TODO: use a params object instead of stringbuilding.
+  var query = [
+    'MATCH (p1:CHARACTER) WHERE id(p1)=' + this.id,
+    'MATCH (p2:CHARACTER) WHERE id(p2)=' + other.id,
+    'CREATE UNIQUE (p1)-[:CHAPTER]->(c:CHAPTER {num: ' + chapter +
+      ', character: p1.name})',
+    'CREATE UNIQUE (p2)-[:CHAPTER]->(:CHAPTER {num: ' + chapter + 
+      ', character: p2.name})',
+    'MERGE (c)-[:'+ type +']->(p2)'
+  ].join('\n');
+
+  q.ninvoke(db, 'query', query, {})
+    .catch(function(err, res) {
+      // will error if character name is non-unique.
+      callback(err);
+    })
+    .done();
+  // this._node.createRelationshipTo(other._node, type, {}, function(err, rel) {
+  //   if(callback) { return callback(err); }
+  // });
 };
 
 module.exports.Character = Character;

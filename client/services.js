@@ -4,7 +4,7 @@ angular.module('storyviz.services', [])
   var storyManager = {
     // get all names and relationships
     getAll: function() {
-        return $http.get('/api/names/all');
+        return $http.get('/api/names/all/1');
     },
 
     // create new character
