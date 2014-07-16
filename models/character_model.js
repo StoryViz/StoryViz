@@ -62,16 +62,25 @@ Character.getById = function (id, callback) {
  *                                      array containing Character instances
  *                                      representing the characters.
  */
-Character.getAll = function(callback) {
+Character.getAll = function(chapter, callback) {
   var query = [
-      'MATCH (character:CHARACTER)',
-      'RETURN character',
+    'match (c:CHARACTER)-[:CHAPTER]->' +
+    '({num:1})-[t:KNOWS]->(c2:CHARACTER)',
+    'RETURN c, type(t), c2'
   ].join('\n');
 
   q.ninvoke(db, 'query', query, null)
     .then(function(results) {
+
+      // i want to return an array of character instances
+      // {source: <character>, target: <character>, type: 'knows'}
       var characters = results.map(function(result) {
-        return new Character(result.character);
+        var r = {};
+        r.source = new Character(result.c);
+        r.target = new Character(result.c2);
+        r.type = result['type(t)'];
+
+        return r;
       });
 
       callback(null, characters);
@@ -81,7 +90,25 @@ Character.getAll = function(callback) {
     })
     .done();
 };
+// Character.getAllBackup = function(callback) {
+//   var query = [
+//       'MATCH (character:CHARACTER)',
+//       'RETURN character',
+//   ].join('\n');
 
+//   q.ninvoke(db, 'query', query, null)
+//     .then(function(results) {
+//       var characters = results.map(function(result) {
+//         return new Character(result.character);
+//       });
+
+//       callback(null, characters);
+//     })
+//     .catch(function(err) {
+//       callback(err);
+//     })
+//     .done();
+// };
 /**
  * Create a Character instance using the provided data.
  * @param  {Object}   data     The data to be stored on the character's db node.
