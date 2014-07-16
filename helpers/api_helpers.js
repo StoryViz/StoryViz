@@ -8,34 +8,41 @@ var Character  = require('../models/character_model').Character;
 
 /**
  * Retrieve info from the DB in JSON, formatted the way D3 expects
- * @param  {Object} params A hash of parameters. 'All', or no params returns 
+ * @param  {Object} params A hash of parameters. By default returns 
  *                         the entire graph, or accept an array of IDs on 
  *                         params.id to show those IDs and their first-degree 
  *                         connections. 
  *                         (to support isolation view for a single node, and
  *                         for clicking nodes to increase scope in isolation
  *                         view)
+ *                         params.chapter (required) specifies the point in time to grab 
+ *                         relationships from.
  * @return {String}        Conveniently-formatted JSON
  */
 function retrieveData(params, callback) {
-  if(params === undefined || params.all || Object.keys(params).length === 0) {
-    Character.getAll(function(err, data) {
+  if(!params.id || Object.keys(params).length === 0) {
+    Character.getAll(params.chapter, function(err, data) {
       if(err) { return callback(err); }
+
+      data.nodes = data.nodes.map(function(node) {
+        return {name: node.name, id: node.id};
+      });
+
+      data.links = data.links.map(function(link){
+        return {
+          source: link.source.id, 
+          target: link.target.id, 
+          type: link.type
+        };
+      });
       
+      console.log(data);
       callback(null, data);
     });
   } else if (params.id) {
 
   }
 }
-
-// function _getAllRelationshipsOnly(callback) {
-//   Character.getAllRelationshipsOnly(function(err, data) {
-//     if(err) { return callback(err); }
-      
-//     callback(null, data);
-//   });
-// }
 
 /**
  * Persist a new node to the DB
@@ -71,7 +78,6 @@ function saveRelationship(params, callback) {
     var toDef   = q.defer();
     var fromDef = q.defer();
     
-    // TODO: not bi-directioal, re-work query for time.
     q.all([toDef.promise, fromDef.promise])
       .then(function(result) {
         result[0].relateTo(result[1], params.type, 1, function(err) {

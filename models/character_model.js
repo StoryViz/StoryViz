@@ -18,7 +18,7 @@ var uniqueNameQuery = [
 ].join('\n');
 db.query(uniqueNameQuery, null, function(){});
 
-// adapted from github.com/aseemk/node-neo4j-template
+// adapted from (now barely resembling) github.com/aseemk/node-neo4j-template
 
 /**
  * Represents a character node in the DB
@@ -64,51 +64,37 @@ Character.getById = function (id, callback) {
  */
 Character.getAll = function(chapter, callback) {
   var query = [
-    'match (c:CHARACTER)-[:CHAPTER]->' +
-    '({num:1})-[t:KNOWS]->(c2:CHARACTER)',
-    'RETURN c, type(t), c2'
+   'MATCH (source:CHARACTER)-[:CHAPTER]->(chap:CHAPTER {num:' + chapter +'})',
+   'OPTIONAL MATCH (chap)-[t]->(target:CHARACTER)',
+   'RETURN source, type(t), target'
   ].join('\n');
 
   q.ninvoke(db, 'query', query, null)
     .then(function(results) {
-
-      // i want to return an array of character instances
       // {source: <character>, target: <character>, type: 'knows'}
-      var characters = results.map(function(result) {
-        var r = {};
-        r.source = new Character(result.c);
-        r.target = new Character(result.c2);
-        r.type = result['type(t)'];
+      var r = {nodes: [], links: []};
+      results.forEach(function(result) {
 
-        return r;
+        // TODO: uniq the nodes array.
+        thisCharacter = new Character(result.source);
+        r.nodes.push(thisCharacter);
+        
+        if(result.target) {
+          r.links.push({
+            source: thisCharacter, 
+            target: new Character(result.target),
+            type: result['type(t)']
+          });
+        }
       });
-
-      callback(null, characters);
+      callback(null, r);
     })
     .catch(function(err) {
       callback(err);
     })
     .done();
 };
-// Character.getAllBackup = function(callback) {
-//   var query = [
-//       'MATCH (character:CHARACTER)',
-//       'RETURN character',
-//   ].join('\n');
 
-//   q.ninvoke(db, 'query', query, null)
-//     .then(function(results) {
-//       var characters = results.map(function(result) {
-//         return new Character(result.character);
-//       });
-
-//       callback(null, characters);
-//     })
-//     .catch(function(err) {
-//       callback(err);
-//     })
-//     .done();
-// };
 /**
  * Create a Character instance using the provided data.
  * @param  {Object}   data     The data to be stored on the character's db node.
@@ -137,7 +123,8 @@ Character.create = function (data, chapter, callback) {
   //todo: Get chapter into data object somehow
   var query = [
       'CREATE (c:CHARACTER {data})',
-      'CREATE (c)-[:CHAPTER]->(:CHAPTER {num: ' + chapter + '})',
+      'CREATE (c)-[:CHAPTER]->(:CHAPTER {num: ' + 
+        chapter + ', character: c.name})',
       'RETURN c'
   ].join('\n');
 
@@ -207,13 +194,14 @@ Character.prototype.relateTo = function(other, type, chapter, callback) {
     'MATCH (p2:CHARACTER) WHERE id(p2)=' + other.id,
     'CREATE UNIQUE (p1)-[:CHAPTER]->(c:CHAPTER {num: ' + chapter +
       ', character: p1.name})',
-    'MERGE (c)-[:KNOWS]->(p2)'
+    'CREATE UNIQUE (p2)-[:CHAPTER]->(:CHAPTER {num: ' + chapter + 
+      ', character: p2.name})',
+    'MERGE (c)-[:'+ type +']->(p2)'
   ].join('\n');
 
   q.ninvoke(db, 'query', query, {})
     .catch(function(err, res) {
       // will error if character name is non-unique.
-      // console.log('error in relateTo: ', err);
       callback(err);
     })
     .done();

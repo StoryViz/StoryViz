@@ -31,36 +31,54 @@ function mockDB() {
     var completed = 0;
     var newCharacters = [];
 
-    dummyJSON.nodes.forEach(function(node) {
-      api.saveNewCharacter({
-        name: node.name
-      }, 1, function(err, character) {
-        if (err) { console.log(err);} 
-        else { newCharacters.push(character); }
-        
-        completed += 1;
+    api.saveNewCharacter({name: 'Mitch'}, 1, function(err, mitch) {
+      api.saveNewCharacter({name: 'Vish'}, 1, function(err, vish) {
+        api.saveNewCharacter({name: 'Michelle'}, 2, function(err, michelle) {
+          api.saveNewCharacter({name: 'Joel Cox'}, 1, function(err, joelcox) {
+            mitch.relateTo(vish, 'knows', 1, function() {});
+            mitch.relateTo(vish, 'knows', 2, function() {});
+            mitch.relateTo(joelcox, 'knows', 1, function() {});
+            mitch.relateTo(joelcox, 'admires', 2, function() {});
+            mitch.relateTo(michelle, 'knows', 2, function() {});
+            mitch.relateTo(joelcox, 'knows', 2, function() {});
+            mitch.relateTo(joelcox, 'admires', 3, function() {});
+          });      
+        });    
+      });  
 
-        if (completed === 30) {
-          newCharacters.forEach(function(character) {
-            var source = character.id;
-            var target = newCharacters[Math.floor(Math.random() * 
-                                        newCharacters.length)].id;
-            var rels = ['allies', 'enemies', 'loves', 'kills', 'near', 'family'];
-            var getRandomInt = function(min, max) {
-              return Math.floor(Math.random() * (max - min)) + min;
-            };
-            var type = rels[getRandomInt(0,5)];
-            api.saveRelationship({
-              from: source,
-              to: target,
-              type: type
-            }, function(err) {
-              if (err) { console.log(err); }
-            });
-          });
-        }
-      });
     });
+    
+    
+    
+
+
+    // dummyJSON.nodes.forEach(function(node) {
+    //   api.saveNewCharacter({
+    //     name: node.name
+    //   }, 1, function(err, character) {
+    //     if (err) { console.log(err);} 
+    //     else { newCharacters.push(character); }
+        
+    //     completed += 1;
+
+    //     if (completed === 30) {
+    //       newCharacters.forEach(function(character) {
+    //         var source = character.id;
+    //         var target = newCharacters[Math.floor(Math.random() * 
+    //                                     newCharacters.length)].id;
+    //         var type = 'knows';
+
+    //         api.saveRelationship({
+    //           from: source,
+    //           to: target,
+    //           type: type
+    //         }, function(err) {
+    //           if (err) { console.log(err); }
+    //         });
+    //       });
+    //     }
+    //   });
+    // });
   });
 }
 
