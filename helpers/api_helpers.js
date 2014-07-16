@@ -43,16 +43,17 @@ function retrieveData(params, callback) {
  * @param  {Function} callback A callback with the signature 
  *                             (err, ID), where ID is the new character's ID.
  */
-function saveNewCharacter(params, callback) {
-  if(params.name) {
-    Character.create(params, function(err, newCharacter) {
+function saveNewCharacter(params, chapter, callback) {
+  if(params.name && (chapter !== undefined)) {
+    Character.create(params, chapter, function(err, newCharacter) {
       if(err) { return callback(err); }
 
       callback(null, newCharacter);
     });
   } else {
     callback('saveNewCharacter requires first argument ' +
-      'to be an object with a "name" property');
+      'to be an object with a "name" property, and the second ' +
+      'agument to be the chapter the character will be created in.');
   }
 }
 
@@ -69,7 +70,8 @@ function saveRelationship(params, callback) {
 
     var toDef   = q.defer();
     var fromDef = q.defer();
-
+    
+    // TODO: not bi-directioal, re-work query for time.
     q.all([toDef.promise, fromDef.promise])
       .spread(function(a, b) {
         a.follow(b, params.type, function() { a.save() });

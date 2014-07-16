@@ -10,6 +10,13 @@ var q     = require('q');
 //       process.env['GRAPHENEDB_URL'] || localhost...
 var db = new neo4j.GraphDatabase('http://localhost:7474');
 
+// tell DB to enforce unique character names, in the case that we're booting with
+// a new DB. If DB exists and this was already set, it will silently fail.
+var uniqueNameQuery = [
+  'CREATE CONSTRAINT ON (c:CHARACTER)',
+  'ASSERT c.name IS UNIQUE'
+].join('\n');
+db.query(uniqueNameQuery, null, function(){});
 
 // adapted from github.com/aseemk/node-neo4j-template
 
@@ -95,13 +102,24 @@ Character.getAll = function(callback) {
  *                             messages from the DB, if the creation is
  *                             unsuccessful.
  */
-Character.create = function (data, callback) {
+Character.create = function (data, chapter, callback) {
+  if(chapter === undefined) { 
+    return callback('Character.create needs both data and an initial chapter');
+  }
+
   var node = db.createNode(data);
   var character = new Character(node);
 
+  // When a character is first created, it needs to be associated with a 
+  // chapter or it will not show up in any view. Front-end should POST to
+  // api/names with the character's name, and the current chapter to form
+  // an initial association.
+
+  //todo: Get chapter into data object somehow
   var query = [
-      'CREATE (character:Character {data})',
-      'RETURN character',
+      'CREATE (c:Character {data})',
+      'CREATE (c)-[:CHAPTER]->(:CHAPTER {num: ' + chapter + '})',
+      'RETURN c'
   ].join('\n');
 
   // Where data is just {name: "name"}, for now.
@@ -111,11 +129,12 @@ Character.create = function (data, callback) {
 
   q.ninvoke(db, 'query', query, params)
     .then(function(results) {
-      var character = new Character(results[0].character);
+      var character = new Character(results[0].c);
       callback(null, character);
     })
-    .catch(function(err) {
-      return callback(err);
+    .catch(function(err, res) {
+      // will error if character name is non-unique.
+      callback(err);
     })
     .done();
 };
@@ -158,11 +177,13 @@ Character.prototype.save = function(callback) {
  * @param  {String}   type     The type of relationship. Defaults to 'knows'.
  * @param  {Function} callback Provides any error message from the server.
  */
-Character.prototype.follow = function(other, type, callback) {
+Character.prototype.relateTo = function(other, type, chapter, callback) {
+  //TODO: refactor to work with chapters
   type || (type = 'knows');
   this._node.createRelationshipTo(other._node, type, {}, function(err, rel) {
     if(callback) { return callback(err); }
   });
 };
+Character.prototype.follow = Character.prototype.relateTo; // remove once done.
 
 module.exports.Character = Character;

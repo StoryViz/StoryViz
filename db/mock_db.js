@@ -34,7 +34,7 @@ function mockDB() {
     dummyJSON.nodes.forEach(function(node) {
       api.saveNewCharacter({
         name: node.name
-      }, function(err, character) {
+      }, 1, function(err, character) {
         if (err) { console.log(err);} 
         else { newCharacters.push(character); }
         

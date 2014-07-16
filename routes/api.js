@@ -76,10 +76,8 @@ apiRouter.get('/', function(req, res) {
 
 .post('/names', function(req, res) {
   // save new character to db
-  q.ninvoke(apiHelpers, 'saveNewCharacter', req.body
-  )
+  q.ninvoke(apiHelpers, 'saveNewCharacter', req.body)
     .then(function(data) {
-      console.dir("new character saved: ");
       var node = {name: data.name, id: data.id};
       res.send(node);
     })
