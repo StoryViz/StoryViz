@@ -106,7 +106,7 @@ Character.create = function (data, chapter, callback) {
   // chapter or it will not show up in any view. Front-end should POST to
   // api/names with the character's name, and the current chapter to form
   // an initial association.
-  console.log('adding: ' + data.name);
+
   //todo: Get chapter into data object somehow
   var query = [
       'CREATE (c:CHARACTER {data})',
@@ -151,7 +151,6 @@ Object.defineProperty(Character.prototype, 'name', {
   }
 });
 
-
 /**
  * Persist any changes to a character instance back to the DB. 
  * @param  {Function} callback Provides any error message from the server.
@@ -171,12 +170,29 @@ Character.prototype.save = function(callback) {
  * @param  {Function} callback Provides any error message from the server.
  */
 Character.prototype.relateTo = function(other, type, chapter, callback) {
-
+  // TODO: this could probably be a static method and save a couple db lookups.
+  if(chapter === undefined) { return callback('relateTo needs a chapter.')}
   type || (type = 'knows');
-  this._node.createRelationshipTo(other._node, type, {}, function(err, rel) {
-    if(callback) { return callback(err); }
-  });
+  
+  // TODO: use a params object instead of stringbuilding.
+  var query = [
+    'MATCH (p1:CHARACTER) WHERE id(p1)=' + this.id,
+    'MATCH (p2:CHARACTER) WHERE id(p2)=' + other.id,
+    'CREATE UNIQUE (p1)-[:CHAPTER]->(c:CHAPTER {num: ' + chapter +
+      ', character: p1.name})',
+    'MERGE (c)-[:KNOWS]->(p2)'
+  ].join('\n');
+
+  q.ninvoke(db, 'query', query, {})
+    .catch(function(err, res) {
+      // will error if character name is non-unique.
+      // console.log('error in relateTo: ', err);
+      callback(err);
+    })
+    .done();
+  // this._node.createRelationshipTo(other._node, type, {}, function(err, rel) {
+  //   if(callback) { return callback(err); }
+  // });
 };
-Character.prototype.follow = Character.prototype.relateTo; // remove once done.
 
 module.exports.Character = Character;
