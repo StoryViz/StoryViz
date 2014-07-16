@@ -77,11 +77,10 @@ apiRouter.get('/', function(req, res) {
     }).done();
 })
 
-// see apiHelpers.saveNewCharacter and saveRelationship.
-
 .post('/names', function(req, res) {
-  // save new character to db
-  q.ninvoke(apiHelpers, 'saveNewCharacter', req.body)
+  console.log('Save new character');
+  
+  q.ninvoke(apiHelpers, 'saveNewCharacter', req.body, req.body.chapter)
     .then(function(data) {
       var node = {name: data.name, id: data.id};
       res.send(node);
@@ -90,7 +89,23 @@ apiRouter.get('/', function(req, res) {
       console.log('error', err);
       res.send(500);
     }).done();
+})
 
+.post('/names/new-relationship', function(req, res) {
+  console.log('Save new relationship');
+  // if (req.params.id) {
+    var relationship = JSON.parse(req.body.json);
+    // console.dir(relationship);
+    // console.log(typeof relationship.from);
+
+    q.ninvoke(apiHelpers, 'saveRelationship', relationship)
+      .then(function() {
+        res.send(200);
+      })
+      .catch(function(err) {
+        console.log('error', err);
+        res.send(500);
+      }).done();
 });
 
 module.exports.apiRouter = apiRouter;
