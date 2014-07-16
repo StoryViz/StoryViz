@@ -38,6 +38,7 @@ angular.module('storyviz.story', [])
               var charIDTarget = links[j].target;
               newLink.source = nodeIndexStorage[charIDSource];
               newLink.target = nodeIndexStorage[charIDTarget];
+              newLink.type = links[j].type;
               linkStorage.push(newLink);
             }
 
