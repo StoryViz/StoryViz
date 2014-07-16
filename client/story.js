@@ -8,11 +8,11 @@ angular.module('storyviz.story', [])
     // relationships
     $scope.characterRelationships = {};
 
-    // newCharacter stores node data for character being added
-    $scope.newCharacter = {};
+    // newChar stores node data for character being added
+    $scope.newChar= {};
 
-    // newRelationship stores link data for relationship being added
-    $scope.newRelationship = {};
+    // newRel stores link data for relationship being added
+    $scope.newRel = {};
 
     // character stores node data for selected character
     $scope.selectedCharacter = {};
@@ -62,7 +62,7 @@ angular.module('storyviz.story', [])
     $scope.addChar = function() {
       // $scope.name should be set through data binding 
       // in view (e.g. input field)
-      Story.addChar($scope.newCharacter.name)
+      Story.addChar($scope.newChar.name)
         .then(function(response) {
 
           // concat used instead of push in order to trigger change
