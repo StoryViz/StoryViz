@@ -71,13 +71,18 @@ Character.getAll = function(chapter, callback) {
 
   q.ninvoke(db, 'query', query, null)
     .then(function(results) {
+
       // {source: <character>, target: <character>, type: 'knows'}
       var r = {nodes: [], links: []};
+      var namesUniq = {};
       results.forEach(function(result) {
-
         // TODO: uniq the nodes array.
         thisCharacter = new Character(result.source);
-        r.nodes.push(thisCharacter);
+        if(!namesUniq[thisCharacter.name]) {
+          r.nodes.push(thisCharacter);  
+          namesUniq[thisCharacter.name] = true;
+        }
+        
         
         if(result.target) {
           r.links.push({
@@ -85,6 +90,7 @@ Character.getAll = function(chapter, callback) {
             target: new Character(result.target),
             type: result['type(t)']
           });
+          console.log('target:', r.links[r.links.length - 1].target.name);
         }
       });
       callback(null, r);

@@ -36,7 +36,6 @@ function retrieveData(params, callback) {
         };
       });
       
-      console.log(data);
       callback(null, data);
     });
   } else if (params.id) {
