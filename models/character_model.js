@@ -86,11 +86,13 @@ Character.getAll = function(callback) {
  * Create a Character instance using the provided data.
  * @param  {Object}   data     The data to be stored on the character's db node.
  *                             ie. name.
+ * @param  {Number}   chapter  Chapter number to create the character in.
  * @param  {Function} callback Callback for errors and results. Provides a new
  *                             Character instance containing the new character'
  *                             information in the DB. Error contains any error
  *                             messages from the DB, if the creation is
  *                             unsuccessful.
+ *                             
  */
 Character.create = function (data, chapter, callback) {
   if(chapter === undefined) { 
@@ -165,10 +167,11 @@ Character.prototype.save = function(callback) {
  * @param  {Character}   other    A character instance, ie. the result of
  *                                Character.getById.
  * @param  {String}   type     The type of relationship. Defaults to 'knows'.
+ * @param  {Number}   chapter  The chapter in which to create the relationship.
  * @param  {Function} callback Provides any error message from the server.
  */
 Character.prototype.relateTo = function(other, type, chapter, callback) {
-  //TODO: refactor to work with chapters
+
   type || (type = 'knows');
   this._node.createRelationshipTo(other._node, type, {}, function(err, rel) {
     if(callback) { return callback(err); }
