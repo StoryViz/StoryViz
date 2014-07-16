@@ -71,12 +71,9 @@ Character.getAll = function(chapter, callback) {
 
   q.ninvoke(db, 'query', query, null)
     .then(function(results) {
-
-      // {source: <character>, target: <character>, type: 'knows'}
       var r = {nodes: [], links: []};
       var namesUniq = {};
       results.forEach(function(result) {
-        // TODO: uniq the nodes array.
         thisCharacter = new Character(result.source);
         if(!namesUniq[thisCharacter.name]) {
           r.nodes.push(thisCharacter);  
