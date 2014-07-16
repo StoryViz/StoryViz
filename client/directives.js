@@ -35,6 +35,7 @@ angular.module('storyviz.directives', ['d3'])
 
           scope.render = function(graphData) {
               // sort the links by source, then target
+              var lTotalLinkNum;
 
 
               var sortLinks = function() {               
@@ -61,60 +62,54 @@ angular.module('storyviz.directives', ['d3'])
               
               //any links with duplicate source and target get an incremented 'linknum'
               var setLinkIndexAndNum = function() {               
-                  for (var i = 0; i < graphData.links.length; i++) 
-                  {
-                      if (i != 0 &&
-                          graphData.links[i].source == graphData.links[i-1].source &&
-                          graphData.links[i].target == graphData.links[i-1].target) 
-                      {
+                  for (var i = 0; i < graphData.links.length; i++) {
+                      if (i != 0 && graphData.links[i].source == graphData.links[i-1].source && graphData.links[i].target == graphData.links[i-1].target) {
                           graphData.links[i].linkindex = graphData.links[i-1].linkindex + 1;
                       }
-                      else 
-                      {
+                      else {
                           graphData.links[i].linkindex = 1;
                       }
                       // save the total number of links between two nodes
-                      if(mLinkNum[graphData.links[i].target + "," + graphData.links[i].source] !== undefined)
-                      {
+                      if(mLinkNum[graphData.links[i].target + "," + graphData.links[i].source] !== undefined) {
+                          console.log(mLinkNum[graphData.links[i].target + "," + graphData.links[i].source]);
                           mLinkNum[graphData.links[i].target + "," + graphData.links[i].source] = graphData.links[i].linkindex;
                       }
-                      else
-                      {
+                      else{
                           mLinkNum[graphData.links[i].source + "," + graphData.links[i].target] = graphData.links[i].linkindex;
                       }
-              } 
-                  }
+                  } 
+              }
             // console.log(anchorLabels);
               
 
               var mLinkNum = {};
               
               // sort links first
-              sortLinks();                
-              
+              sortLinks(); 
               // set up linkIndex and linkNumer, because it may possible multiple links share the same source and target node
               setLinkIndexAndNum();
+              console.log(JSON.stringify(mLinkNum));
               force.nodes(graphData.nodes)
                 .links(graphData.links)
                 .on("tick", tick)
                 .start();
 
-              var labelAnchors = [];
-              for(var i = 0; i < graphData.nodes.length; i++) {
-                labelAnchors.push({label: graphData.nodes[i].name});
+              // var labelAnchors = [];
+              // for(var i = 0; i < graphData.nodes.length; i++) {
+              //   labelAnchors.push({label: graphData.nodes[i].name});
                 
-              };
-              console.log(labelAnchors);
+              // };
+              // console.log(labelAnchors);
 
-              labelForce.nodes(labelAnchors)
-                .on("tick", tick)
-                .start()
+              // labelForce.nodes(labelAnchors)
+              //   .on("tick", tick)
+              //   .start()
 
-                var anchorNode = svg.selectAll("g.anchorNode").data(labelAnchors).enter().append("svg:g").attr("class", "anchorNode");
-                  anchorNode.append("svg:circle").attr("r", 0).style("fill", "#FFF");
-                    anchorNode.append("svg:text").text(function(d) {
-                    d.label
-                  }).style("fill", "#666").style("font-family", "Arial").style("font-size", 12);
+              //   var anchorNode = svg.selectAll("g.anchorNode").data(labelAnchors).enter().append("svg:g").attr("class", "anchorNode");
+              //     anchorNode.append("svg:circle").attr("r", 0).style("fill", "#FFF");
+              //       anchorNode.append("svg:text").text(function(d) {
+              //       d.label
+              //     }).style("fill", "#666").style("font-family", "Arial").style("font-size", 12);
 
       //             var updateNode = function() {
       //   this.attr("transform", function(d) {
@@ -138,6 +133,7 @@ angular.module('storyviz.directives', ['d3'])
 
                 svg.selectAll('#loves, #kills')
                 .attr("marker-end", "url(#end)");
+              console.log(path);
 
               svg.append("svg:defs").selectAll("marker")
                 .data(["end"])
@@ -155,8 +151,6 @@ angular.module('storyviz.directives', ['d3'])
                   .append("svg:path")
                     .attr("d", "M0,-5L10,0L0,5");
 
-
-              console.log(svg.selectAll("#loves"));
               var gnodes = svg.selectAll('g.gnode')
                 .data(graphData.nodes)
                 .enter().append('g')
@@ -174,19 +168,16 @@ angular.module('storyviz.directives', ['d3'])
                 .attr("dy", ".3em")
                 .text(function(d) { return d.name; })
                 // .call(force.drag);
-
-                node.exit().remove();
-
-
-              
+          
               // Use elliptical arc path segments to doubly-encode directionality.
+              console.log(lTotalLinkNum);
               function tick() {
                   path.attr("d", function(d) {
                       var dx = d.target.x - d.source.x,
                           dy = d.target.y - d.source.y,
                           dr = Math.sqrt(dx * dx + dy * dy);
                       // get the total link numbers between source and target node
-                      var lTotalLinkNum = mLinkNum[d.source.id + "," + d.target.id] || mLinkNum[d.target.id + "," + d.source.id];
+                      lTotalLinkNum = mLinkNum[d.source.id + "," + d.target.id] || mLinkNum[d.target.id + "," + d.source.id];
                       if(lTotalLinkNum > 1)
                       {
                           // if there are multiple links between these two nodes, we need generate different dr for each path
@@ -222,9 +213,9 @@ angular.module('storyviz.directives', ['d3'])
         //   }
         // });
 
-   anchorNode.attr("transform", function(d) {
-                      return "translate(" + d.x + "," + d.y + ")";
-                  });
+   // anchorNode.attr("transform", function(d) {
+   //                    return "translate(" + d.x + "," + d.y + ")";
+   //                });
 
 
         // anchorNode.call(updateNode);
