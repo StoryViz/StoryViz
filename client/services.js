@@ -2,11 +2,6 @@ angular.module('storyviz.services', [])
 
 .factory('Story', function($http) {
   var storyManager = {
-    // get dummy data
-    getAllChars: function() {
-      return $http.get('/api/dummy');
-    },
-
     // get all names and relationships
     getAll: function() {
         return $http.get('/api/names/all');

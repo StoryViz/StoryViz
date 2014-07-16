@@ -45,8 +45,11 @@ function mockDB() {
             var source = character.id;
             var target = newCharacters[Math.floor(Math.random() * 
                                         newCharacters.length)].id;
-            var type = 'knows';
-
+            var rels = ['allies', 'enemies', 'loves', 'kills', 'near', 'family'];
+            var getRandomInt = function(min, max) {
+              return Math.floor(Math.random() * (max - min)) + min;
+            };
+            var type = rels[getRandomInt(0,5)];
             api.saveRelationship({
               from: source,
               to: target,
