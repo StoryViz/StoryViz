@@ -8,10 +8,10 @@ angular.module('storyviz.services', [])
     },
 
     // create new character
-    addChar: function(name) {
+    addChar: function(newChar) {
 
         // jQuery's param method serializes object for ajax request
-        var data = $.param({name: name});
+        var data = $.param(newChar);
         return $http({
             method: 'POST',
             url: '/api/names',
@@ -20,9 +20,19 @@ angular.module('storyviz.services', [])
         })
     },
 
-    // create new relationship
-    addRel: function(from, to, type) {
-        return $http.post('/api/names/follow', {from: from, to: to, type: type});
+     // create new relationship
+    addRel: function(relationship) {
+        // var url = '/api/names/:' + from.id;
+
+        var url = '/api/names/new-relationship';
+        var data = $.param({json: JSON.stringify(relationship)});
+
+        return $http({
+            method: 'POST',
+            url: url,
+            data: data,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        });
     }
 
   };
