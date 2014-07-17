@@ -77,6 +77,16 @@ apiRouter.get('/', function(req, res) {
     }).done();
 })
 
+.get('/relationship/types', function(req, res) {
+  q.ninvoke(apiHelpers, 'getRelOfType', req.body)
+    .then(function(data) {
+      res.send(data);
+    })
+    .catch(function(err) {
+      console.log('error', err);
+    }).done();
+})
+
 .post('/names', function(req, res) {
   q.ninvoke(apiHelpers, 'saveNewCharacter', req.body, req.body.chapter)
     .then(function(data) {
