@@ -1,6 +1,6 @@
 angular.module('storyviz.story', [])
   .controller('StoryController', function($scope, Story) {
-    $scope.relationshipTypes = ['Family', 'Near', 'Allies', 'Enemies', 'Kills', 'Romance'];
+    $scope.relationshipTypes = ['ParentChild', "Siblings", 'Near', 'Allies', 'Enemies', 'Kills', 'Mutual', 'Unrequited'];
     $scope.data = {};
 
     // stores all relationships for each character
