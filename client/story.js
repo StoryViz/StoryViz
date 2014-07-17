@@ -1,7 +1,11 @@
 angular.module('storyviz.story', [])
   .controller('StoryController', function($scope, Story) {
     $scope.relationshipTypes = ['ParentChild', "Siblings", 'Near', 'Allies', 'Enemies', 'Kills', 'Mutual', 'Unrequited'];
+    // nodes and links to be rendered in d3
     $scope.data = {};
+
+    // relationship types to be rendered in d3
+    $scope.selectedRelTypes = [];
 
     // stores all relationships for each character
     // enables isolation of a single character and their
@@ -98,5 +102,18 @@ angular.module('storyviz.story', [])
           throw err;
         });
     };
+
+    // Get all relationships of a certain type
+    $scope.getRelsOfType = function() {
+      Story.getRelsOfType($scope.selectedRelTypes)
+        .then(function(response) {
+          // $scope.data = ...
+          console.log('getRelsOfType response');
+        })
+        .catch(function(err) {
+          console.log(err);
+          throw err;
+        })
+    }
 
   });
