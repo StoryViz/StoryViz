@@ -22,14 +22,11 @@ angular.module('storyviz.services', [])
 
      // create new relationship
     addRel: function(relationship) {
-        // var url = '/api/names/:' + from.id;
-
-        var url = '/api/relationship';
         var data = $.param({json: JSON.stringify(relationship)});
 
         return $http({
             method: 'POST',
-            url: url,
+            url: '/api/relationship',
             data: data,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         });
