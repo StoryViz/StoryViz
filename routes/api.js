@@ -95,8 +95,6 @@ apiRouter.get('/', function(req, res) {
   console.log('Save new relationship');
   // if (req.params.id) {
     var relationship = JSON.parse(req.body.json);
-    // console.dir(relationship);
-    // console.log(typeof relationship.from);
 
     q.ninvoke(apiHelpers, 'saveRelationship', relationship)
       .then(function() {
