@@ -78,8 +78,6 @@ apiRouter.get('/', function(req, res) {
 })
 
 .post('/names', function(req, res) {
-  console.log('Save new character');
-  
   q.ninvoke(apiHelpers, 'saveNewCharacter', req.body, req.body.chapter)
     .then(function(data) {
       var node = {name: data.name, id: data.id};
@@ -91,13 +89,8 @@ apiRouter.get('/', function(req, res) {
     }).done();
 })
 
-.post('/names/new-relationship', function(req, res) {
-  console.log('Save new relationship');
-  // if (req.params.id) {
+.post('/relationship', function(req, res) {
     var relationship = JSON.parse(req.body.json);
-    // console.dir(relationship);
-    // console.log(typeof relationship.from);
-
     q.ninvoke(apiHelpers, 'saveRelationship', relationship)
       .then(function() {
         res.send(200);

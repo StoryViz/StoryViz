@@ -83,19 +83,15 @@ angular.module('storyviz.story', [])
         to: $scope.newRel.to.id,
       };
 
-      // To Do: move inside addRel
-      var newLink = {
-        source: $scope.newRel.from.index,
-        type: $scope.newRel.type,
-        target: $scope.newRel.to.index
-      };
-
-      $scope.data.links = $scope.data.links.concat(newLink);
-
       Story.addRel(relationship)
         .then(function(response) {
-          console.log('controller received response');
-          console.dir(response);
+          var newLink = {
+            source: $scope.newRel.from.index,
+            type: $scope.newRel.type,
+            target: $scope.newRel.to.index
+          };
+
+          $scope.data.links = $scope.data.links.concat(newLink);
         })
         .catch(function(err) {
           console.log(err);
