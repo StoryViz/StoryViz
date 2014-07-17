@@ -79,8 +79,9 @@ function saveRelationship(params, callback) {
     
     q.all([toDef.promise, fromDef.promise])
       .then(function(result) {
-        result[0].relateTo(result[1], params.type, 1, function(err) {
+        result[0].relateTo(result[1], params.type, 1, function(err, result) {
           console.log(err);
+          callback(null, result);
         });
       })
       // .spread(function(a, b) {

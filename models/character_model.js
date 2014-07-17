@@ -203,6 +203,9 @@ Character.prototype.relateTo = function(other, type, chapter, callback) {
   ].join('\n');
 
   q.ninvoke(db, 'query', query, {})
+    .then(function(results) {
+      callback(null, results)
+    })
     .catch(function(err, res) {
       // will error if character name is non-unique.
       callback(err);
