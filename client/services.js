@@ -33,6 +33,16 @@ angular.module('storyviz.services', [])
             data: data,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         });
+    },
+
+    getRelsOfType: function(types) {
+        var data = $.param({json: JSON.stringify(types)});
+        return $http({
+            method: 'GET',
+            url: '/api/relationship/types',
+            data: data,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        });
     }
 
   };
