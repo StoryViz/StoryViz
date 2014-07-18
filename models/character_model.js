@@ -93,15 +93,10 @@ Character.getAll = function(params, callback) {
     ].join('\n');
     
   } else if (params.type !== undefined) {
-    // if I only specify type, return all IDs
-    // todo: this returns all characters, but only links of the given type--
-    // should it not return characters without links?
-    // query would be 
-    // MATCH (source:CHARACTER)-[:CHAPTER]->(chap:CHAPTER)-[t]->(target:CHARACTER)
-    // WHERE ... etc
     query = [
-      'MATCH (source:CHARACTER)-[:CHAPTER]->(chap:CHAPTER)',
-      'OPTIONAL MATCH (chap)-[t]->(target:CHARACTER)',
+      // 'MATCH (source:CHARACTER)-[:CHAPTER]->(chap:CHAPTER)',
+      // 'OPTIONAL MATCH (chap)-[t]->(target:CHARACTER)',
+      'MATCH (source:CHARACTER)-[:CHAPTER]->(chap:CHAPTER)-[t]->(target:CHARACTER)',
       'WHERE type(t)=\'' + params.type + '\'',
       'RETURN source, type(t), target, chap.num'
     ].join('\n');
