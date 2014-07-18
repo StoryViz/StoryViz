@@ -42,6 +42,7 @@ function mockDB() {
             mitch.relateTo(michelle, 'knows', 2, function() {});
             mitch.relateTo(joelcox, 'knows', 2, function() {});
             mitch.relateTo(joelcox, 'admires', 3, function() {});
+            michelle.relateTo(vish, 'knows', 3, function() {});
           });      
         });    
       });  

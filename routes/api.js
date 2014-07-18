@@ -3,20 +3,17 @@
 var express = require('express');
 var path    = require('path');
 var q       = require('q');
-var params  = require('express-params');
+var eParams = require('express-params');
 
 var apiHelpers = require('../helpers/api_helpers');
 var publicDir   = require('../helpers/path_helpers').publicDir;
 
 var apiRouter = express.Router();
-params.extend(apiRouter);
+eParams.extend(apiRouter);
 
 apiRouter.get('/', function(req, res) {
   res.send('StoryViz JSON API');
 })
-
-// parameters are ID and type.
-
 
 // validations for ID and type parameters
 .param('id', /^\d+$/) // IDs are digits only
@@ -31,33 +28,40 @@ apiRouter.get('/', function(req, res) {
 });
 
 function handleIdAndType(req, res) {
+  res.set('Content-Type', 'application/json');
+  res.set('charset', 'utf-8');
+
+  var params = {};
+
   if(req.params.id !== undefined && req.params.type !== undefined) {
     // if I specify both, return a single ID and a single type
     //  GET /api/name/1/type/knows
+    params.id = Number(req.params.id[0]);
+    params.type = req.params.type[0];
+    
   } else if(req.params.id !== undefined) {
     // if I only specify ID, return all types
     //  GET /api/names/:id
+    params.id = Number(req.params.id[0]);
   } else if (req.params.type !== undefined) {
     // if I only specify type, return all IDs
     //  GET /api/names/type/:type
+    params.type = req.params.type[0];
   } else {
     // if I specify neither, return all types and IDs
     //  GET /api/names
   }
 
+  // Retrieve info on the full DB
+  q.ninvoke(apiHelpers, 'retrieveData', params)
+    .then(function(data) {
+      res.send(JSON.stringify(data));
+    })
 
-  // res.set('Content-Type', 'application/json');
-  // res.set('charset', 'utf-8');
-  // // Retrieve info on the full DB
-  // q.ninvoke(apiHelpers, 'retrieveData', params)
-  //   .then(function(data) {
-  //     res.send(JSON.stringify(data));
-  //   })
-
-  //   .catch(function(err) {
-  //     console.log('error', err);
-  //     res.send(500);
-  //   }).done();
+    .catch(function(err) {
+      console.log('error', err);
+      res.send(500);
+    }).done();
 }
 
 
