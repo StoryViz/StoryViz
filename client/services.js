@@ -49,29 +49,40 @@ angular.module('storyviz.services', [])
     },
 
     reindexLinks: function(data) {
-        var nodes = data.data.nodes;
-        var nodeIndexStorage = {};
-        var links = data.data.links;
-        var linkStorage = [];
+        // var nodes = data.data.nodes;
+        // var nodeIndexStorage = {};
+        // var links = data.data.links;
+        // var linkStorage = [];
+        var dataByChapter = {};
 
         // Save array index of each node in nodeIndexStorage object
-        for (var i = 0; i < nodes.length; i++) {
-          nodeIndexStorage[nodes[i].id] = i;
+        for (var chapter in data.data) {
+            var nodes = data.data[chapter].nodes;
+            var nodeIndexStorage = {};
+            var links = data.data[chapter].links;
+            var linkStorage = [];
+
+            for (var i = 0; i < nodes.length; i++) {
+              nodeIndexStorage[nodes[i].id] = i;
+            }
+
+            for (var j = 0; j < links.length; j++) {
+              var newLink = {};
+
+              // Change source to refer to array index instead of character id
+              var charIDSource = links[j].source;
+              var charIDTarget = links[j].target;
+              newLink.source = nodeIndexStorage[charIDSource];
+              newLink.target = nodeIndexStorage[charIDTarget];
+              newLink.type = links[j].type;
+              linkStorage.push(newLink);
+            }
+
+            dataByChapter[chapter] = {nodes: nodes, links: linkStorage};
         }
 
-        for (var j = 0; j < links.length; j++) {
-          var newLink = {};
-
-          // Change source to refer to array index instead of character id
-          var charIDSource = links[j].source;
-          var charIDTarget = links[j].target;
-          newLink.source = nodeIndexStorage[charIDSource];
-          newLink.target = nodeIndexStorage[charIDTarget];
-          newLink.type = links[j].type;
-          linkStorage.push(newLink);
-        }
-
-        return {nodes: nodes, links: linkStorage};
+        // return {nodes: nodes, links: linkStorage};
+        return dataByChapter;
     }
 
   };
