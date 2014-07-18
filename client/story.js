@@ -4,6 +4,9 @@ angular.module('storyviz.story', [])
     // nodes and links to be rendered in d3
     $scope.data = {};
 
+    // nodes and links organized by chapter
+    $scope.dataByChapter = {};
+
     // relationship types to be rendered in d3
     $scope.selectedRelTypes = [];
 
@@ -26,7 +29,9 @@ angular.module('storyviz.story', [])
       Story.getAll()
         .then(Story.reindexLinks)
         .then(function(data) {
-          $scope.data = data;
+          // $scope.data = data;
+          $scope.dataByChapter = data;
+          $scope.data = $scope.dataByChapter;
         })
         .catch(function(err) {
           console.log(err);
