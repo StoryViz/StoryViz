@@ -33,11 +33,12 @@ angular.module('storyviz.services', [])
     },
 
     getRelsOfType: function(types) {
-        var data = $.param({json: JSON.stringify(types)});
+        var queryString = types.join('+');
+        var url = '/api/relationship/types?filter=' + queryString;
+
         return $http({
             method: 'GET',
-            url: '/api/relationship/types',
-            data: data,
+            url: url,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         });
     }
