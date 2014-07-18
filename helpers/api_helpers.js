@@ -28,7 +28,7 @@ function retrieveData(params, callback) {
         return {name: node.name, id: node.id};
       });
 
-      data.links = data.links.map(function(link){
+      data.links = data.links.map(function(link) {
         return {
           source: link.source.id, 
           target: link.target.id, 
@@ -40,9 +40,58 @@ function retrieveData(params, callback) {
     });
   } else if (params.id) {
 
+    // TODO: create character model method to retrieve 
+    // connected nodes and links for specified character
+
+    // Test with getAll
+    Character.getAll(params.chapter, function(err, data) {
+      if(err) { return callback(err); }
+
+      data.nodes = data.nodes.map(function(node) {
+        return {name: node.name, id: node.id};
+      });
+
+      data.links = data.links.map(function(link) {
+        return {
+          source: link.source.id, 
+          target: link.target.id, 
+          type: link.type
+        };
+      });
+      
+      callback(null, data);
+    });
   }
 }
 
+/**
+* Retrieve relationships of certain types
+* @param [Array] params An array of parameters. By default returns
+*                       relationships of all types, or accept an array of
+*                       relationship types.
+*/
+function retrieveRelsOfType(params, callback) {
+  // TODO: create character model method to retrieve links and nodes
+  // for specified relationship type
+  
+  // Character.getRelsOfType(params, function(err, data) {
+  //   if(err) { return callback(err); }
+
+  //   data.nodes = data.nodes.map(function(node) {
+  //     return {name: node.name, id: node.id};
+  //   });
+
+  //   data.links = data.links.map(function(link) {
+  //     return {
+  //       source: link.source.id,
+  //       target: link.target.id,
+  //       type: link.type
+  //     };
+  //   });
+
+  //   callback(null, data);
+  // });
+} 
 /**
  * Persist a new node to the DB
  * @param  {Object}   params Parameters to save on the node. For now, just name.
