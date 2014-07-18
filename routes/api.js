@@ -78,13 +78,18 @@ apiRouter.get('/', function(req, res) {
 })
 
 .get('/relationship/types', function(req, res) {
-  q.ninvoke(apiHelpers, 'getRelOfType', req.body)
-    .then(function(data) {
-      res.send(data);
-    })
-    .catch(function(err) {
-      console.log('error', err);
-    }).done();
+  var params = req.query.filter.split(' ');
+  console.log('params: ', params);
+  res.send(200);
+  // q.ninvoke(apiHelpers, 'retrieveRelsOfType', req.body)
+  //   .then(function(data) {
+  //     console.log('database response received in get handler')
+  //     console.log(data);
+  //     res.send(200);
+  //   })
+  //   .catch(function(err) {
+  //     console.log('error', err);
+  //   }).done();
 })
 
 .post('/names', function(req, res) {
