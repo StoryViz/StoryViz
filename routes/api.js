@@ -3,11 +3,13 @@
 var express = require('express');
 var path    = require('path');
 var q       = require('q');
+var params  = require('express-params');
 
 var apiHelpers = require('../helpers/api_helpers');
 var publicDir   = require('../helpers/path_helpers').publicDir;
 
 var apiRouter = express.Router();
+params.extend(apiRouter);
 
 apiRouter.get('/', function(req, res) {
   res.send('StoryViz JSON API');
@@ -16,12 +18,14 @@ apiRouter.get('/', function(req, res) {
 // parameters are ID and type.
 
 
-
-
+// validations for ID and type parameters
+.param('id', /^\d+$/) // IDs are digits only
+.param('type', /^[a-zA-Z]+$/) // types are strings only
 
 .get('/names/:id?', function(req, res) {
   handleIdAndType(req, res);
 })
+
 .get('/names/:id?/type/:type?', function(req, res) {
  handleIdAndType(req, res);
 });
@@ -40,7 +44,6 @@ function handleIdAndType(req, res) {
     // if I specify neither, return all types and IDs
     //  GET /api/names
   }
-  // console.log(req.params);
 
 
   // res.set('Content-Type', 'application/json');
