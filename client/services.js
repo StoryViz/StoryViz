@@ -4,7 +4,12 @@ angular.module('storyviz.services', [])
   var storyManager = {
     // get all names and relationships
     getAll: function() {
-        return $http.get('/api/names/all/1');
+        return $http.get('/api/names/chapter/1');
+    },
+
+    // get nodes and links connected to specified character
+    getChar: function(id) {
+        return $http.get('/api/names/' + id + '/chapter/1');
     },
 
     // create new character
