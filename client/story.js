@@ -1,7 +1,11 @@
 angular.module('storyviz.story', [])
   .controller('StoryController', function($scope, Story) {
-    $scope.relationshipTypes = ['Family', 'Near', 'Allies', 'Enemies', 'Kills', 'Romance'];
+    $scope.relationshipTypes = ['ParentChild', "Siblings", 'Near', 'Allies', 'Enemies', 'Kills', 'Mutual', 'Unrequited'];
+    // nodes and links to be rendered in d3
     $scope.data = {};
+
+    // relationship types to be rendered in d3
+    $scope.selectedRelTypes = [];
 
     // stores all relationships for each character
     // enables isolation of a single character and their
@@ -15,35 +19,14 @@ angular.module('storyviz.story', [])
     $scope.newRel = {};
 
     // character stores node data for selected character
-    $scope.selectedCharacter = {};
+    $scope.selectedChar = {};
 
     // Get all characters and relationships
     $scope.getAll = function() {
       Story.getAll()
+        .then(Story.reindexLinks)
         .then(function(data) {
-          var nodes = data.data.nodes;
-          var nodeIndexStorage = {};
-          var links = data.data.links;
-          var linkStorage = [];
-
-          // Save array index of each node in nodeIndexStorage object
-          for (var i = 0; i < nodes.length; i++) {
-            nodeIndexStorage[nodes[i].id] = i;
-          }
-
-          for (var j = 0; j < links.length; j++) {
-            var newLink = {};
-
-            // Change source to refer to array index instead of character id
-            var charIDSource = links[j].source;
-            var charIDTarget = links[j].target;
-            newLink.source = nodeIndexStorage[charIDSource];
-            newLink.target = nodeIndexStorage[charIDTarget];
-            newLink.type = links[j].type;
-            linkStorage.push(newLink);
-          }
-
-          $scope.data = {nodes: nodes, links: linkStorage};
+          $scope.data = data;
         })
         .catch(function(err) {
           console.log(err);
@@ -53,9 +36,24 @@ angular.module('storyviz.story', [])
 
     $scope.getAll();
 
-    $scope.getCharacterRelationships = function() {
-      // $scope.selectedCharacter.id;
+    // Get connected nodes and links for selected character
+    $scope.getChar = function() {
+      // Test data
+      $scope.selectedChar = $scope.data.nodes[0];
+
+      Story.getChar($scope.selectedChar.id)
+        .then(Story.reindexLinks)
+        .then(function(data) {
+          $scope.data = data;
+        })
+        .catch(function(err) {
+          console.log(err);
+          throw err;
+        });
     };
+
+    // Test getChar
+    setTimeout($scope.getChar, 300);
 
     // Add new character
     // addChar called from view on click
@@ -98,5 +96,20 @@ angular.module('storyviz.story', [])
           throw err;
         });
     };
+
+    // Get all relationships of a certain type
+    $scope.getRelsOfType = function() {
+      $scope.selectedRelTypes = ['Kills', 'Near'];
+      Story.getRelsOfType($scope.selectedRelTypes)
+        .then(function(response) {
+          // $scope.data = ...
+        })
+        .catch(function(err) {
+          console.log(err);
+          throw err;
+        })
+    }
+
+    // setTimeout($scope.getRelsOfType, 2000);
 
   });

@@ -4,7 +4,12 @@ angular.module('storyviz.services', [])
   var storyManager = {
     // get all names and relationships
     getAll: function() {
-        return $http.get('/api/names/all/1');
+        return $http.get('/api/names/chapter/1');
+    },
+
+    // get nodes and links connected to specified character
+    getChar: function(id) {
+        return $http.get('/api/names/' + id + '/chapter/1');
     },
 
     // create new character
@@ -22,17 +27,51 @@ angular.module('storyviz.services', [])
 
      // create new relationship
     addRel: function(relationship) {
-        // var url = '/api/names/:' + from.id;
-
-        var url = '/api/relationship';
         var data = $.param({json: JSON.stringify(relationship)});
 
         return $http({
             method: 'POST',
-            url: url,
+            url: '/api/relationship',
             data: data,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         });
+    },
+
+    getRelsOfType: function(types) {
+        var queryString = types.join('+');
+        var url = '/api/relationship/types?filter=' + queryString;
+
+        return $http({
+            method: 'GET',
+            url: url,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        });
+    },
+
+    reindexLinks: function(data) {
+        var nodes = data.data.nodes;
+        var nodeIndexStorage = {};
+        var links = data.data.links;
+        var linkStorage = [];
+
+        // Save array index of each node in nodeIndexStorage object
+        for (var i = 0; i < nodes.length; i++) {
+          nodeIndexStorage[nodes[i].id] = i;
+        }
+
+        for (var j = 0; j < links.length; j++) {
+          var newLink = {};
+
+          // Change source to refer to array index instead of character id
+          var charIDSource = links[j].source;
+          var charIDTarget = links[j].target;
+          newLink.source = nodeIndexStorage[charIDSource];
+          newLink.target = nodeIndexStorage[charIDTarget];
+          newLink.type = links[j].type;
+          linkStorage.push(newLink);
+        }
+
+        return {nodes: nodes, links: linkStorage};
     }
 
   };

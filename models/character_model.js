@@ -98,6 +98,41 @@ Character.getAll = function(chapter, callback) {
     .done();
 };
 
+Character.getRelsOfType = function(types, callback) {
+  // var query = [
+  //  'MATCH (source:CHARACTER)-[:CHAPTER]->(chap:CHAPTER {num:' + chapter +'})',
+  //  'OPTIONAL MATCH (chap)-[t]->(target:CHARACTER)',
+  //  'RETURN source, type(t), target'
+  // ].join('\n');
+
+  // q.ninvoke(db, 'query', query, null)
+  //   .then(function(results) {
+  //     var r = {nodes: [], links: []};
+  //     var namesUniq = {};
+  //     results.forEach(function(result) {
+  //       thisCharacter = new Character(result.source);
+  //       if(!namesUniq[thisCharacter.name]) {
+  //         r.nodes.push(thisCharacter);  
+  //         namesUniq[thisCharacter.name] = true;
+  //       }
+        
+        
+  //       if(result.target) {
+  //         r.links.push({
+  //           source: thisCharacter, 
+  //           target: new Character(result.target),
+  //           type: result['type(t)']
+  //         });
+  //         console.log('target:', r.links[r.links.length - 1].target.name);
+  //       }
+  //     });
+  //     callback(null, r);
+  //   })
+  //   .catch(function(err) {
+  //     callback(err);
+  //   })
+  //   .done();
+}
 /**
  * Create a Character instance using the provided data.
  * @param  {Object}   data     The data to be stored on the character's db node.

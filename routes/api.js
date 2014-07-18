@@ -23,12 +23,17 @@ apiRouter.get('/', function(req, res) {
   next();
 })
 
-.get('/names/all/:chapter', function(req, res) {
+.get('/names/:id?/chapter/:chapter?', function(req, res) {
+  var params = {chapter: req.chapter};
+
+  if (req.params.id) {
+    params.id = req.params.id;
+  }
+
   res.set('Content-Type', 'application/json');
   res.set('charset', 'utf-8');
-
   // Retrieve info on the full DB
-  q.ninvoke(apiHelpers, 'retrieveData', {chapter: req.chapter})
+  q.ninvoke(apiHelpers, 'retrieveData', params)
     .then(function(data) {
       res.send(JSON.stringify(data));
       // data.forEach(function(d) {
@@ -75,6 +80,26 @@ apiRouter.get('/', function(req, res) {
       console.log('error', err);
       res.send(500);
     }).done();
+})
+
+
+.get('/relationship/types', function(req, res) {
+  var params = req.query.filter.split(' ');
+  res.send(200);
+
+  /*TODO: develop api_helper and character_model
+  methods for retrieveRelsOfType*/
+
+  // q.ninvoke(apiHelpers, 'retrieveRelsOfType', 1)
+  //   .then(function(data) {
+  //     console.log('database response received in get handler')
+  //     console.log(data);
+  //     res.send(200);
+  //   })
+  //   .catch(function(err) {
+  //     console.log('error', err);
+  //     res.send(500);
+  //   }).done();
 })
 
 .post('/names', function(req, res) {
