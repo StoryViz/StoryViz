@@ -19,7 +19,7 @@ angular.module('storyviz.story', [])
     $scope.newRel = {};
 
     // character stores node data for selected character
-    $scope.selectedCharacter = {};
+    $scope.selectedChar = {};
 
     // Get all characters and relationships
     $scope.getAll = function() {
@@ -57,8 +57,17 @@ angular.module('storyviz.story', [])
 
     $scope.getAll();
 
-    $scope.getCharacterRelationships = function() {
-      // $scope.selectedCharacter.id;
+    // Get connected nodes and links for selected character
+    $scope.getChar = function() {
+      Story.getChar($scope.selectedChar.id)
+        .then(function(response) {
+          console.log(response);
+          // $scope.data = response;
+        })
+        .catch(function(err) {
+          console.log(err);
+          throw err;
+        });
     };
 
     // Add new character
@@ -105,15 +114,17 @@ angular.module('storyviz.story', [])
 
     // Get all relationships of a certain type
     $scope.getRelsOfType = function() {
+      $scope.selectedRelTypes = ['Kills', 'Near'];
       Story.getRelsOfType($scope.selectedRelTypes)
         .then(function(response) {
           // $scope.data = ...
-          console.log('getRelsOfType response');
         })
         .catch(function(err) {
           console.log(err);
           throw err;
         })
     }
+
+    // setTimeout($scope.getRelsOfType, 2000);
 
   });
