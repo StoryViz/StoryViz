@@ -64,12 +64,48 @@ Character.getById = function (id, callback) {
  *                                      array containing Character instances
  *                                      representing the characters.
  */
-Character.getAll = function(callback) {
-  var query = [
-   'MATCH (source:CHARACTER)-[:CHAPTER]->(chap:CHAPTER)', //{num:' + chapter +'})',
-   'OPTIONAL MATCH (chap)-[t]->(target:CHARACTER)',
-   'RETURN source, type(t), target, chap.num'
-  ].join('\n');
+Character.getAll = function(params, callback) {
+  var query;
+  if(Object.keys(params).length === 0) {
+    // if I specify neither, return all types and IDs
+    query = [
+       'MATCH (source:CHARACTER)-[:CHAPTER]->(chap:CHAPTER)', //{num:' + chapter +'})',
+       'OPTIONAL MATCH (chap)-[t]->(target:CHARACTER)',
+       'RETURN source, type(t), target, chap.num'
+      ].join('\n');
+  } else if(params.id !== undefined && params.type !== undefined) {
+    // if I specify both, return a single ID and a single type
+    query = [
+      'MATCH (source:CHARACTER)-[:CHAPTER]->(chap:CHAPTER)',
+      'WHERE id(source)=' + params.id,
+      'OPTIONAL MATCH (chap)-[t]->(target:CHARACTER)',
+      'WHERE id(source)=' + params.id +' AND type(t)=\'' + params.type + '\'',
+      'RETURN source, type(t), target, chap.num'
+    ].join('\n');
+  } else if (params.id !== undefined) {
+    // if I only specify ID, return all types
+    query = [
+      'MATCH (source:CHARACTER)-[:CHAPTER]->(chap:CHAPTER)',
+      'WHERE id(source)=' + params.id,
+      'OPTIONAL MATCH (chap)-[t]->(target:CHARACTER)',
+      'WHERE id(source)=' + params.id,
+      'RETURN source, type(t), target, chap.num'
+    ].join('\n');
+    
+  } else if (params.type !== undefined) {
+    // if I only specify type, return all IDs
+    // todo: this returns all characters, but only links of the given type--
+    // should it not return characters without links?
+    // query would be 
+    // MATCH (source:CHARACTER)-[:CHAPTER]->(chap:CHAPTER)-[t]->(target:CHARACTER)
+    // WHERE ... etc
+    query = [
+      'MATCH (source:CHARACTER)-[:CHAPTER]->(chap:CHAPTER)',
+      'OPTIONAL MATCH (chap)-[t]->(target:CHARACTER)',
+      'WHERE type(t)=\'' + params.type + '\'',
+      'RETURN source, type(t), target, chap.num'
+    ].join('\n');
+  }
 
   q.ninvoke(db, 'query', query, null)
     .then(function(results) {
@@ -123,42 +159,7 @@ Character.getAll = function(callback) {
     .done();
 };
 
-//only relationships of a single type of a single chapter
-Character.getRelsOfType = function(types, callback) {
-  // var query = [
-  //  'MATCH (source:CHARACTER)-[:CHAPTER]->(chap:CHAPTER {num:' + chapter +'})',
-  //  'OPTIONAL MATCH (chap)-[t]->(target:CHARACTER)',
-  //  'RETURN source, type(t), target'
-  // ].join('\n');
 
-  // q.ninvoke(db, 'query', query, null)
-  //   .then(function(results) {
-  //     var r = {nodes: [], links: []};
-  //     var namesUniq = {};
-  //     results.forEach(function(result) {
-  //       thisCharacter = new Character(result.source);
-  //       if(!namesUniq[thisCharacter.name]) {
-  //         r.nodes.push(thisCharacter);  
-  //         namesUniq[thisCharacter.name] = true;
-  //       }
-        
-        
-  //       if(result.target) {
-  //         r.links.push({
-  //           source: thisCharacter, 
-  //           target: new Character(result.target),
-  //           type: result['type(t)']
-  //         });
-  //         console.log('target:', r.links[r.links.length - 1].target.name);
-  //       }
-  //     });
-  //     callback(null, r);
-  //   })
-  //   .catch(function(err) {
-  //     callback(err);
-  //   })
-  //   .done();
-}
 /**
  * Create a Character instance using the provided data.
  * @param  {Object}   data     The data to be stored on the character's db node.

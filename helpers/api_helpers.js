@@ -20,10 +20,10 @@ var Character  = require('../models/character_model').Character;
  * @return {String}        Conveniently-formatted JSON
  */
 function retrieveData(params, callback) {
-  if(Object.keys(params).length === 0) {
+  // if(Object.keys(params).length === 0) {
     // return all types and IDs, by chapter. ie. 
     // { 1: {nodes: [ ], links: [ ] }, 2: ...}
-    Character.getAll(function(err, data) {
+    Character.getAll(params, function(err, data) {
       if(err) { return callback(err); }
 
       for (var chapter in data) {
@@ -42,7 +42,9 @@ function retrieveData(params, callback) {
       
       callback(null, data);
     });
-  }   
+  // } else if (params.id !== undefined && params.type !== undefined) {
+  //   // return a single ID and links of a single type, by chapter
+  // }   
 }
 
 /**

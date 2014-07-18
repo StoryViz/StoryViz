@@ -33,6 +33,8 @@ function handleIdAndType(req, res) {
 
   var params = {};
 
+  // TODO: this could be simplified, since this logic is 
+  // already in Character.getAll
   if(req.params.id !== undefined && req.params.type !== undefined) {
     // if I specify both, return a single ID and a single type
     //  GET /api/name/1/type/knows
