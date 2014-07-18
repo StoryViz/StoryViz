@@ -24,30 +24,9 @@ angular.module('storyviz.story', [])
     // Get all characters and relationships
     $scope.getAll = function() {
       Story.getAll()
+        .then(Story.reindexLinks)
         .then(function(data) {
-          var nodes = data.data.nodes;
-          var nodeIndexStorage = {};
-          var links = data.data.links;
-          var linkStorage = [];
-
-          // Save array index of each node in nodeIndexStorage object
-          for (var i = 0; i < nodes.length; i++) {
-            nodeIndexStorage[nodes[i].id] = i;
-          }
-
-          for (var j = 0; j < links.length; j++) {
-            var newLink = {};
-
-            // Change source to refer to array index instead of character id
-            var charIDSource = links[j].source;
-            var charIDTarget = links[j].target;
-            newLink.source = nodeIndexStorage[charIDSource];
-            newLink.target = nodeIndexStorage[charIDTarget];
-            newLink.type = links[j].type;
-            linkStorage.push(newLink);
-          }
-
-          $scope.data = {nodes: nodes, links: linkStorage};
+          $scope.data = data;
         })
         .catch(function(err) {
           console.log(err);
@@ -59,16 +38,22 @@ angular.module('storyviz.story', [])
 
     // Get connected nodes and links for selected character
     $scope.getChar = function() {
+      // Test data
+      $scope.selectedChar = $scope.data.nodes[0];
+
       Story.getChar($scope.selectedChar.id)
-        .then(function(response) {
-          console.log(response);
-          // $scope.data = response;
+        .then(Story.reindexLinks)
+        .then(function(data) {
+          $scope.data = data;
         })
         .catch(function(err) {
           console.log(err);
           throw err;
         });
     };
+
+    // Test getChar
+    setTimeout($scope.getChar, 300);
 
     // Add new character
     // addChar called from view on click
