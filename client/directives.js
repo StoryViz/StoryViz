@@ -27,11 +27,11 @@ angular.module('storyviz.directives', ['d3'])
             .linkDistance(150)
             .size([width, height]);
 
-          var labelForce = d3.layout.force()
-            .charge(-100)
-            .linkDistance(0)
-            .linkStrength(8)
-            .size([width, height]);
+          // var labelForce = d3.layout.force()
+          //   .charge(-100)
+          //   .linkDistance(0)
+          //   .linkStrength(8)
+          //   .size([width, height]);
 
           scope.render = function(graphData) {
             // sort the links by source, then target
@@ -174,9 +174,9 @@ angular.module('storyviz.directives', ['d3'])
             }
           });
 
-        });
-      }
-    };
-  }
+        }); // end d3Service promise chain
+      } // end link function
+    }; // end returned object
+  } // end dependency injection into directive
 
-]);
+]); // end directive
