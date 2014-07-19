@@ -10,18 +10,13 @@ angular.module('storyviz.story', [])
     // relationship types to be rendered in d3
     $scope.selectedRelTypes = [];
 
-    // stores all relationships for each character
-    // enables isolation of a single character and their
-    // relationships
-    $scope.characterRelationships = {};
-
-    // newChar stores node data for character being added
+    // node data for character being added
     $scope.newChar= {};
 
-    // newRel stores link data for relationship being added
+    // link data for relationship being added
     $scope.newRel = {};
 
-    // character stores node data for selected character
+    // node data for selected character
     $scope.selectedChar = {};
 
     // Get all characters and relationships
@@ -61,8 +56,8 @@ angular.module('storyviz.story', [])
     // Add new character
     // addChar called from view on click
     $scope.addChar = function() {
-      // $scope.name should be set through data binding 
-      // in view (e.g. input field)
+      // $scope.name set through data binding 
+      // in view
       Story.addChar($scope.newChar)
         .then(function(response) {
 
