@@ -1,6 +1,8 @@
 angular.module('storyviz.story', [])
   .controller('StoryController', function($scope, Story) {
+    
     $scope.relationshipTypes = ['ParentChild', "Siblings", 'Near', 'Allies', 'Enemies', 'Kills', 'Mutual', 'Unrequited'];
+    
     // nodes and links to be rendered in d3
     $scope.data = {};
 
@@ -56,8 +58,7 @@ angular.module('storyviz.story', [])
     // Add new character
     // addChar called from view on click
     $scope.addChar = function() {
-      // $scope.name set through data binding 
-      // in view
+      // $scope.name set through data binding in view
       Story.addChar($scope.newChar)
         .then(function(response) {
 
