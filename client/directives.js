@@ -16,8 +16,8 @@ angular.module('storyviz.directives', ['d3'])
           var markerWidth = 6;
           var markerHeight = 6;
           var cRadius = 25;
-          var refX = cRadius + (markerWidth * 2) - 1;
-          var refY = -Math.sqrt(cRadius) + 9;
+          var refX = cRadius + (markerWidth * 2) ;
+          var refY = -Math.sqrt(cRadius) + 2;
           var drSub = cRadius + refY;
           var color = d3.scale.category20();
 
@@ -39,14 +39,13 @@ angular.module('storyviz.directives', ['d3'])
 
             var countRels = function() {
               for (var i = 0; i < graphData.links.length; i++) {
-                if (i === graphData.links.length - 1) {
+                if (graphData.links[i].source.id === undefined) {
                   var source = graphData.links[i].source;
                   var target = graphData.links[i].target;
                 } else {
                   var source = graphData.links[i].source.id;
                   var target = graphData.links[i].target.id;
                 }
-
                 var key1 = source + ',' + target;
                 var key2 = target + ',' + source;
 
@@ -62,7 +61,11 @@ angular.module('storyviz.directives', ['d3'])
                   numRels[key2] = 1;
                 }
 
+                // assign the link's position (out of the total number
+                // of relationships between its source and target)
+                // to its linkIndex
                 graphData.links[i].linkIndex = numRels[key1];
+                console.dir(numRels);
               }
             };
             countRels();
@@ -81,14 +84,13 @@ angular.module('storyviz.directives', ['d3'])
               .attr("id", function(d){return d.type;})
               .attr("stroke-width", 3)
 
-              svg.selectAll('#loves, #kills')
+              svg.selectAll('#unrequited, #parentchild, #kills')
               .attr("marker-end", "url(#end)");
 
             svg.append("svg:defs").selectAll("marker")
               .data(["end"])
                 .enter().append("svg:marker")  
                   .attr("id", String)
-                  // .attr("class", function(d){return d.type;})
                   .attr("viewBox", "0 -5 10 10")
                   .attr("refX", refX)
                   .attr("refY", refY)
@@ -116,7 +118,6 @@ angular.module('storyviz.directives', ['d3'])
               .attr("class", "nodeLabels")
               .attr("dy", ".3em")
               .text(function(d) { return d.name; });
-              // .call(force.drag);
 
             // Use elliptical arc path segments to doubly-encode directionality.
             function tick() {
@@ -136,8 +137,8 @@ angular.module('storyviz.directives', ['d3'])
 
                 // generate svg path
                 return "M" + d.source.x + "," + d.source.y + 
-                  "A" + dr + "," + dr + " 0 0 1," + d.target.x + "," + d.target.y + 
-                  "A" + dr + "," + dr + " 0 0 0," + d.source.x + "," + d.source.y;  
+                  "A" + dr + "," + dr + " 0 0 1," + d.target.x + "," + d.target.y;
+                  // "A" + dr + "," + dr + " 0 0 0," + d.source.x + "," + d.source.y;  
               });
                 
               node.attr("transform", function(d) {
@@ -155,9 +156,7 @@ angular.module('storyviz.directives', ['d3'])
             if (newValue !== undefined) {
               // remove all children of svg
               d3.selectAll("svg > *").remove();
-              console.dir(scope.data);
               scope.render(scope.data);
-              
             }
           });
 
