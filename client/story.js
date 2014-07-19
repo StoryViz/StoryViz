@@ -1,6 +1,8 @@
 angular.module('storyviz.story', [])
   .controller('StoryController', function($scope, Story) {
+
     $scope.relationshipTypes = ['ParentChild', "Siblings", 'Near', 'Allies', 'Enemies', 'Kills', 'Mutual', 'Unrequited'];
+    
     // nodes and links to be rendered in d3
     $scope.data = {};
 
@@ -10,18 +12,13 @@ angular.module('storyviz.story', [])
     // relationship types to be rendered in d3
     $scope.selectedRelTypes = [];
 
-    // stores all relationships for each character
-    // enables isolation of a single character and their
-    // relationships
-    $scope.characterRelationships = {};
-
-    // newChar stores node data for character being added
+    // node data for character being added
     $scope.newChar= {};
 
-    // newRel stores link data for relationship being added
+    // link data for relationship being added
     $scope.newRel = {};
 
-    // character stores node data for selected character
+    // node data for selected character
     $scope.selectedChar = {};
 
     // Get all characters and relationships
@@ -61,8 +58,7 @@ angular.module('storyviz.story', [])
     // Add new character
     // addChar called from view on click
     $scope.addChar = function() {
-      // $scope.name should be set through data binding 
-      // in view (e.g. input field)
+      // $scope.name set through data binding in view
       Story.addChar($scope.newChar)
         .then(function(response) {
 
@@ -99,5 +95,17 @@ angular.module('storyviz.story', [])
           throw err;
         });
     };
+
+    $scope.playChapters = function() {
+      for (var chapter in $scope.dataByChapter) {
+        // set data to be rendered
+        // (triggers render() in d3 directive for each chapter)
+        $scope.data = $scope.dataByChapter[chapter];
+        console.log($scope.dataByChapter[chapter]);
+      }
+    };
+
+    // TEST playChapters
+    // setTimeout($scope.playChapters, 2000);
 
   });
