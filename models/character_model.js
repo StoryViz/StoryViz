@@ -57,39 +57,95 @@ Character.getById = function (id, callback) {
 };
 
 /**
- * Retrieve all characters from the database
+ * Retrieve all characters from the database, across all types and all chapters
+ * in the format { 1: {nodes: [ {name: 'Mitch', id: 1} ], 
+ *   links: [ source: 123, target: 456, type: 'knows' ] }, 2: ...}
  * @param  {Function} callback Callback for errors and results. provides an
  *                                      array containing Character instances
  *                                      representing the characters.
  */
-Character.getAll = function(chapter, callback) {
-  var query = [
-   'MATCH (source:CHARACTER)-[:CHAPTER]->(chap:CHAPTER {num:' + chapter +'})',
-   'OPTIONAL MATCH (chap)-[t]->(target:CHARACTER)',
-   'RETURN source, type(t), target'
-  ].join('\n');
+Character.getAll = function(params, callback) {
+  var query;
+  if(Object.keys(params).length === 0) {
+    // if I specify neither, return all types and IDs
+    query = [
+       'MATCH (source:CHARACTER)-[:CHAPTER]->(chap:CHAPTER)', //{num:' + chapter +'})',
+       'OPTIONAL MATCH (chap)-[t]->(target:CHARACTER)',
+       'RETURN source, type(t), target, chap.num'
+      ].join('\n');
+  } else if(params.id !== undefined && params.type !== undefined) {
+    // if I specify both, return a single ID and a single type
+    query = [
+      'MATCH (source:CHARACTER)-[:CHAPTER]->(chap:CHAPTER)',
+      'WHERE id(source)=' + params.id,
+      'OPTIONAL MATCH (chap)-[t]->(target:CHARACTER)',
+      'WHERE id(source)=' + params.id +' AND type(t)=\'' + params.type + '\'',
+      'RETURN source, type(t), target, chap.num'
+    ].join('\n');
+  } else if (params.id !== undefined) {
+    // if I only specify ID, return all types
+    query = [
+      'MATCH (source:CHARACTER)-[:CHAPTER]->(chap:CHAPTER)',
+      'WHERE id(source)=' + params.id,
+      'OPTIONAL MATCH (chap)-[t]->(target:CHARACTER)',
+      'WHERE id(source)=' + params.id,
+      'RETURN source, type(t), target, chap.num'
+    ].join('\n');
+    
+  } else if (params.type !== undefined) {
+    query = [
+      // 'MATCH (source:CHARACTER)-[:CHAPTER]->(chap:CHAPTER)',
+      // 'OPTIONAL MATCH (chap)-[t]->(target:CHARACTER)',
+      'MATCH (source:CHARACTER)-[:CHAPTER]->(chap:CHAPTER)-[t]->(target:CHARACTER)',
+      'WHERE type(t)=\'' + params.type + '\'',
+      'RETURN source, type(t), target, chap.num'
+    ].join('\n');
+  }
 
   q.ninvoke(db, 'query', query, null)
     .then(function(results) {
-      var r = {nodes: [], links: []};
+      var r = {};
       var namesUniq = {};
       results.forEach(function(result) {
-        thisCharacter = new Character(result.source);
-        if(!namesUniq[thisCharacter.name]) {
-          r.nodes.push(thisCharacter);  
-          namesUniq[thisCharacter.name] = true;
+        var thisChapter = result['chap.num'];
+
+        // make keys for the current chapter if one doesn't exist
+        if(!r.hasOwnProperty(thisChapter)) { 
+          r[thisChapter] = {nodes: [], links: []}; 
+          namesUniq[thisChapter] = {};
         }
-        
-        
+
+        // There will always be a source-- so we can get a list of all characters
+        // existing in a chapter (regarless of their relationships). The source
+        // names will repeat for every relationship, so we uniq them per chapter.
+        var thisCharacter = new Character(result.source);
+        if(!namesUniq[thisChapter][thisCharacter.name]) {
+          r[thisChapter].nodes.push(thisCharacter);
+          namesUniq[thisChapter][thisCharacter.name] = true;
+        }
+
         if(result.target) {
-          r.links.push({
+          r[thisChapter].links.push({
             source: thisCharacter, 
             target: new Character(result.target),
             type: result['type(t)']
           });
-          console.log('target:', r.links[r.links.length - 1].target.name);
         }
       });
+
+      // double check
+      // for (var chapter in r) {
+      //   console.log('in chapter', chapter);
+      //   console.log('characters:');
+      //   r[chapter].nodes.forEach(function(node) {
+      //     console.log(node.name);
+      //   });
+      //   console.log('links:');
+      //   r[chapter].links.forEach(function(link) {
+      //     console.log(link.source.name, link.target.name, link.type);
+      //   });
+      // }
+
       callback(null, r);
     })
     .catch(function(err) {
@@ -98,41 +154,7 @@ Character.getAll = function(chapter, callback) {
     .done();
 };
 
-Character.getRelsOfType = function(types, callback) {
-  // var query = [
-  //  'MATCH (source:CHARACTER)-[:CHAPTER]->(chap:CHAPTER {num:' + chapter +'})',
-  //  'OPTIONAL MATCH (chap)-[t]->(target:CHARACTER)',
-  //  'RETURN source, type(t), target'
-  // ].join('\n');
 
-  // q.ninvoke(db, 'query', query, null)
-  //   .then(function(results) {
-  //     var r = {nodes: [], links: []};
-  //     var namesUniq = {};
-  //     results.forEach(function(result) {
-  //       thisCharacter = new Character(result.source);
-  //       if(!namesUniq[thisCharacter.name]) {
-  //         r.nodes.push(thisCharacter);  
-  //         namesUniq[thisCharacter.name] = true;
-  //       }
-        
-        
-  //       if(result.target) {
-  //         r.links.push({
-  //           source: thisCharacter, 
-  //           target: new Character(result.target),
-  //           type: result['type(t)']
-  //         });
-  //         console.log('target:', r.links[r.links.length - 1].target.name);
-  //       }
-  //     });
-  //     callback(null, r);
-  //   })
-  //   .catch(function(err) {
-  //     callback(err);
-  //   })
-  //   .done();
-}
 /**
  * Create a Character instance using the provided data.
  * @param  {Object}   data     The data to be stored on the character's db node.

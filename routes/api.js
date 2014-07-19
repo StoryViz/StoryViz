@@ -3,113 +3,97 @@
 var express = require('express');
 var path    = require('path');
 var q       = require('q');
+var eParams = require('express-params');
 
 var apiHelpers = require('../helpers/api_helpers');
 var publicDir   = require('../helpers/path_helpers').publicDir;
 
 var apiRouter = express.Router();
+eParams.extend(apiRouter);
 
 apiRouter.get('/', function(req, res) {
   res.send('StoryViz JSON API');
 })
 
-// Returns all names and relationships in the DB, in the form:
-// {nodes: [{id: 5, name: 'mitch'}], 
-// links: [{source: 11, target: 24, type: 'knows'}]}
-// where node ID and link source/target are the IDs of the actual nodes in the 
-// database.
-.param('chapter', function(req, res, next, chapter){
-  req.chapter = chapter;
-  next();
+// validations for ID and type parameters
+.param('id', /^\d+$/) // IDs are digits only
+.param('type', /^[a-zA-Z]+$/) // types are strings only
+
+.get('/names/:id?', function(req, res) {
+  handleIdAndType(req, res);
 })
 
-.get('/names/:id?/chapter/:chapter?', function(req, res) {
-  var params = {chapter: req.chapter};
+.get('/names/:id?/type/:type?', function(req, res) {
+ handleIdAndType(req, res);
+});
 
-  if (req.params.id) {
-    params.id = req.params.id;
-  }
-
+function handleIdAndType(req, res) {
   res.set('Content-Type', 'application/json');
   res.set('charset', 'utf-8');
+
+  var params = {};
+
+  // TODO: this could be simplified, since this logic is 
+  // already in Character.getAll
+  if(req.params.id !== undefined && req.params.type !== undefined) {
+    // if I specify both, return a single ID and a single type
+    //  GET /api/name/1/type/knows
+    params.id = Number(req.params.id[0]);
+    params.type = req.params.type[0];
+    
+  } else if(req.params.id !== undefined) {
+    // if I only specify ID, return all types
+    //  GET /api/names/:id
+    params.id = Number(req.params.id[0]);
+  } else if (req.params.type !== undefined) {
+    // if I only specify type, return all IDs
+    //  GET /api/names/type/:type
+    params.type = req.params.type[0];
+  } else {
+    // if I specify neither, return all types and IDs
+    //  GET /api/names
+  }
+
   // Retrieve info on the full DB
   q.ninvoke(apiHelpers, 'retrieveData', params)
     .then(function(data) {
       res.send(JSON.stringify(data));
-      // data.forEach(function(d) {
-      //   // push character names and IDs into the result
-      //   result.nodes.push({id: d.id, name: d.name});
-      // });
-      
-      // var outgoingDef = q.defer();
-      
-      // var count = 0;
-      // var total = result.nodes.length;
-
-      // for(var i = 0, len = data.length; i < len; i++) {
-      //   var d = data[i];
-
-      //   // get all the character's outgoing relations...
-      //   d._node.outgoing('', function(err, rel) {
-      //     if(err) { return outgoingDef.reject(err); }
-      //     // ...if there are none, resolve immediately...
-      //     if(rel.length === 0) { return outgoingDef.resolve(data); }
-
-      //     // ...otherwise push them all into the result.
-      //     for(var i = 0, len = rel.length; i < len; i++) {
-      //       result.links.push({source: rel[i].start.id, 
-      //         target: rel[i].end.id, 
-      //         type: rel[i]._data.type});  
-      //     }
-          
-      //     // if all the callbacks have returned, we can resolve the promise.
-      //     if(++count >= total) {
-      //       outgoingDef.resolve(data);
-      //     }
-      //   });
-      // }
-
-      // return outgoingDef.promise;
     })
-
-    // .then(function(data) {
-    //   res.send(JSON.stringify(result));
-    // })
 
     .catch(function(err) {
       console.log('error', err);
       res.send(500);
     }).done();
-})
+}
 
 
-.get('/relationship/types', function(req, res) {
-  var params = req.query.filter.split(' ');
-  res.send(200);
+// apiRouter.get('/relationship/types', function(req, res) {
+//   var params = req.query.filter.split(' ');
+//   res.send(200);
 
-  /*TODO: develop api_helper and character_model
-  methods for retrieveRelsOfType*/
+//   /*TODO: develop api_helper and character_model
+//   methods for retrieveRelsOfType*/
 
-  // q.ninvoke(apiHelpers, 'retrieveRelsOfType', 1)
-  //   .then(function(data) {
-  //     console.log('database response received in get handler')
-  //     console.log(data);
-  //     res.send(200);
-  //   })
-  //   .catch(function(err) {
-  //     console.log('error', err);
-  //     res.send(500);
-  //   }).done();
-})
+//   // q.ninvoke(apiHelpers, 'retrieveRelsOfType', 1)
+//   //   .then(function(data) {
+//   //     console.log('database response received in get handler')
+//   //     console.log(data);
+//   //     res.send(200);
+//   //   })
+//   //   .catch(function(err) {
+//   //     console.log('error', err);
+//   //     res.send(500);
+//   //   }).done();
+// })
 
-.post('/names', function(req, res) {
+apiRouter.post('/names', function(req, res) {
   q.ninvoke(apiHelpers, 'saveNewCharacter', req.body, req.body.chapter)
     .then(function(data) {
       var node = {name: data.name, id: data.id};
       res.send(node);
     })
     .catch(function(err) {
-      console.log('error', err);
+      console.log('error in post /names', err);
       res.send(500);
     }).done();
 })

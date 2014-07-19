@@ -4,6 +4,9 @@ angular.module('storyviz.story', [])
     // nodes and links to be rendered in d3
     $scope.data = {};
 
+    // nodes and links organized by chapter
+    $scope.dataByChapter = {};
+
     // relationship types to be rendered in d3
     $scope.selectedRelTypes = [];
 
@@ -23,10 +26,20 @@ angular.module('storyviz.story', [])
 
     // Get all characters and relationships
     $scope.getAll = function() {
-      Story.getAll()
+      var params = {};
+      if ($scope.selectedChar.id) {
+        params.id = $scope.selectedChar.id;
+      }
+
+      if ($scope.selectedRelTypes.length > 0) {
+        params.type = $scope.selectedRelTypes;
+      }
+
+      Story.getAll(params)
         .then(Story.reindexLinks)
         .then(function(data) {
-          $scope.data = data;
+          $scope.dataByChapter = data;
+          $scope.data = $scope.dataByChapter;
         })
         .catch(function(err) {
           console.log(err);
@@ -36,24 +49,14 @@ angular.module('storyviz.story', [])
 
     $scope.getAll();
 
-    // Get connected nodes and links for selected character
-    $scope.getChar = function() {
-      // Test data
-      $scope.selectedChar = $scope.data.nodes[0];
-
-      Story.getChar($scope.selectedChar.id)
-        .then(Story.reindexLinks)
-        .then(function(data) {
-          $scope.data = data;
-        })
-        .catch(function(err) {
-          console.log(err);
-          throw err;
-        });
-    };
-
-    // Test getChar
-    setTimeout($scope.getChar, 300);
+    // TEST invocation of getAll with id & types
+    // -------------------
+    setTimeout(function() {
+      $scope.selectedChar.id = $scope.data[1].nodes[0].id;
+      $scope.selectedRelTypes = ['knows'];
+      $scope.getAll();
+    }, 200);
+    // -------------------
 
     // Add new character
     // addChar called from view on click
@@ -96,20 +99,5 @@ angular.module('storyviz.story', [])
           throw err;
         });
     };
-
-    // Get all relationships of a certain type
-    $scope.getRelsOfType = function() {
-      $scope.selectedRelTypes = ['Kills', 'Near'];
-      Story.getRelsOfType($scope.selectedRelTypes)
-        .then(function(response) {
-          // $scope.data = ...
-        })
-        .catch(function(err) {
-          console.log(err);
-          throw err;
-        })
-    }
-
-    // setTimeout($scope.getRelsOfType, 2000);
 
   });

@@ -20,48 +20,31 @@ var Character  = require('../models/character_model').Character;
  * @return {String}        Conveniently-formatted JSON
  */
 function retrieveData(params, callback) {
-  if(!params.id || Object.keys(params).length === 0) {
-    Character.getAll(params.chapter, function(err, data) {
+  // if(Object.keys(params).length === 0) {
+    // return all types and IDs, by chapter. ie. 
+    // { 1: {nodes: [ ], links: [ ] }, 2: ...}
+    Character.getAll(params, function(err, data) {
       if(err) { return callback(err); }
 
-      data.nodes = data.nodes.map(function(node) {
-        return {name: node.name, id: node.id};
-      });
-
-      data.links = data.links.map(function(link) {
-        return {
-          source: link.source.id, 
-          target: link.target.id, 
-          type: link.type
-        };
-      });
+      for (var chapter in data) {
+        data[chapter].nodes = data[chapter].nodes.map(function(node) {
+          return {name: node.name, id: node.id};
+        });
+ 
+        data[chapter].links = data[chapter].links.map(function(link) {
+          return {
+            source: link.source.id, 
+            target: link.target.id, 
+            type: link.type
+          };
+        });
+      }
       
       callback(null, data);
     });
-  } else if (params.id) {
-
-    // TODO: create character model method to retrieve 
-    // connected nodes and links for specified character
-
-    // Test with getAll
-    Character.getAll(params.chapter, function(err, data) {
-      if(err) { return callback(err); }
-
-      data.nodes = data.nodes.map(function(node) {
-        return {name: node.name, id: node.id};
-      });
-
-      data.links = data.links.map(function(link) {
-        return {
-          source: link.source.id, 
-          target: link.target.id, 
-          type: link.type
-        };
-      });
-      
-      callback(null, data);
-    });
-  }
+  // } else if (params.id !== undefined && params.type !== undefined) {
+  //   // return a single ID and links of a single type, by chapter
+  // }   
 }
 
 /**
@@ -129,7 +112,7 @@ function saveRelationship(params, callback) {
     q.all([toDef.promise, fromDef.promise])
       .then(function(result) {
         result[0].relateTo(result[1], params.type, 1, function(err, result) {
-          console.log(err);
+          if (err) { return callback(err); }
           callback(null, result);
         });
       })
