@@ -101,7 +101,11 @@ angular.module('storyviz.story', [])
         // set data to be rendered
         // (triggers render() in d3 directive for each chapter)
         $scope.data = $scope.dataByChapter[chapter];
+        console.log($scope.dataByChapter[chapter]);
       }
-    }
+    };
+
+    // TEST playChapters
+    // setTimeout($scope.playChapters, 2000);
 
   });
