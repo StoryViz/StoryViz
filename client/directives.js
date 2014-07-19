@@ -5,7 +5,7 @@ angular.module('storyviz.directives', ['d3'])
       scope: {
         data: '=data'
       },
-      link:function(scope, element) {
+      link: function(scope, element) {
         d3Service.d3().then(function(d3) {
           var width = 1200;
           var height = 800;
@@ -21,7 +21,6 @@ angular.module('storyviz.directives', ['d3'])
           var drSub = cRadius + refY;
           var color = d3.scale.category20();
 
-
           var force = d3.layout.force()
             .charge(-650)
             .linkDistance(150)
@@ -34,58 +33,41 @@ angular.module('storyviz.directives', ['d3'])
           //   .size([width, height]);
 
           scope.render = function(graphData) {
-            // sort the links by source, then target
-            var lTotalLinkNum;
 
-            var sortLinks = function() {               
-              graphData.links.sort(function(a,b) {
-                if (a.source > b.source) {
-                  return 1;
-                }
-                else if (a.source < b.source) {
-                  return -1;
-                }
-                else {
-                  if (a.target > b.target) {
-                    return 1;
-                  } 
-                  if (a.target < b.target) {
-                    return -1;
-                  }
-                  else {
-                    return 0;
-                  }
-                }
-              });
-            }
-            
-            //any links with duplicate source and target get an incremented 'linknum'
-            var setLinkIndexAndNum = function() {               
+            // stores number of relationships between a source and target
+            var numRels = {};
+
+            var countRels = function() {
               for (var i = 0; i < graphData.links.length; i++) {
-                if (i != 0 && graphData.links[i].source == graphData.links[i-1].source && graphData.links[i].target == graphData.links[i-1].target) {
-                  graphData.links[i].linkindex = graphData.links[i-1].linkindex + 1;
+                if (i === graphData.links.length - 1) {
+                  var source = graphData.links[i].source;
+                  var target = graphData.links[i].target;
+                } else {
+                  var source = graphData.links[i].source.id;
+                  var target = graphData.links[i].target.id;
                 }
-                else {
-                  graphData.links[i].linkindex = 1;
-                }
-                // save the total number of links between two nodes
-                if(mLinkNum[graphData.links[i].target + "," + graphData.links[i].source] !== undefined) {
-                  console.log(mLinkNum[graphData.links[i].target + "," + graphData.links[i].source]);
-                  mLinkNum[graphData.links[i].target + "," + graphData.links[i].source] = graphData.links[i].linkindex;
-                }
-                else{
-                  mLinkNum[graphData.links[i].source + "," + graphData.links[i].target] = graphData.links[i].linkindex;
-                }
-              } 
-            }
 
-            var mLinkNum = {};
-            
-            // sort links first
-            sortLinks(); 
-            // set up linkIndex and linkNumer, because it may possible multiple links share the same source and target node
-            setLinkIndexAndNum();
-            console.log(JSON.stringify(mLinkNum));
+                var key1 = source + ',' + target;
+                var key2 = target + ',' + source;
+
+                if (numRels[key1]) {
+                  numRels[key1]++;
+                } else {
+                  numRels[key1] = 1;
+                }
+
+                if (numRels[key2]) {
+                  numRels[key2]++;
+                } else {
+                  numRels[key2] = 1;
+                }
+
+                graphData.links[i].linkIndex = numRels[key1];
+              }
+            };
+            countRels();
+
+
             force.nodes(graphData.nodes)
               .links(graphData.links)
               .on("tick", tick)
@@ -101,7 +83,6 @@ angular.module('storyviz.directives', ['d3'])
 
               svg.selectAll('#loves, #kills')
               .attr("marker-end", "url(#end)");
-            console.log(path);
 
             svg.append("svg:defs").selectAll("marker")
               .data(["end"])
@@ -143,13 +124,16 @@ angular.module('storyviz.directives', ['d3'])
                 var dx = d.target.x - d.source.x,
                     dy = d.target.y - d.source.y,
                     dr = Math.sqrt(dx * dx + dy * dy);
+
                 // get the total link numbers between source and target node
-                lTotalLinkNum = mLinkNum[d.source.id + "," + d.target.id] || mLinkNum[d.target.id + "," + d.source.id];
-                if(lTotalLinkNum > 1)
+                var index = d.source.id + ',' + d.target.id;
+
+                if(numRels[index] > 1)
                 {
                   // if there are multiple links between these two nodes, we need generate different dr for each path
-                  dr = dr/(1 + (1/lTotalLinkNum) * (d.linkindex - 1));
+                  dr = dr/(1 + (1/numRels[index]) * (d.linkIndex - 1));
                 }     
+
                 // generate svg path
                 return "M" + d.source.x + "," + d.source.y + 
                   "A" + dr + "," + dr + " 0 0 1," + d.target.x + "," + d.target.y + 
@@ -163,14 +147,17 @@ angular.module('storyviz.directives', ['d3'])
               labels.attr("transform", function(d) {
                   return "translate(" + d.x + "," + d.y + ")";
               });
-            } 
+            }; 
 
           };
           
           scope.$watchGroup(['data','data.nodes', 'data.links'], function(newValue) {
             if (newValue !== undefined) {
+              // remove all children of svg
               d3.selectAll("svg > *").remove();
+              console.dir(scope.data);
               scope.render(scope.data);
+              
             }
           });
 
