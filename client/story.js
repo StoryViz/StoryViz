@@ -1,6 +1,6 @@
 angular.module('storyviz.story', [])
   .controller('StoryController', function($scope, Story) {
-    
+
     $scope.relationshipTypes = ['ParentChild', "Siblings", 'Near', 'Allies', 'Enemies', 'Kills', 'Mutual', 'Unrequited'];
     
     // nodes and links to be rendered in d3
@@ -95,5 +95,13 @@ angular.module('storyviz.story', [])
           throw err;
         });
     };
+
+    $scope.playChapters = function() {
+      for (var chapter in $scope.dataByChapter) {
+        // set data to be rendered
+        // (triggers render() in d3 directive for each chapter)
+        $scope.data = $scope.dataByChapter[chapter];
+      }
+    }
 
   });
