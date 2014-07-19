@@ -9,7 +9,7 @@ angular.module('storyviz.services', [])
 
     // get nodes and links connected to specified character
     getChar: function(id) {
-        return $http.get('/api/names/' + id + '/chapter/1');
+        return $http.get('/api/names/' + id);
     },
 
     // create new character
@@ -53,6 +53,8 @@ angular.module('storyviz.services', [])
         // var nodeIndexStorage = {};
         // var links = data.data.links;
         // var linkStorage = [];
+        console.log('data received by reindexLinks: ');
+        console.log(data);
         var dataByChapter = {};
 
         // Save array index of each node in nodeIndexStorage object
