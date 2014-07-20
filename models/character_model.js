@@ -118,16 +118,24 @@ Character.getAll = function(params, callback) {
         // There will always be a source-- so we can get a list of all characters
         // existing in a chapter (regarless of their relationships). The source
         // names will repeat for every relationship, so we uniq them per chapter.
-        var thisCharacter = new Character(result.source);
-        if(!namesUniq[thisChapter][thisCharacter.name]) {
-          r[thisChapter].nodes.push(thisCharacter);
-          namesUniq[thisChapter][thisCharacter.name] = true;
+        var sourceCharacter = new Character(result.source);
+
+        if(!namesUniq[thisChapter][sourceCharacter.name]) {
+          r[thisChapter].nodes.push(sourceCharacter);
+          namesUniq[thisChapter][sourceCharacter.name] = true;
         }
 
         if(result.target) {
+          var targetCharacter = new Character(result.target);
+          
+          if(!namesUniq[thisChapter][targetCharacter.name]) {
+            r[thisChapter].nodes.push(targetCharacter);
+            namesUniq[thisChapter][targetCharacter.name] = true;
+          }
+
           r[thisChapter].links.push({
-            source: thisCharacter, 
-            target: new Character(result.target),
+            source: sourceCharacter, 
+            target: targetCharacter,
             type: result['type(t)']
           });
         }
