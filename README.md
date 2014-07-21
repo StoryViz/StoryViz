@@ -14,10 +14,10 @@
 
 ## Usage
 
-> Add relationships
-> Add characters
-> Select a chapter to view
-> Play through all of the chapters!
+- Add relationships
+- Add characters
+- Select a chapter to view
+- Play through all of the chapters!
 
 ## Requirements
 
@@ -27,6 +27,8 @@
    - body-parser: ^1.4.3
    - q: ^1.0.1
    - express-params: 0.0.3
+   - angular-ui-router: ~0.2.10
+   - angular: ~1.2.20"
 
 ## Development
 
