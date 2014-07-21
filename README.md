@@ -28,7 +28,7 @@
    - q: ^1.0.1
    - express-params: 0.0.3
    - angular-ui-router: ~0.2.10
-   - angular: ~1.2.20"
+   - angular: ~1.2.20
 
 ## Development
 
