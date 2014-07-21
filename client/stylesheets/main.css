@@ -149,7 +149,18 @@ form {
 svg {
   z-index: -1;
 }
-
-img {
+#logoContainer {
   margin-left: 25%;
+}
+
+/*#logo {
+  margin-left: 25%;
+}*/
+
+#enter {
+  position: relative;
+  display: block;
+  left:20%;
+  margin-top: 15%;
+  width: 10em;
 }
