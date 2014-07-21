@@ -77,3 +77,73 @@ h1 {
 .navigation li a.selected {
   background-color: #ccc;
 }
+
+div.row#range-slider {
+  position: absolute;
+}
+
+div.row#hey {
+  height: 30%;
+  padding: 1%;
+  background-color: AliceBlue;
+  margin-top: 2%;
+  margin-left: 3%;
+  display: inline-block;
+ /* position: absolute;*/
+}
+/*
+#addChar {
+  padding: 5px;
+}*/
+
+#addCharButton {
+  position: relative;
+  width: 86.3%;
+  margin-top: -1.5%;
+  margin-left: 7%;
+}
+
+h3 {
+  display: inline;
+}
+
+h4 {
+  display: inline;
+}
+
+button {
+  display: inline;
+  margin-top: .7em;
+  height: 2em;
+  width: 6em;
+  padding: 0;
+  text-align: center;
+}
+
+form {
+  display: none;
+}
+
+.range-slider {
+ display: inline;
+ float: right;
+ width: 87%;
+}
+
+.edit {
+  transform: rotate(90deg);
+  -webkit-transform:rotate(90deg);
+  left: -2em;
+  position: absolute;
+  margin-top: -3.5%;
+  display: inline;
+  font-size: 10px;
+}
+
+svg {
+  z-index: -1;
+}
+
+img {
+  margin-left: 25%;
+}

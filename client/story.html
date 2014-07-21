@@ -1,39 +1,49 @@
 <div ng-controller='StoryController'>
-  <div>
+
     <!-- Slider Bar -->
-    <div style="top: 30%" class="row">
-      <div class="small-2 medium-1 columns"></div>
-      <div class="small-10 medium-11 columns">
+    <div class="row" id='rangeslider'>
+      <!-- <div class="small-2 medium-1 columns"></div> -->
+   <!--    <div class="small-10 medium-11 columns"> -->
+
         <h3 style="font-family:Optima">Chapter <h4 class="subheader" id="sliderOutput" class="label">0</h4></h3>
-        <div class="range-slider" data-slider data-options="start: 0; end: 400;">
+        <br/>
+        <button>Play</button>
+        <div class="range-slider round" data-slider data-options="start: 0; end: 400;">
           <span class="range-slider-handle"></span>
           <span class="range-slider-active-segment"></span>
           <input type="hidden">
         </div>
-        <a class="button small" id="play-chapters">Play</a>
-      </div>
+        <ul class="button-group">
+          <button>Allies</button>
+          <button>Enemies</button>
+          <button>Admires</button>
+          <button>Kills</button>
+          <button>Parent</button>
+          <button>Sibling</button>
+        </ul>
+      <!-- </div> -->
     </div>
 
     <!-- Input Form -->
     <form>
-      <div class="row">
+      <div class="row" id='hey'>
         <!-- Add Character -->
-        <div class="large-3 columns">
-          <div class="row collapse">
+        <div class="large-3 columns" id="addChar">
+          <!-- div class="row collapse"> -->
             <div class="small-12 columns">
               <input ng-model="newChar.name" type="text" placeholder="New character...">
               <input ng-model="newChar.chapter" type="text" placeholder="First chapter appearance...">
             </div>
-<!--             <div class="small-4 columns">
+          <!--   <div class="small-4 columns">
               <a ng-click="addChar()" class="button postfix">Add</a>
             </div> -->
-          </div>
-          <div class="small-4 columns">
-            <a ng-click="addChar()" class="button small">Add</a>
-          </div>
+         <!--  </div> -->
+          <!-- <div class="small-4 columns"> -->
+            <button id='addCharButton' ng-click="addChar()">Add Character</button>
+          <!-- </div> -->
         </div>
         <!-- Add Relationship -->
-        <div class="large-3 columns">
+        <div class="large-3 columns" id='addRel'>
           <!-- From -->
           <div class="row collapse">
             <div class="small-4 columns">
@@ -63,13 +73,22 @@
           </div>
 
           <div class="large-6 columns">
-            <a ng-click="addRel()" class="button small">Add</a>
+            <button ng-click="addRel()">Add</button>
           </div>
 
         </div>
       </div>
     </form>
 
-  </div>
+  <button class="edit">Edit Network</button>
   <story-graph data='data'></story-graph>
 </div>
+<script>
+$(".edit").on('click', function() {
+  $('form').toggle(); 
+  $('#rangeslider').toggle();; 
+  $(this).text(function(i, text) {
+    return text === "Edit Network" ? "Done" : "Edit Network";
+  });
+});
+</script>

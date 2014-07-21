@@ -11,5 +11,9 @@ angular.module('storyviz', [
       url: '/story',
       templateUrl: 'story.html',
       controller: 'StoryController'
+    })
+    .state('landing', {
+      url: '/landing',
+      templateUrl: 'landing.html'
     });
 });

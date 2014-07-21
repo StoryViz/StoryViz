@@ -11,8 +11,8 @@ angular.module('storyviz.directives', ['d3'])
           var height = 800;
           var svg = d3.select(element[0])
             .append('svg')
-            .attr('width', width)
-            .attr('height', height);
+            .attr('width', '100%')
+            .attr('height', '100%');
           var markerWidth = 6;
           var markerHeight = 6;
           var cRadius = 25;
