@@ -50,6 +50,14 @@ angular.module('storyviz.story', [])
 
     $scope.getAll();
 
+    $scope.onClick = function(nodeId) {
+      $scope.$apply(function() {
+        $scope.selectedChar.id = nodeId;
+        console.log(nodeId);
+        $scope.getAll();
+        console.log($scope.data);
+      });
+    };
     // TEST invocation of getAll with id & types
     // -------------------
     // setTimeout(function() {

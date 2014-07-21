@@ -20,7 +20,7 @@
           <button class='relType' ng-click="selectedRelTypes.push('Siblings')">Sibling</button>
           <button class='relType' ng-click="selectedRelTypes.push('Unrequited')">Unrequited</button>
           <button id='filterRels' ng-click="getAll();selectedRelTypes=[]">Filter</button>
-          <button id='viewAllRels' ng-click="selectedRelTypes=[];getAll()">View All</button>
+          <button id='viewAllRels' ng-click="selectedChar={};selectedRelTypes=[];getAll()">View All</button>
         </ul>
     </div>
 
@@ -77,7 +77,7 @@
     </form>
 
   <button class="edit">Edit Network</button>
-  <story-graph data='data'></story-graph>
+  <story-graph data='data' on-click="onClick(nodeId)"></story-graph>
 </div>
 <script>
   //toggle edit form and range slider
