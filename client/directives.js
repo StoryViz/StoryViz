@@ -112,6 +112,7 @@ angular.module('storyviz.directives', ['d3'])
               .attr('class', 'node')
               .attr('r', 25)
               .style('fill', function(d){return color(d.id)})
+              .on('dblclick', function(d, i){return scope.onClick({nodeId: d.id});})
               .call(force.drag);
 
             var labels = gnodes.append("text")
