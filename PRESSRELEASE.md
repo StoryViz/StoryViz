@@ -20,4 +20,5 @@ Just click on the name of your favorite story, and start exploring the relations
 ”Before StoryViz, I just couldn’t keep straight who was sleeping with who in Game of Thrones!”
 “Now I can share my obscure knowledge of Star Wars with the community”
 “I can’t believe there were so many romances over the course of Friends”
-Closing and Call to Action - StoryViz is nothing without the community-- go forth and contribute to your favorite graph
+
+## StoryViz is nothing without the community-- go forth and contribute to your favorite graph
