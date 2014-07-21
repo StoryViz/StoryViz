@@ -103,6 +103,12 @@ div.row#hey {
   margin-left: 7%;
 }
 
+#addRelButton {
+  width: 13.25em;
+  margin-top: -0.15em;
+  margin-left: -0.85em;
+}
+
 h3 {
   display: inline;
 }

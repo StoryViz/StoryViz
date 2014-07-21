@@ -6,6 +6,7 @@ angular.module('storyviz', [
   'd3'
   ])
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
+  $urlRouterProvider.when('', '/landing');
   $stateProvider
     .state('story', {
       url: '/story',
