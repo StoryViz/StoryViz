@@ -2,9 +2,6 @@
 
     <!-- Slider Bar -->
     <div class="row" id='rangeslider'>
-      <!-- <div class="small-2 medium-1 columns"></div> -->
-   <!--    <div class="small-10 medium-11 columns"> -->
-
         <h3 style="font-family:Optima">Chapter <h4 class="subheader" id="sliderOutput" class="label">0</h4></h3>
         <br/>
         <button ng-click='playChapters()'>Play</button>
@@ -13,18 +10,18 @@
           <span class="range-slider-active-segment"></span>
           <input type="hidden">
         </div>
-        <ul class="button-group">
-          <button id='viewAll'>View All</button>
-          <button id='viewAllies'>Allies</button>
-          <button id='viewEnemies'>Enemies</button>
-          <button id='viewMutual'>Mutual</button>
-          <button id='viewNear'>Near</button>
-          <button id='viewKills'>Kills</button>
-          <button id='viewParentChild'>ParentChild</button>
-          <button id='viewSibling'>Sibling</button>
-          <button id='viewUnrequited'>Unrequited</button>
+         <ul class="button-group">
+          <button class='relType' ng-click="selectedRelTypes.push('Allies')">Allies</button>
+          <button class='relType' ng-click="selectedRelTypes.push('Enemies')">Enemies</button>
+          <button class='relType' ng-click="selectedRelTypes.push('Mutual')">Mutual</button>
+          <button class='relType' ng-click="selectedRelTypes.push('Near')">Near</button>
+          <button class='relType' ng-click="selectedRelTypes.push('Kills')">Kills</button>
+          <button class='relType' ng-click="selectedRelTypes.push('ParentChild')">ParentChild</button>
+          <button class='relType' ng-click="selectedRelTypes.push('Siblings')">Sibling</button>
+          <button class='relType' ng-click="selectedRelTypes.push('Unrequited')">Unrequited</button>
+          <button id='filterRels' ng-click="getAll();selectedRelTypes=[]">Filter</button>
+          <button id='viewAllRels' ng-click="selectedRelTypes=[];getAll()">View All</button>
         </ul>
-      <!-- </div> -->
     </div>
 
     <!-- Input Form -->
@@ -32,18 +29,14 @@
       <div class="row" id='hey'>
         <!-- Add Character -->
         <div class="large-3 columns" id="addChar">
-          <!-- div class="row collapse"> -->
+
             <div class="small-12 columns">
               <input ng-model="newChar.name" type="text" placeholder="New character...">
               <input ng-model="newChar.chapter" type="text" placeholder="First chapter appearance...">
             </div>
-          <!--   <div class="small-4 columns">
-              <a ng-click="addChar()" class="button postfix">Add</a>
-            </div> -->
-         <!--  </div> -->
-          <!-- <div class="small-4 columns"> -->
+
             <button id='addCharButton' ng-click="addChar()">Add Character</button>
-          <!-- </div> -->
+
         </div>
         <!-- Add Relationship -->
         <div class="large-3 columns" id='addRel'>
@@ -87,7 +80,6 @@
   <story-graph data='data'></story-graph>
 </div>
 <script>
-  var relationshipIds = ['#knows', '#Allies', '#Enemies', '#Unrequited', '#Mutual', '#Kills', '#ParentChild', '#Siblings', '#Near'];
   //toggle edit form and range slider
   $(".edit").on('click', function() {
     $('form').toggle(); 
@@ -96,65 +88,10 @@
       return text === "Edit Network" ? "Done" : "Edit Network";
     });
   });
-  $("#viewAllies").on('click', function() {
-    for(var i = 0; i < relationshipIds[i].length; i++) {
-      $(relationshipIds[i]).css('display', 'block');
-      $(relationshipIds[i]).css('display', 'none');
-      $('#Allies').css('display', 'block');
-    }
+  $(".relType").on('click', function() {
+    $(this).css('background-color', '#CC1422');
   });
-  $("#viewEnemies").on('click', function() {
-    for(var i = 0; i < relationshipIds[i].length; i++) {
-      $(relationshipIds[i]).css('display', 'block');
-      $(relationshipIds[i]).css('display', 'none');
-      $('#Enemies').css('display', 'block');
-    }
-  });
-  $("#viewMutual").on('click', function() {
-    for(var i = 0; i < relationshipIds[i].length; i++) {
-      $(relationshipIds[i]).css('display', 'block');
-      $(relationshipIds[i]).css('display', 'none');
-      $('#Mutual').css('display', 'block');
-    }
-  });
-  $("#viewNear").on('click', function() {
-    for(var i = 0; i < relationshipIds[i].length; i++) {
-      $(relationshipIds[i]).css('display', 'block');
-      $(relationshipIds[i]).css('display', 'none');
-      $('#Near').css('display', 'block');
-    }
-  });
-  $("#viewKills").on('click', function() {
-    for(var i = 0; i < relationshipIds[i].length; i++) {
-      $(relationshipIds[i]).css('display', 'block');
-      $(relationshipIds[i]).css('display', 'none');
-      $('#Kills').css('display', 'block');
-    }
-  });
-  $("#viewParentChild").on('click', function() {
-    for(var i = 0; i < relationshipIds[i].length; i++) {
-      $(relationshipIds[i]).css('display', 'block');
-      $(relationshipIds[i]).css('display', 'none');
-      $('#ParentChild').css('display', 'block');
-    }
-  });
-  $("#viewSibling").on('click', function() {
-    for(var i = 0; i < relationshipIds[i].length; i++) {
-      $(relationshipIds[i]).css('display', 'block');
-      $(relationshipIds[i]).css('display', 'none');
-      $('#Siblings').css('display', 'block');
-    }
-  });
-   $("#viewUnrequited").on('click', function() {
-    for(var i = 0; i < relationshipIds[i].length; i++) {
-      $(relationshipIds[i]).css('display', 'block');
-      $(relationshipIds[i]).css('display', 'none');
-      $('#Unrequited').css('display', 'block');
-    }
-  });
-    $("#viewAll").on('click', function() {
-    for(var i = 0; i < relationshipIds[i].length; i++) {
-      $(relationshipIds[i]).css('display', 'block');
-    }
+  $("#viewAllRels, #filterRels").on('click', function() {
+    $(".relType").css('background-color', '#FF5840');
   });
 </script>

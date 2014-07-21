@@ -6,7 +6,7 @@ span.test {
   stroke-width: 1.5px;
 }
 
-#unrequited {
+#Unrequited {
   stroke: IndianRed;
 }
 
@@ -14,11 +14,11 @@ span.test {
   stroke: #B915E8;
 }
 
-#kills {
+#Kills {
   stroke: #700008;
 }
 
-#mutual {
+#Mutual {
   stroke: IndianRed;
 }
 
@@ -26,7 +26,7 @@ span.test {
   stroke: #B915E8;
 }
 
-#allies {
+#Allies {
   stroke: #0B6BFF;
 }
 
@@ -34,7 +34,7 @@ span.test {
   stroke: black;
 }
 
-#near {
+#Near {
   stroke: #FF6900;
 }
 
@@ -139,11 +139,25 @@ h4 {
 
 button {
   display: inline;
-  margin-top: .7em;
+  margin-top: 2%;
   height: 2em;
   width: 6em;
   padding: 0;
   text-align: center;
+  font-size: 14px;
+ /* background-color: AliceBlue;*/
+}
+
+button.relType {
+  border: 1px solid;
+  border-radius: 10px;
+  background-color: #FF5840;
+
+}
+
+.button-group {
+  background-color: AliceBlue;
+  padding-left: 6%;
 }
 
 form {

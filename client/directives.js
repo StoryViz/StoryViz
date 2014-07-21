@@ -3,7 +3,8 @@ angular.module('storyviz.directives', ['d3'])
     return {
       restrict: 'E',
       scope: {
-        data: '=data'
+        data: '=data',
+        onClick: '&'
       },
       link: function(scope, element) {
         d3Service.d3().then(function(d3) {
