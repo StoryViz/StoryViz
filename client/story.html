@@ -13,16 +13,17 @@
           <span class="range-slider-active-segment"></span>
           <input type="hidden">
         </div>
-        <ul class="button-group">
-          <button id='viewAll'>View All</button>
-          <button id='viewAllies'>Allies</button>
-          <button id='viewEnemies'>Enemies</button>
-          <button id='viewMutual'>Mutual</button>
-          <button id='viewNear'>Near</button>
-          <button id='viewKills'>Kills</button>
-          <button id='viewParentChild'>ParentChild</button>
-          <button id='viewSibling'>Sibling</button>
-          <button id='viewUnrequited'>Unrequited</button>
+         <ul class="button-group">
+          <button ng-click="selectedRelTypes=[];getAll()">View All</button>
+          <button ng-click="selectedRelTypes.push('Allies')">Allies</button>
+          <button ng-click="selectedRelTypes.push('Enemies')">Enemies</button>
+          <button ng-click="selectedRelTypes.push('Mutual')">Mutual</button>
+          <button ng-click="selectedRelTypes.push('Near')">Near</button>
+          <button ng-click="selectedRelTypes.push('Kills')">Kills</button>
+          <button ng-click="selectedRelTypes.push('ParentChild')">ParentChild</button>
+          <button ng-click="selectedRelTypes.push('Sibling')">Sibling</button>
+          <button ng-click="selectedRelTypes.push('Unrequited')">Unrequited</button>
+          <button ng-click="getAll()">Filter Relationships</button>
         </ul>
       <!-- </div> -->
     </div>
@@ -95,66 +96,5 @@
     $(this).text(function(i, text) {
       return text === "Edit Network" ? "Done" : "Edit Network";
     });
-  });
-  $("#viewAllies").on('click', function() {
-    for(var i = 0; i < relationshipIds[i].length; i++) {
-      $(relationshipIds[i]).css('display', 'block');
-      $(relationshipIds[i]).css('display', 'none');
-      $('#Allies').css('display', 'block');
-    }
-  });
-  $("#viewEnemies").on('click', function() {
-    for(var i = 0; i < relationshipIds[i].length; i++) {
-      $(relationshipIds[i]).css('display', 'block');
-      $(relationshipIds[i]).css('display', 'none');
-      $('#Enemies').css('display', 'block');
-    }
-  });
-  $("#viewMutual").on('click', function() {
-    for(var i = 0; i < relationshipIds[i].length; i++) {
-      $(relationshipIds[i]).css('display', 'block');
-      $(relationshipIds[i]).css('display', 'none');
-      $('#Mutual').css('display', 'block');
-    }
-  });
-  $("#viewNear").on('click', function() {
-    for(var i = 0; i < relationshipIds[i].length; i++) {
-      $(relationshipIds[i]).css('display', 'block');
-      $(relationshipIds[i]).css('display', 'none');
-      $('#Near').css('display', 'block');
-    }
-  });
-  $("#viewKills").on('click', function() {
-    for(var i = 0; i < relationshipIds[i].length; i++) {
-      $(relationshipIds[i]).css('display', 'block');
-      $(relationshipIds[i]).css('display', 'none');
-      $('#Kills').css('display', 'block');
-    }
-  });
-  $("#viewParentChild").on('click', function() {
-    for(var i = 0; i < relationshipIds[i].length; i++) {
-      $(relationshipIds[i]).css('display', 'block');
-      $(relationshipIds[i]).css('display', 'none');
-      $('#ParentChild').css('display', 'block');
-    }
-  });
-  $("#viewSibling").on('click', function() {
-    for(var i = 0; i < relationshipIds[i].length; i++) {
-      $(relationshipIds[i]).css('display', 'block');
-      $(relationshipIds[i]).css('display', 'none');
-      $('#Siblings').css('display', 'block');
-    }
-  });
-   $("#viewUnrequited").on('click', function() {
-    for(var i = 0; i < relationshipIds[i].length; i++) {
-      $(relationshipIds[i]).css('display', 'block');
-      $(relationshipIds[i]).css('display', 'none');
-      $('#Unrequited').css('display', 'block');
-    }
-  });
-    $("#viewAll").on('click', function() {
-    for(var i = 0; i < relationshipIds[i].length; i++) {
-      $(relationshipIds[i]).css('display', 'block');
-    }
   });
 </script>
