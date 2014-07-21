@@ -108,41 +108,24 @@ angular.module('storyviz.story', [])
         });
     };
 
-   $scope.playChapters = function() {
-    console.log('dataByChapter: ');
-    console.log($scope.dataByChapter);
-    console.log('Playing chapters');
-    $scope.data = {nodes: [], links: []};
-    $scope.numChapters = Object.keys($scope.dataByChapter).length;
-    console.log($scope.numChapters);
-    var play = setInterval(function() {
-      console.log('Current chapter: ', $scope.selectedChapter);
-      $scope.data = $scope.dataByChapter[$scope.selectedChapter];
-      console.log($scope.data);
-      $scope.selectedChapter++;
-      if ($scope.selectedChapter === $scope.numChapters) {
-        clearInterval(play);
-      }
-    }, 5000);
+    $scope.playChapters = function() {
+      console.log('Playing chapters');
+      console.log($scope.selectedRelTypes);
 
-    // $scope.playChapters = function() {
-    //   console.log('Playing chapters');
-    //   $scope.data = {};
-    //   var numChapters = Object.keys($scope.dataByChapter).length;
-    //   console.log(numChapters);
+      // clear screen
+      $scope.data = {nodes: [], links: []};
+      $scope.numChapters = Object.keys($scope.dataByChapter).length;
+      $scope.selectedChapter = 1;
 
-    //   for (var chapter = 1; chapter <= numChapters; chapter++) {
-    //     console.log('Chapter: ', chapter);
-    //     // set data to be rendered
-    //     // (triggers render() in d3 directive for each chapter)
-    //     // needs to be slowed down
-    //     $scope.data = $scope.dataByChapter[chapter];
-    //   }
-    // };
+      var play = setInterval(function() {
+        console.log('Current chapter: ', $scope.selectedChapter);
+        $scope.getAll();
+        $scope.selectedChapter++;
+        if ($scope.selectedChapter === $scope.numChapters) {
+          clearInterval(play);
+        }
+      }, 2000);
+    }
 
-    // TEST playChapters
-    // setTimeout(function() {
-    //   $scope.playChapters();
-    // }, 3000);
 
   });
