@@ -6,16 +6,36 @@ span.test {
   stroke-width: 1.5px;
 }
 
-#knows {
-  stroke: #9ecae1;
-}
-
-#loves {
+#unrequited {
   stroke: IndianRed;
 }
 
+#ParentChild {
+  stroke: #B915E8;
+}
+
 #kills {
+  stroke: #700008;
+}
+
+#mutual {
+  stroke: IndianRed;
+}
+
+#Siblings {
+  stroke: #B915E8;
+}
+
+#allies {
+  stroke: #0B6BFF;
+}
+
+#Enemies {
   stroke: black;
+}
+
+#near {
+  stroke: #FF6900;
 }
 
 .node {
@@ -76,4 +96,91 @@ h1 {
 
 .navigation li a.selected {
   background-color: #ccc;
+}
+
+div.row#range-slider {
+  position: absolute;
+}
+
+div.row#hey {
+  height: 30%;
+  padding: 1%;
+  background-color: AliceBlue;
+  margin-top: 2%;
+  margin-left: 3%;
+  display: inline-block;
+ /* position: absolute;*/
+}
+/*
+#addChar {
+  padding: 5px;
+}*/
+
+#addCharButton {
+  position: relative;
+  width: 86.3%;
+  margin-top: -1.5%;
+  margin-left: 7%;
+}
+
+#addRelButton {
+  width: 13.25em;
+  margin-top: -0.15em;
+  margin-left: -0.85em;
+}
+
+h3 {
+  display: inline;
+}
+
+h4 {
+  display: inline;
+}
+
+button {
+  display: inline;
+  margin-top: .7em;
+  height: 2em;
+  width: 6em;
+  padding: 0;
+  text-align: center;
+}
+
+form {
+  display: none;
+}
+
+.range-slider {
+ display: inline;
+ float: right;
+ width: 87%;
+}
+
+.edit {
+  transform: rotate(90deg);
+  -webkit-transform:rotate(90deg);
+  left: -2em;
+  position: absolute;
+  margin-top: -3.5%;
+  display: inline;
+  font-size: 10px;
+}
+
+svg {
+  z-index: -1;
+}
+#logoContainer {
+  margin-left: 25%;
+}
+
+/*#logo {
+  margin-left: 25%;
+}*/
+
+#enter {
+  position: relative;
+  display: block;
+  left:20%;
+  margin-top: 15%;
+  width: 10em;
 }

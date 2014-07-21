@@ -1,39 +1,52 @@
 <div ng-controller='StoryController'>
-  <div>
+
     <!-- Slider Bar -->
-    <div style="top: 30%" class="row">
-      <div class="small-2 medium-1 columns"></div>
-      <div class="small-10 medium-11 columns">
+    <div class="row" id='rangeslider'>
+      <!-- <div class="small-2 medium-1 columns"></div> -->
+   <!--    <div class="small-10 medium-11 columns"> -->
+
         <h3 style="font-family:Optima">Chapter <h4 class="subheader" id="sliderOutput" class="label">0</h4></h3>
-        <div class="range-slider" data-slider data-options="start: 0; end: 400;">
+        <br/>
+        <button ng-click='playChapters()'>Play</button>
+        <div class="range-slider round" data-slider data-options="start: 0; end: 400;">
           <span class="range-slider-handle"></span>
           <span class="range-slider-active-segment"></span>
           <input type="hidden">
         </div>
-        <a class="button small" id="play-chapters">Play</a>
-      </div>
+        <ul class="button-group">
+          <button id='viewAll'>View All</button>
+          <button id='viewAllies'>Allies</button>
+          <button id='viewEnemies'>Enemies</button>
+          <button id='viewMutual'>Mutual</button>
+          <button id='viewNear'>Near</button>
+          <button id='viewKills'>Kills</button>
+          <button id='viewParentChild'>ParentChild</button>
+          <button id='viewSibling'>Sibling</button>
+          <button id='viewUnrequited'>Unrequited</button>
+        </ul>
+      <!-- </div> -->
     </div>
 
     <!-- Input Form -->
     <form>
-      <div class="row">
+      <div class="row" id='hey'>
         <!-- Add Character -->
-        <div class="large-3 columns">
-          <div class="row collapse">
+        <div class="large-3 columns" id="addChar">
+          <!-- div class="row collapse"> -->
             <div class="small-12 columns">
               <input ng-model="newChar.name" type="text" placeholder="New character...">
               <input ng-model="newChar.chapter" type="text" placeholder="First chapter appearance...">
             </div>
-<!--             <div class="small-4 columns">
+          <!--   <div class="small-4 columns">
               <a ng-click="addChar()" class="button postfix">Add</a>
             </div> -->
-          </div>
-          <div class="small-4 columns">
-            <a ng-click="addChar()" class="button small">Add</a>
-          </div>
+         <!--  </div> -->
+          <!-- <div class="small-4 columns"> -->
+            <button id='addCharButton' ng-click="addChar()">Add Character</button>
+          <!-- </div> -->
         </div>
         <!-- Add Relationship -->
-        <div class="large-3 columns">
+        <div class="large-3 columns" id='addRel'>
           <!-- From -->
           <div class="row collapse">
             <div class="small-4 columns">
@@ -63,13 +76,85 @@
           </div>
 
           <div class="large-6 columns">
-            <a ng-click="addRel()" class="button small">Add</a>
+            <button id="addRelButton" ng-click="addRel()">Add Relationship</button>
           </div>
 
         </div>
       </div>
     </form>
 
-  </div>
+  <button class="edit">Edit Network</button>
   <story-graph data='data'></story-graph>
 </div>
+<script>
+  var relationshipIds = ['#knows', '#Allies', '#Enemies', '#Unrequited', '#Mutual', '#Kills', '#ParentChild', '#Siblings', '#Near'];
+  //toggle edit form and range slider
+  $(".edit").on('click', function() {
+    $('form').toggle(); 
+    $('#rangeslider').toggle();; 
+    $(this).text(function(i, text) {
+      return text === "Edit Network" ? "Done" : "Edit Network";
+    });
+  });
+  $("#viewAllies").on('click', function() {
+    for(var i = 0; i < relationshipIds[i].length; i++) {
+      $(relationshipIds[i]).css('display', 'block');
+      $(relationshipIds[i]).css('display', 'none');
+      $('#Allies').css('display', 'block');
+    }
+  });
+  $("#viewEnemies").on('click', function() {
+    for(var i = 0; i < relationshipIds[i].length; i++) {
+      $(relationshipIds[i]).css('display', 'block');
+      $(relationshipIds[i]).css('display', 'none');
+      $('#Enemies').css('display', 'block');
+    }
+  });
+  $("#viewMutual").on('click', function() {
+    for(var i = 0; i < relationshipIds[i].length; i++) {
+      $(relationshipIds[i]).css('display', 'block');
+      $(relationshipIds[i]).css('display', 'none');
+      $('#Mutual').css('display', 'block');
+    }
+  });
+  $("#viewNear").on('click', function() {
+    for(var i = 0; i < relationshipIds[i].length; i++) {
+      $(relationshipIds[i]).css('display', 'block');
+      $(relationshipIds[i]).css('display', 'none');
+      $('#Near').css('display', 'block');
+    }
+  });
+  $("#viewKills").on('click', function() {
+    for(var i = 0; i < relationshipIds[i].length; i++) {
+      $(relationshipIds[i]).css('display', 'block');
+      $(relationshipIds[i]).css('display', 'none');
+      $('#Kills').css('display', 'block');
+    }
+  });
+  $("#viewParentChild").on('click', function() {
+    for(var i = 0; i < relationshipIds[i].length; i++) {
+      $(relationshipIds[i]).css('display', 'block');
+      $(relationshipIds[i]).css('display', 'none');
+      $('#ParentChild').css('display', 'block');
+    }
+  });
+  $("#viewSibling").on('click', function() {
+    for(var i = 0; i < relationshipIds[i].length; i++) {
+      $(relationshipIds[i]).css('display', 'block');
+      $(relationshipIds[i]).css('display', 'none');
+      $('#Siblings').css('display', 'block');
+    }
+  });
+   $("#viewUnrequited").on('click', function() {
+    for(var i = 0; i < relationshipIds[i].length; i++) {
+      $(relationshipIds[i]).css('display', 'block');
+      $(relationshipIds[i]).css('display', 'none');
+      $('#Unrequited').css('display', 'block');
+    }
+  });
+    $("#viewAll").on('click', function() {
+    for(var i = 0; i < relationshipIds[i].length; i++) {
+      $(relationshipIds[i]).css('display', 'block');
+    }
+  });
+</script>
