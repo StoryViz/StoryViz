@@ -9,14 +9,14 @@ angular.module('storyviz.story', [])
     // nodes and links organized by chapter
     $scope.dataByChapter = {};
 
-    // relationship types to be rendered in d3
-    $scope.selectedRelTypes = [];
-
     // node data for character being added
     $scope.newChar= {};
 
     // link data for relationship being added
     $scope.newRel = {};
+
+    // relationship types to be rendered in d3
+    $scope.selectedRelTypes = [];
 
     // node data for selected character
     $scope.selectedChar = {};
