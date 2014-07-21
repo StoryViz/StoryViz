@@ -2,9 +2,6 @@
 
     <!-- Slider Bar -->
     <div class="row" id='rangeslider'>
-      <!-- <div class="small-2 medium-1 columns"></div> -->
-   <!--    <div class="small-10 medium-11 columns"> -->
-
         <h3 style="font-family:Optima">Chapter <h4 class="subheader" id="sliderOutput" class="label">0</h4></h3>
         <br/>
         <button ng-click='playChapters()'>Play</button>
@@ -14,18 +11,17 @@
           <input type="hidden">
         </div>
          <ul class="button-group">
-          <button ng-click="selectedRelTypes=[];getAll()">View All</button>
-          <button ng-click="selectedRelTypes.push('Allies')">Allies</button>
-          <button ng-click="selectedRelTypes.push('Enemies')">Enemies</button>
-          <button ng-click="selectedRelTypes.push('Mutual')">Mutual</button>
-          <button ng-click="selectedRelTypes.push('Near')">Near</button>
-          <button ng-click="selectedRelTypes.push('Kills')">Kills</button>
-          <button ng-click="selectedRelTypes.push('ParentChild')">ParentChild</button>
-          <button ng-click="selectedRelTypes.push('Sibling')">Sibling</button>
-          <button ng-click="selectedRelTypes.push('Unrequited')">Unrequited</button>
-          <button ng-click="getAll()">Filter Relationships</button>
+          <button class='relType' ng-click="selectedRelTypes.push('Allies')">Allies</button>
+          <button class='relType' ng-click="selectedRelTypes.push('Enemies')">Enemies</button>
+          <button class='relType' ng-click="selectedRelTypes.push('Mutual')">Mutual</button>
+          <button class='relType' ng-click="selectedRelTypes.push('Near')">Near</button>
+          <button class='relType' ng-click="selectedRelTypes.push('Kills')">Kills</button>
+          <button class='relType' ng-click="selectedRelTypes.push('ParentChild')">ParentChild</button>
+          <button class='relType' ng-click="selectedRelTypes.push('Siblings')">Sibling</button>
+          <button class='relType' ng-click="selectedRelTypes.push('Unrequited')">Unrequited</button>
+          <button id='filterRels' ng-click="getAll();selectedRelTypes=[]">Filter</button>
+          <button id='viewAllRels' ng-click="selectedRelTypes=[];getAll()">View All</button>
         </ul>
-      <!-- </div> -->
     </div>
 
     <!-- Input Form -->
@@ -33,18 +29,14 @@
       <div class="row" id='hey'>
         <!-- Add Character -->
         <div class="large-3 columns" id="addChar">
-          <!-- div class="row collapse"> -->
+
             <div class="small-12 columns">
               <input ng-model="newChar.name" type="text" placeholder="New character...">
               <input ng-model="newChar.chapter" type="text" placeholder="First chapter appearance...">
             </div>
-          <!--   <div class="small-4 columns">
-              <a ng-click="addChar()" class="button postfix">Add</a>
-            </div> -->
-         <!--  </div> -->
-          <!-- <div class="small-4 columns"> -->
+
             <button id='addCharButton' ng-click="addChar()">Add Character</button>
-          <!-- </div> -->
+
         </div>
         <!-- Add Relationship -->
         <div class="large-3 columns" id='addRel'>
@@ -88,7 +80,6 @@
   <story-graph data='data'></story-graph>
 </div>
 <script>
-  var relationshipIds = ['#knows', '#Allies', '#Enemies', '#Unrequited', '#Mutual', '#Kills', '#ParentChild', '#Siblings', '#Near'];
   //toggle edit form and range slider
   $(".edit").on('click', function() {
     $('form').toggle(); 
@@ -96,5 +87,11 @@
     $(this).text(function(i, text) {
       return text === "Edit Network" ? "Done" : "Edit Network";
     });
+  });
+  $(".relType").on('click', function() {
+    $(this).css('background-color', '#CC1422');
+  });
+  $("#viewAllRels, #filterRels").on('click', function() {
+    $(".relType").css('background-color', '#FF5840');
   });
 </script>
