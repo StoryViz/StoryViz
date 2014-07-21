@@ -25,6 +25,8 @@ angular.module('storyviz.story', [])
     // set to 1 for testing
     $scope.selectedChapter = 1;
 
+    // $scope.numChapters = Object.keys($scope.dataByChapter).length;
+
     // Get all characters and relationships
     $scope.getAll = function() {
       var params = {};
@@ -120,10 +122,11 @@ angular.module('storyviz.story', [])
       $scope.data = $scope.dataByChapter[$scope.selectedChapter];
       console.log($scope.data);
       $scope.selectedChapter++;
-      if ($scope.selectedChapter === $scope.numChapters) {
+      if ($scope.selectedChapter >= $scope.numChapters) {
         clearInterval(play);
       }
     }, 5000);
+  };
 
     // $scope.playChapters = function() {
     //   console.log('Playing chapters');
