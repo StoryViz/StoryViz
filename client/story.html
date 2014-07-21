@@ -2,7 +2,9 @@
 
     <!-- Slider Bar -->
     <div class="row" id='rangeslider'>
-        <h3 style="font-family:Optima">Chapter <h4 class="subheader" id="sliderOutput" class="label">0</h4></h3>
+        <!-- <h3 style="font-family:Optima">Chapter <h4 class="subheader" id="sliderOutput" class="label">0</h4></h3> -->
+        <h3 style="font-family:Optima" ng-model="selectedChapter">Chapter {{selectedChapter}}</h3>
+
         <br/>
         <button ng-click='playChapters()'>Play</button>
         <div class="range-slider round" data-slider data-options="start: 0; end: 400;">
@@ -19,7 +21,7 @@
           <button class='relType' ng-click="selectedRelTypes.push('ParentChild')">ParentChild</button>
           <button class='relType' ng-click="selectedRelTypes.push('Siblings')">Sibling</button>
           <button class='relType' ng-click="selectedRelTypes.push('Unrequited')">Unrequited</button>
-          <button id='filterRels' ng-click="getAll();selectedRelTypes=[]">Filter</button>
+          <button id='filterRels' ng-click="getAll()">Filter</button>
           <button id='viewAllRels' ng-click="selectedChar={};selectedRelTypes=[];getAll()">View All</button>
         </ul>
     </div>
