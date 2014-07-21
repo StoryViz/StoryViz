@@ -6,16 +6,36 @@ span.test {
   stroke-width: 1.5px;
 }
 
-#knows {
-  stroke: #9ecae1;
-}
-
-#loves {
+#unrequited {
   stroke: IndianRed;
 }
 
+#parentchild {
+  stroke: #B915E8;
+}
+
 #kills {
+  stroke: #700008;
+}
+
+#mutual {
+  stroke: IndianRed;
+}
+
+#sibling {
+  stroke: #B915E8;
+}
+
+#allies {
+  stroke: #0B6BFF;
+}
+
+#enemies {
   stroke: black;
+}
+
+#near {
+  stroke: #FF6900;
 }
 
 .node {
