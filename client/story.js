@@ -21,6 +21,10 @@ angular.module('storyviz.story', [])
     // node data for selected character
     $scope.selectedChar = {};
 
+    // chapter set by slider bar in view
+    // set to 1 for testing
+    $scope.selectedChapter = 1;
+
     // Get all characters and relationships
     $scope.getAll = function() {
       var params = {};
@@ -36,7 +40,7 @@ angular.module('storyviz.story', [])
         .then(Story.reindexLinks)
         .then(function(data) {
           $scope.dataByChapter = data;
-          $scope.data = $scope.dataByChapter;
+          $scope.data = $scope.dataByChapter[$scope.selectedChapter];
         })
         .catch(function(err) {
           console.log(err);
@@ -48,11 +52,11 @@ angular.module('storyviz.story', [])
 
     // TEST invocation of getAll with id & types
     // -------------------
-    setTimeout(function() {
-      $scope.selectedChar.id = $scope.data[1].nodes[0].id;
-      $scope.selectedRelTypes = ['knows'];
-      $scope.getAll();
-    }, 200);
+    // setTimeout(function() {
+    //   $scope.selectedChar.id = $scope.dataByChapter[$scope.selectedChapter].nodes[0].id;
+    //   $scope.selectedRelTypes = ['knows'];
+    //   $scope.getAll();
+    // }, 200);
     // -------------------
 
     // Add new character
@@ -96,16 +100,26 @@ angular.module('storyviz.story', [])
         });
     };
 
+
+
     $scope.playChapters = function() {
-      for (var chapter in $scope.dataByChapter) {
+      console.log('Playing chapters');
+      $scope.data = {};
+      var numChapters = Object.keys($scope.dataByChapter).length;
+      console.log(numChapters);
+
+      for (var chapter = 1; chapter <= numChapters; chapter++) {
+        console.log('Chapter: ', chapter);
         // set data to be rendered
         // (triggers render() in d3 directive for each chapter)
+        // needs to be slowed down
         $scope.data = $scope.dataByChapter[chapter];
-        console.log($scope.dataByChapter[chapter]);
       }
     };
 
     // TEST playChapters
-    // setTimeout($scope.playChapters, 2000);
+    // setTimeout(function() {
+    //   $scope.playChapters();
+    // }, 3000);
 
   });
