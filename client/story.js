@@ -110,23 +110,23 @@ angular.module('storyviz.story', [])
         });
     };
 
-   $scope.playChapters = function() {
-    console.log('dataByChapter: ');
-    console.log($scope.dataByChapter);
-    console.log('Playing chapters');
-    $scope.data = {nodes: [], links: []};
-    $scope.numChapters = Object.keys($scope.dataByChapter).length;
-    console.log($scope.numChapters);
-    var play = setInterval(function() {
-      console.log('Current chapter: ', $scope.selectedChapter);
-      $scope.data = $scope.dataByChapter[$scope.selectedChapter];
-      console.log($scope.data);
-      $scope.selectedChapter++;
-      if ($scope.selectedChapter >= $scope.numChapters) {
-        clearInterval(play);
-      }
-    }, 5000);
-  };
+  //  $scope.playChapters = function() {
+  //   console.log('dataByChapter: ');
+  //   console.log($scope.dataByChapter);
+  //   console.log('Playing chapters');
+  //   $scope.data = {nodes: [], links: []};
+  //   $scope.numChapters = Object.keys($scope.dataByChapter).length;
+  //   console.log($scope.numChapters);
+  //   var play = setInterval(function() {
+  //     console.log('Current chapter: ', $scope.selectedChapter);
+  //     $scope.data = $scope.dataByChapter[$scope.selectedChapter];
+  //     console.log($scope.data);
+  //     $scope.selectedChapter++;
+  //     if ($scope.selectedChapter >= $scope.numChapters) {
+  //       clearInterval(play);
+  //     }
+  //   }, 5000);
+  // };
 
     // $scope.playChapters = function() {
     //   console.log('Playing chapters');
