@@ -111,17 +111,23 @@ angular.module('storyviz.story', [])
     };
 
     $scope.playChapters = function() {
+      console.log('Playing chapters');
+      console.log($scope.selectedRelTypes);
+
+      // clear screen
       $scope.data = {nodes: [], links: []};
       $scope.numChapters = Object.keys($scope.dataByChapter).length;
+      $scope.selectedChapter = 1;
 
       var play = setInterval(function() {
         console.log('Current chapter: ', $scope.selectedChapter);
         $scope.getAll();
         $scope.selectedChapter++;
-        if ($scope.selectedChapter >= $scope.numChapters) {
+
+        if ($scope.selectedChapter === $scope.numChapters) {
           clearInterval(play);
         }
-      }, 5000);
-    };
+      }, 2000);
+    }
 
   });
