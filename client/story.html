@@ -6,11 +6,12 @@
 
         <br/>
         <button ng-click='playChapters()'>Play</button>
-        <div class="range-slider round" data-slider data-options="start: 0; end: 20;">
+        <div class="range-slider round" data-slider data-options="start: 1; end: 20;">
           <span class="range-slider-handle"></span>
           <span class="range-slider-active-segment"></span>
-          <input type="hidden">
+          <input id="sliderInput" type="hidden">
         </div>
+
          <ul class="button-group">
           <button class='relType' ng-click="selectedRelTypes.push('Allies')">Allies</button>
           <button class='relType' ng-click="selectedRelTypes.push('Enemies')">Enemies</button>
@@ -94,19 +95,6 @@
   });
   $("#viewAllRels, #filterRels").on('click', function() {
     $(".relType").css('background-color', '#FF5840');
-  });
-  var updateSlider = function(){
-    chapter = $('.range-slider input')[0].value;
-    $('#sliderOutput').text(chapter);
-  };
-
-  $(document).foundation({
-    slider: {
-      on_change: function(){
-          updateSlider();
-          // $scope.playChapters();
-      }
-    }
   });
 
 </script>

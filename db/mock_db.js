@@ -62,7 +62,7 @@ function mockDB() {
                                                           api.saveNewCharacter({name: 'Will J'}, 1, function(err, willj) {
                                                             api.saveNewCharacter({name: 'Will L'}, 1, function(err, willl) {
                                                               api.saveNewCharacter({name: 'Voldemort'}, 1, function(err, voldemort) {
-                                                                for (var chapter = 1; chapter < numChapters; chapter++) {
+                                                                for (var chapter = 1; chapter <= numChapters; chapter++) {
 
                                                                   relationshipTypes.forEach(function(type) {
                                                                     mitch.relateTo(vish, type, 1, function() {});

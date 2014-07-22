@@ -22,10 +22,10 @@ angular.module('storyviz.story', [])
     $scope.selectedChar = {};
 
     // chapter set by slider bar in view
-    // set to 1 for testing
+    // set to 1 for initialization
     $scope.selectedChapter = 1;
 
-    // $scope.numChapters = Object.keys($scope.dataByChapter).length;
+    // $('.range-slider').foundation('slider', 'set_value', $scope.selectedChapter);
 
     // Get all characters and relationships
     $scope.getAll = function() {
@@ -41,6 +41,8 @@ angular.module('storyviz.story', [])
       Story.getAll(params)
         .then(Story.reindexLinks)
         .then(function(data) {
+          // console.log('data.links: ');
+          // console.log(data.links);
           $scope.dataByChapter = data;
           $scope.data = $scope.dataByChapter[$scope.selectedChapter];
         })
@@ -52,22 +54,26 @@ angular.module('storyviz.story', [])
 
     $scope.getAll();
 
+    $scope.updateChapter = function() {
+      $scope.selectedChapter = $('#sliderInput')[0].value;
+      $scope.getAll();
+    };
+    
+    // make sure updateChapter and getAll are defined beforehand
+    $(document).foundation({
+      slider: {
+        on_change: function(){
+            $scope.updateChapter();
+        }
+      }
+    });
+    
     $scope.onClick = function(nodeId) {
       $scope.$apply(function() {
         $scope.selectedChar.id = nodeId;
-        console.log(nodeId);
         $scope.getAll();
-        console.log($scope.data);
       });
     };
-    // TEST invocation of getAll with id & types
-    // -------------------
-    // setTimeout(function() {
-    //   $scope.selectedChar.id = $scope.dataByChapter[$scope.selectedChapter].nodes[0].id;
-    //   $scope.selectedRelTypes = ['knows'];
-    //   $scope.getAll();
-    // }, 200);
-    // -------------------
 
     // Add new character
     // addChar called from view on click
@@ -75,7 +81,6 @@ angular.module('storyviz.story', [])
       // $scope.name set through data binding in view
       Story.addChar($scope.newChar)
         .then(function(response) {
-
           // concat used instead of push in order to trigger change
           $scope.data.nodes = $scope.data.nodes.concat(response.data);
         })
@@ -121,13 +126,17 @@ angular.module('storyviz.story', [])
 
       var play = setInterval(function() {
         console.log('Current chapter: ', $scope.selectedChapter);
+        $('.range-slider').foundation('slider', 'set_value', $scope.selectedChapter);
         $scope.getAll();
         $scope.selectedChapter++;
 
-        if ($scope.selectedChapter === $scope.numChapters) {
+        if ($scope.selectedChapter >= $scope.numChapters) {
           clearInterval(play);
         }
-      }, 2000);
+      }, 1000);
     }
 
   });
+
+
+
