@@ -44,8 +44,8 @@ angular.module('storyviz.directives', ['d3'])
                   var source = graphData.links[i].source;
                   var target = graphData.links[i].target;
                 } else {
-                  var source = graphData.links[i].source.id;
-                  var target = graphData.links[i].target.id;
+                  var source = graphData.links[i].source.index;
+                  var target = graphData.links[i].target.index;
                 }
                 var key1 = source + ',' + target;
                 var key2 = target + ',' + source;
@@ -70,7 +70,6 @@ angular.module('storyviz.directives', ['d3'])
               }
             };
             countRels();
-
 
             force.nodes(graphData.nodes)
               .links(graphData.links)
@@ -129,7 +128,7 @@ angular.module('storyviz.directives', ['d3'])
                     dr = Math.sqrt(dx * dx + dy * dy);
 
                 // get the total link numbers between source and target node
-                var index = d.source.id + ',' + d.target.id;
+                var index = d.source.index + ',' + d.target.index;
 
                 if(numRels[index] > 1)
                 {
