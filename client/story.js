@@ -25,22 +25,6 @@ angular.module('storyviz.story', [])
     // set to 1 for initialization
     $scope.selectedChapter = 1;
 
-    $scope.$watch('selectedChapter', function(val){
-      console.log('selectedChapter changed', val);
-      // selectedChapters new val = val
-    });
-    
-    $scope.updateChapter = function(chapter) {
-      $scope.selectedChapter = chapter;
-      console.log($scope.selectedChapter);
-    }
-    $scope.updateSlider1 = function(){
-          // scope.chapter = $('#slider').attr('data-slider');
-      // scope.chapter = $('#sliderInput')[0].value;
-      console.log('scope.chapter: ', $scope.chapter);
-    };
-    // $scope.numChapters = Object.keys($scope.dataByChapter).length;
-
     // Get all characters and relationships
     $scope.getAll = function() {
       var params = {};
@@ -68,6 +52,20 @@ angular.module('storyviz.story', [])
 
     $scope.getAll();
 
+    $scope.updateChapter = function() {
+      $scope.selectedChapter = $('#sliderInput')[0].value;
+      $scope.getAll();
+    };
+    
+    // make sure updateChapter and getAll are defined beforehand
+    $(document).foundation({
+      slider: {
+        on_change: function(){
+            $scope.updateChapter();
+        }
+      }
+    });
+    
     $scope.onClick = function(nodeId) {
       $scope.$apply(function() {
         $scope.selectedChar.id = nodeId;
