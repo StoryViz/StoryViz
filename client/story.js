@@ -25,6 +25,8 @@ angular.module('storyviz.story', [])
     // set to 1 for initialization
     $scope.selectedChapter = 1;
 
+    // $('.range-slider').foundation('slider', 'set_value', $scope.selectedChapter);
+
     // Get all characters and relationships
     $scope.getAll = function() {
       var params = {};
@@ -124,13 +126,14 @@ angular.module('storyviz.story', [])
 
       var play = setInterval(function() {
         console.log('Current chapter: ', $scope.selectedChapter);
+        $('.range-slider').foundation('slider', 'set_value', $scope.selectedChapter);
         $scope.getAll();
         $scope.selectedChapter++;
 
-        if ($scope.selectedChapter === $scope.numChapters) {
+        if ($scope.selectedChapter >= $scope.numChapters) {
           clearInterval(play);
         }
-      }, 2000);
+      }, 1000);
     }
 
   });
