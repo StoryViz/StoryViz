@@ -66,7 +66,6 @@ angular.module('storyviz.directives', ['d3'])
                 // of relationships between its source and target)
                 // to its linkIndex
                 graphData.links[i].linkIndex = numRels[key1];
-                console.dir(numRels);
               }
             };
             countRels();
