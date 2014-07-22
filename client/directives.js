@@ -27,6 +27,8 @@ angular.module('storyviz.directives', ['d3'])
             .linkDistance(150)
             .size([width, height]);
 
+          // not sure what this is is here for,
+          // should it do something down the line?
           // var labelForce = d3.layout.force()
           //   .charge(-100)
           //   .linkDistance(0)
@@ -40,12 +42,14 @@ angular.module('storyviz.directives', ['d3'])
 
             var countRels = function() {
               for (var i = 0; i < graphData.links.length; i++) {
+                var source;
+                var target;
                 if (graphData.links[i].source.id === undefined) {
-                  var source = graphData.links[i].source;
-                  var target = graphData.links[i].target;
+                  source = graphData.links[i].source;
+                  target = graphData.links[i].target;
                 } else {
-                  var source = graphData.links[i].source.index;
-                  var target = graphData.links[i].target.index;
+                  source = graphData.links[i].source.index;
+                  target = graphData.links[i].target.index;
                 }
                 var key1 = source + ',' + target;
                 var key2 = target + ',' + source;
@@ -80,15 +84,17 @@ angular.module('storyviz.directives', ['d3'])
               .enter().append("svg:path")
               .attr("fill", "none")
               .attr("class", "link")
-              .attr("id", function(d){return d.type;})
-              .attr("stroke-width", 3)
+              .attr("id", function(d){
+                return d.type;
+              })
+              .attr("stroke-width", 3);
 
               svg.selectAll('#unrequited, #parentchild, #kills')
               .attr("marker-end", "url(#end)");
 
             svg.append("svg:defs").selectAll("marker")
               .data(["end"])
-                .enter().append("svg:marker")  
+                .enter().append("svg:marker")
                   .attr("id", String)
                   .attr("viewBox", "0 -5 10 10")
                   .attr("refX", refX)
@@ -109,15 +115,21 @@ angular.module('storyviz.directives', ['d3'])
             var node = gnodes.append('circle')
               .attr('class', 'node')
               .attr('r', 25)
-              .style('fill', function(d){return color(d.id)})
-              .on('dblclick', function(d, i){return scope.onClick({nodeId: d.id});})
+              .style('fill', function(d){
+                return color(d.id);
+              })
+              .on('dblclick', function(d, i){
+                return scope.onClick({nodeId: d.id});
+              })
               .call(force.drag);
 
             var labels = gnodes.append("text")
               .attr("text-anchor", "middle")
               .attr("class", "nodeLabels")
               .attr("dy", ".3em")
-              .text(function(d) { return d.name; });
+              .text(function(d) {
+                return d.name;
+              });
 
             // Use elliptical arc path segments to doubly-encode directionality.
             function tick() {
@@ -133,12 +145,13 @@ angular.module('storyviz.directives', ['d3'])
                 {
                   // if there are multiple links between these two nodes, we need generate different dr for each path
                   dr = dr/(1 + (1/numRels[index]) * (d.linkIndex - 1));
-                }     
+                }
 
                 // generate svg path
-                return "M" + d.source.x + "," + d.source.y + 
+                return "M" + d.source.x + "," + d.source.y +
                   "A" + dr + "," + dr + " 0 0 1," + d.target.x + "," + d.target.y;
-                  // "A" + dr + "," + dr + " 0 0 0," + d.source.x + "," + d.source.y;  
+                  // I think this should be deleted?
+                  // "A" + dr + "," + dr + " 0 0 0," + d.source.x + "," + d.source.y;
               });
                 
               node.attr("transform", function(d) {
@@ -148,7 +161,7 @@ angular.module('storyviz.directives', ['d3'])
               labels.attr("transform", function(d) {
                   return "translate(" + d.x + "," + d.y + ")";
               });
-            }; 
+            }
 
           };
           
