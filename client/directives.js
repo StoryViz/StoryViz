@@ -1,4 +1,22 @@
 angular.module('storyviz.directives', ['d3'])
+  .directive('chapterSlider', [function(){
+    return {
+      restrict: 'E',
+      template: '<div class="range-slider round" data-slider data-options="start: 0; end: 20;">' +
+                  '<span class="range-slider-handle"></span>' +
+                  '<span class="range-slider-active-segment"></span>' +
+                  '<input type="hidden">' +
+                '</div><span></span>', //span sacrifices itself in order for div to render
+      scope: {
+        chapter: '=chapter',
+      },
+      link: function(scope, element) {
+        var new_value = 3;
+        $('slider').foundation('slider', 'set_value', new_value);
+      }
+    };
+  }
+])
   .directive('storyGraph', ['d3Service', function(d3Service){
     return {
       restrict: 'E',
