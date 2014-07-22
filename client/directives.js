@@ -5,14 +5,38 @@ angular.module('storyviz.directives', ['d3'])
       template: '<div class="range-slider round" data-slider data-options="start: 0; end: 20;">' +
                   '<span class="range-slider-handle"></span>' +
                   '<span class="range-slider-active-segment"></span>' +
-                  '<input type="hidden">' +
+                  '<input id="sliderInput" ng-model="chapter" type="hidden">' +
                 '</div><span></span>', //span sacrifices itself in order for div to render
       scope: {
-        chapter: '=chapter',
+        chapter: '=',
+        // directiveChapter: '@newChapter',
+        updateChapter: '&'
+      },    
+      controller: function($scope) {
+        $scope.updateChapter = function() {
+          $scope.selectedChapter = $('#sliderInput')[0].value;
+        };
       },
       link: function(scope, element) {
-        var new_value = 3;
-        $('slider').foundation('slider', 'set_value', new_value);
+        // var new_value = 3;
+        // $('slider').foundation('slider', 'set_value', new_value);
+        // $('#sliderInput').on('change', function() {
+        //   console.log('yolo');
+        // });
+        var updateSlider = function(){
+          // scope.chapter = $('#slider').attr('data-slider');
+          scope.chapter = $('#sliderInput')[0].value;
+          console.log('scope.chapter: ', scope.chapter);
+        };
+
+        $(document).foundation({
+          slider: {
+            on_change: function(){
+                updateSlider();
+                // $scope.playChapters();
+            }
+          }
+        });
       }
     };
   }
