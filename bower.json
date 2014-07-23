@@ -5,7 +5,11 @@
   "authors": [
     "mitch robb",
     "vishal reddy",
-    "michelle vu"
+    "michelle vu",
+    "will villanueva",
+    "bob owen",
+    "tyler ochiai",
+    "will labranche"
   ],
   "license": "MIT",
   "private": true,
@@ -18,6 +22,11 @@
   ],
   "dependencies": {
     "angular-ui-router": "~0.2.10",
-    "angular": "~1.2.20"
+    "angular": "1.3.0-beta.14",
+    "d3": "~3.4.11",
+    "foundation": "~5.3.1"
+  },
+  "resolutions": {
+    "angular": "1.3.0-beta.14"
   }
 }
