@@ -17,7 +17,6 @@ var paths = {
   'bower_components/foundation/js/foundation.min.js',
   'bower_components/d3/d3.js',
   ],
-  npm: ['node_modules/**/*js'],
   app: ['client/*.js']
 };
 
