@@ -4,3 +4,4 @@ node_modules
 client/bower_components
 bower_components
 iisnode.yml
+client/js/build

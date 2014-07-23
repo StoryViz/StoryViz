@@ -1,39 +1,35 @@
 var gulp = require('gulp');
-// var gutil = require('gulp-util');
-// var bower = require('bower');
+var gutil = require('gulp-util');
 var concat = require('gulp-concat');
-// var rename = require('gulp-rename');
-// var sh = require('gulp-shell');
-// var shelljs = require('shelljs');
-// var nodemon = require('gulp-nodemon');
+var nodemon = require('gulp-nodemon');
 
 var paths = {
-  bower: ['bower_components/angular/angular.min.js',
+  bower: [
+  'bower_components/angular/angular.min.js',
   'bower_components/angular-ui-router/release/angular-ui-router.min.js',
-  'bower_components/d3/d3.min.js'],
+  'bower_components/jquery/dist/jquery.min.js',
+  'bower_components/foundation/js/foundation.min.js',
+  'bower_components/d3/d3.min.js',
+  ],
   npm: ['node_modules/**/*js'],
   app: ['client/*.js']
 };
 
-// compiles css
-gulp.task('sass', function(done) {
-  gulp.src('./scss/ionic.app.scss')
-    .pipe(sass())
-    .pipe(gulp.dest('./www/css/'))
-    .pipe(minifyCss({
-      keepSpecialComments: 0
-    }))
-    .pipe(rename({ extname: '.min.css' }))
-    .pipe(gulp.dest('./www/css/'))
-    .on('end', done);
+gulp.task('serve', function(){
+  nodemon({
+    script: 'server.js',
+    ext: 'js html',
+    ignore: ['client/js/build/**']
+  });
 });
 
 // compiles angular and other dependencies
-gulp.task('client', function(){
+gulp.task('clientBuild', function(){
   gulp.src(paths.bower)
     .pipe(concat('clientCompiled.js'))
     .pipe(gulp.dest('client/js/build/'));
 });
+
 gulp.task('appBuild', function(){
   gulp.src(paths.app)
     .pipe(concat('appCompiled.js'))
@@ -41,9 +37,10 @@ gulp.task('appBuild', function(){
 });
 
 gulp.task('watch', function() {
-  gulp.watch(paths.bower, ['clientCompiles']);
+  gulp.watch(paths.bower, ['clientBuild']);
+  gulp.watch(paths.app, ['appBuild']);
 });
 
 
-gulp.task('compile', ['client', 'appBuild']);
-gulp.task('default', ['compile', 'watch']);
+gulp.task('compile', ['clientBuild', 'appBuild']);
+gulp.task('default', ['compile', 'serve','watch']);
