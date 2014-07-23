@@ -2,6 +2,12 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var concat = require('gulp-concat');
 var nodemon = require('gulp-nodemon');
+var shell = require('gulp-shell');
+
+gulp.task('install', shell.task([
+          'npm i',
+          'bower i'
+          ]));
 
 var paths = {
   bower: [
@@ -15,8 +21,6 @@ var paths = {
   app: ['client/*.js']
 };
 
-
-// compiles angular and other dependencies
 gulp.task('clientBuild', function(){
   gulp.src(paths.bower)
     .pipe(concat('clientCompiled.js'))
@@ -43,4 +47,8 @@ gulp.task('serve', function(){
   });
 });
 
-gulp.task('default', ['compile','serve']);
+gulp.task('default', ['compile', 'serve']);
+
+gulp.task('init', ['install'], function(){
+  gulp.run();
+});
