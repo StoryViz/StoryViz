@@ -35,12 +35,12 @@ angular.module('storyviz.directives', ['d3'])
           //   .linkStrength(8)
           //   .size([width, height]);
 
-          scope.render = function(graphData) {
-
+          var render = function(graphData) {
             // stores number of relationships between a source and target
             var numRels = {};
 
             var countRels = function() {
+              // this is returning undefined
               for (var i = 0; i < graphData.links.length; i++) {
                 var source;
                 var target;
@@ -164,12 +164,16 @@ angular.module('storyviz.directives', ['d3'])
             }
 
           };
-          
+
+          // watchGroup a part angular beta
           scope.$watchGroup(['data','data.nodes', 'data.links'], function(newValue) {
             if (newValue !== undefined) {
               // remove all children of svg
               d3.selectAll("svg > *").remove();
-              scope.render(scope.data);
+              //figure out how to make this better
+              if (scope.data.links){
+                render(scope.data);
+              }
             }
           });
 
