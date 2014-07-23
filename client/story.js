@@ -25,6 +25,12 @@ angular.module('storyviz.story', [])
     // set to 1 for initialization
     $scope.selectedChapter = 1;
 
+    // flag indicating play/pause status
+    $scope.playing = false;
+
+    // play/pause button text
+    $scope.button = 'Play';
+
     // $('.range-slider').foundation('slider', 'set_value', $scope.selectedChapter);
 
     // Get all characters and relationships
@@ -118,23 +124,30 @@ angular.module('storyviz.story', [])
     $scope.playChapters = function() {
       console.log('Playing chapters');
       console.log($scope.selectedRelTypes);
+      if(!$scope.playing){
+        $scope.button = 'Pause';
+        $scope.playing = true;
+        // clear screen
+        $scope.data = {nodes: [], links: []};
+        $scope.numChapters = Object.keys($scope.dataByChapter).length;
+        $scope.selectedChapter = 1;
+        $scope.play = setInterval(function() {
+          console.log('Current chapter: ', $scope.selectedChapter);
+          $('.range-slider').foundation('slider', 'set_value', $scope.selectedChapter);
+          $scope.getAll();
+          $scope.selectedChapter++;
 
-      // clear screen
-      $scope.data = {nodes: [], links: []};
-      $scope.numChapters = Object.keys($scope.dataByChapter).length;
-      $scope.selectedChapter = 1;
+          if ($scope.selectedChapter >= $scope.numChapters) {
+            clearInterval($scope.play);
+          }
+        }, 1000);
+      } else {
+        $scope.button = 'Play';
+        $scope.playing = false;
+        clearInterval($scope.play);
+      }
 
-      var play = setInterval(function() {
-        console.log('Current chapter: ', $scope.selectedChapter);
-        $('.range-slider').foundation('slider', 'set_value', $scope.selectedChapter);
-        $scope.getAll();
-        $scope.selectedChapter++;
-
-        if ($scope.selectedChapter >= $scope.numChapters) {
-          clearInterval(play);
-        }
-      }, 1000);
-    }
+    };
 
   });
 
