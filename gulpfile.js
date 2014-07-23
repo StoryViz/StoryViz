@@ -17,13 +17,6 @@ var paths = {
   app: ['client/*.js']
 };
 
-gulp.task('serve', function(){
-  nodemon({
-    script: 'server.js',
-    ext: 'js html',
-    ignore: ['client/js/build/**']
-  });
-});
 
 // compiles angular and other dependencies
 gulp.task('clientBuild', function(){
@@ -38,12 +31,18 @@ gulp.task('appBuild', function(){
     .pipe(gulp.dest('client/js/build/'));
 });
 
+gulp.task('compile', ['clientBuild', 'appBuild']);
 
-gulp.task('watch', function() {
-  gulp.watch(paths.bower, ['clientBuild']);
-  gulp.watch(paths.app, ['appBuild']);
+gulp.task('serve', function(){
+  nodemon({
+    script: 'server.js',
+    ext: 'js html',
+    ignore: ['client/js/build/**']
+  })
+  .on('change', ['compile'])
+  .on('restart', function(){
+    console.log('restarted');
+  });
 });
 
-gulp.task('compile', ['clientBuild', 'appBuild']);
-// something off here
-gulp.task('default', ['compile', 'serve','watch']);
+gulp.task('default', ['compile','serve']);
