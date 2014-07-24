@@ -46,15 +46,18 @@ angular.module('storyviz.services', [])
     },
 
     reindexLinks: function(data) {
+        //data at data.data contains the raw list of data for all chapters.
         var dataByChapter = {};
 
-        // Save array index of each node in nodeIndexStorage object
+        // Save array index of each node in nodeIndexStorage object / split by chapter
         for (var chapter in data.data) {
             var nodes = data.data[chapter].nodes;
             var nodeIndexStorage = {};
             var links = data.data[chapter].links;
             var linkStorage = [];
 
+            //Create a lookup for find the array position of a node.id
+            // (Used by D3 force graph)
             for (var i = 0; i < nodes.length; i++) {
               nodeIndexStorage[nodes[i].id] = i;
             }

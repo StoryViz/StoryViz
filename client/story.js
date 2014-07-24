@@ -1,5 +1,6 @@
 angular.module('storyviz.story', [])
   .controller('StoryController', function($scope, Story) {
+    console.log('Controller caller');
 
     $scope.relationshipTypes = ['ParentChild', "Siblings", 'Near', 'Allies', 'Enemies', 'Kills', 'Mutual', 'Unrequited'];
     
@@ -23,7 +24,7 @@ angular.module('storyviz.story', [])
 
     // chapter set by slider bar in view
     // set to 1 for initialization
-    $scope.selectedChapter = 1;
+    $scope.selectedChapter = 10;
 
     // flag indicating play/pause status
     $scope.playing = false;
@@ -51,6 +52,10 @@ angular.module('storyviz.story', [])
           // console.log(data.links);
           $scope.dataByChapter = data;
           $scope.data = $scope.dataByChapter[$scope.selectedChapter];
+          // debugger;
+          if($scope.data){
+            $scope.data.renderChart = "Will's badass idea." + Math.random();
+          }
         })
         .catch(function(err) {
           console.log(err);
@@ -61,8 +66,12 @@ angular.module('storyviz.story', [])
     $scope.getAll();
 
     $scope.updateChapter = function() {
-      $scope.selectedChapter = $('#sliderInput')[0].value;
-      $scope.getAll();
+      if($('#sliderInput')[0].value !== $scope.selectedChapter && $('#sliderInput')[0].value){
+        console.log("Slider: ", $('#sliderInput')[0].value);
+        console.log("Current chapter: ", $scope.selectedChapter);
+        $scope.selectedChapter = $('#sliderInput')[0].value;
+        $scope.getAll();
+      }
     };
     
     // make sure updateChapter and getAll are defined beforehand
@@ -77,7 +86,7 @@ angular.module('storyviz.story', [])
     $scope.onClick = function(nodeId) {
       $scope.$apply(function() {
         $scope.selectedChar.id = nodeId;
-        $scope.getAll();
+        // $scope.getAll();
       });
     };
 
@@ -124,20 +133,22 @@ angular.module('storyviz.story', [])
     $scope.playChapters = function() {
       console.log('Playing chapters');
       console.log($scope.selectedRelTypes);
+      var currentChapter = 1;
       if(!$scope.playing){
         $scope.button = 'Pause';
         $scope.playing = true;
         // clear screen
         $scope.data = {nodes: [], links: []};
         $scope.numChapters = Object.keys($scope.dataByChapter).length;
-        $scope.selectedChapter = 1;
+        // $scope.selectedChapter = 1;
+        $('.range-slider').foundation('slider', 'set_value', 1);
         $scope.play = setInterval(function() {
-          console.log('Current chapter: ', $scope.selectedChapter);
-          $('.range-slider').foundation('slider', 'set_value', $scope.selectedChapter);
-          $scope.getAll();
-          $scope.selectedChapter++;
+          //console.log('Current chapter: ', $scope.selectedChapter);
+          $('.range-slider').foundation('slider', 'set_value', currentChapter);
+          //$scope.getAll();
+          currentChapter++;
 
-          if ($scope.selectedChapter >= $scope.numChapters) {
+          if (currentChapter >= $scope.numChapters) {
             clearInterval($scope.play);
           }
         }, 1000);
