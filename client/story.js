@@ -52,10 +52,6 @@ angular.module('storyviz.story', [])
           // console.log(data.links);
           $scope.dataByChapter = data;
           $scope.data = $scope.dataByChapter[$scope.selectedChapter];
-          // debugger;
-          if($scope.data){
-            $scope.data.renderChart = "Will's badass idea." + Math.random();
-          }
         })
         .catch(function(err) {
           console.log(err);
