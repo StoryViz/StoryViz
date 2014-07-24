@@ -86,7 +86,7 @@ angular.module('storyviz.story', [])
     $scope.onClick = function(nodeId) {
       $scope.$apply(function() {
         $scope.selectedChar.id = nodeId;
-        // $scope.getAll();
+        $scope.getAll();
       });
     };
 
