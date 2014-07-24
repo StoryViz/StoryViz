@@ -42,7 +42,7 @@
           </div>
         </form>
         <!-- Add Relationship -->
-        <form>
+        <form name="addRelForm">
           <div class="large-3 columns" id='addRel'>
             <!-- From -->
             <div class="row collapse">
@@ -50,13 +50,13 @@
                 <span class="prefix radius">From</span>
               </div>
               <div class="small-8 columns">
-                <select ng-model="newRel.from" ng-options="node.name for node in data.nodes" required>
+                <select ng-model="newRel.from" ng-options="node.name for node in data.nodes" required >
                   <option value="">Choose person</option>
                 </select>
               </div>
             </div>
             <!-- Type -->
-            <select ng-model="newRel.type" ng-options="type for type in relationshipTypes" required>
+            <select ng-model="newRel.type" ng-options="type for type in relationshipTypes" required >
               <option value="">Choose relationship</option>
             </select>
 
@@ -66,14 +66,14 @@
                 <span class="prefix radius">To</span>
               </div>
               <div class="small-8 columns">
-                <select ng-model="newRel.to" ng-options="node.name for node in data.nodes" required>
+                <select ng-model="newRel.to" ng-options="node.name for node in data.nodes" required >
                   <option value="">Choose person</option>
                 </select>
               </div>
             </div>
 
             <div class="large-6 columns">
-              <button id="addRelButton" ng-click="addRel()">Add Relationship</button>
+              <button id="addRelButton" ng-click="addRel()" ng-disabled="addRelForm.$invalid" >Add Relationship</button>
             </div>
 
           </div>
