@@ -29,15 +29,15 @@
     <!-- Input Form -->
       <div class="row" id='hey'>
         <!-- Add Character -->
-        <form>
+        <form name="addCharForm">
           <div class="large-3 columns" id="addChar">
 
               <div class="small-12 columns">
-                <input ng-model="newChar.name" type="text" placeholder="New character...">
-                <input ng-model="newChar.chapter" type="text" placeholder="First chapter appearance...">
+                <input ng-model="newChar.name" type="text" placeholder="New character..." required >
+                <input ng-model="newChar.chapter" type="text" placeholder="First chapter appearance..." required >
               </div>
 
-              <button id='addCharButton' ng-click="addChar()">Add Character</button>
+              <button id='addCharButton' ng-click="addChar()" ng-disabled="addCharForm.$invalid" >Add Character</button>
 
           </div>
         </form>
