@@ -69,11 +69,15 @@ angular.module('storyviz.directives', ['d3'])
                 // assign the link's position (out of the total number
                 // of relationships between its source and target)
                 // to its linkIndex
+                // Concerned that this is retriggering the render item's watch since this is bound to the
+                // same data that is passed in. 
                 graphData.links[i].linkIndex = numRels[key1];
               }
             };
             countRels();
 
+            // Adds force graph attributes to each graphData note
+            // Also adds 'tick' trigger for animating the force graph as nodes are added.
             force.nodes(graphData.nodes)
               .links(graphData.links)
               .on("tick", tick)
@@ -166,7 +170,9 @@ angular.module('storyviz.directives', ['d3'])
           };
 
           // watchGroup a part angular beta
-          scope.$watchGroup(['data','data.nodes', 'data.links'], function(newValue) {
+          // scope.$watchGroup(['data','data.nodes', 'data.links'], function(newValue) {
+          // TODO: Fix this. Using a watch workaround that we might not need anymore.
+          scope.$watch('data.renderChart', function(newValue) {
             if (newValue !== undefined) {
               // remove all children of svg
               d3.selectAll("svg > *").remove();

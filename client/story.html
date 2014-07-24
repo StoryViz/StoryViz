@@ -1,4 +1,4 @@
-<div ng-controller='StoryController'>
+<div>
 
     <!-- Slider Bar -->
     <div class="row" id='rangeslider'>
@@ -6,7 +6,7 @@
 
         <br/>
         <button ng-click='playChapters()'>{{button}}</button>
-        <div class="range-slider round" data-slider data-options="start: 1; end: 20;">
+        <div id="#slider" class="range-slider round" data-slider data-options="start: 1; end: 20;">
           <span class="range-slider-handle"></span>
           <span class="range-slider-active-segment"></span>
           <input id="sliderInput" type="hidden">
