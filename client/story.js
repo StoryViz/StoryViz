@@ -10,6 +10,9 @@ angular.module('storyviz.story', [])
     // nodes and links organized by chapter
     $scope.dataByChapter = {};
 
+    $scope.chapters = [];
+
+
     // node data for character being added
     $scope.newChar= {};
 
@@ -52,6 +55,7 @@ angular.module('storyviz.story', [])
           // console.log(data.links);
           $scope.dataByChapter = data;
           $scope.data = $scope.dataByChapter[$scope.selectedChapter];
+          $scope.chapters = Object.keys($scope.dataByChapter);
         })
         .catch(function(err) {
           console.log(err);

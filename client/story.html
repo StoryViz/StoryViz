@@ -34,7 +34,10 @@
 
               <div class="small-12 columns">
                 <input ng-model="newChar.name" type="text" placeholder="New character..." required >
-                <input ng-model="newChar.chapter" type="text" placeholder="First chapter appearance..." required >
+                <select ng-model="newChar.chapter" ng-options="number for number in chapters" required >
+                  <option value="">First Chapter Appearance:</option>
+                </select>
+                <!-- <input ng-model="newChar.chapter" type="text" placeholder="First chapter appearance..." required > -->
               </div>
 
               <button id='addCharButton' ng-click="addChar()" ng-disabled="addCharForm.$invalid" >Add Character</button>
