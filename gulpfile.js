@@ -14,10 +14,7 @@ var paths = {
   'bower_components/jquery/dist/jquery.js',
   'bower_components/angular/angular.js',
   'bower_components/angular-ui-router/release/angular-ui-router.js',
-  // 'bower_components/foundation/js/foundation.js',
-  // 'bower_components/foundation/js/foundation/*.js',
-  // 'bower_components/foundation/js/vendor/*.js',
-  'bower_components/foundation/js/foundation.min.js',
+  'bower_components/foundation/js/foundation.js',
   'bower_components/d3/d3.js',
   ],
   app: ['client/*.js']
@@ -49,8 +46,10 @@ gulp.task('serve', function(){
   });
 });
 
-gulp.task('default', ['compile', 'serve']);
+gulp.task('default', ['compile'], function(){
+  gulp.start('serve');
+});
 
 gulp.task('init', ['install'], function(){
-  gulp.run();
+  gulp.start('default');
 });
