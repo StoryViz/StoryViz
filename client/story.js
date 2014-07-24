@@ -145,8 +145,7 @@ angular.module('storyviz.story', [])
           $('.range-slider').foundation('slider', 'set_value', currentChapter);
           //$scope.getAll();
           currentChapter++;
-
-          if (currentChapter >= $scope.numChapters) {
+          if (currentChapter > $scope.numChapters) {
             clearInterval($scope.play);
           }
         }, 1000);
