@@ -107,7 +107,9 @@ angular.module('storyviz.story', [])
 
     // Add new relationship
     $scope.addRel = function() {
-      // from, to, and, type are set through data binding in view 
+      // from, to, and, type are set through data binding in view
+      // current throws errors if things have yet to be chosen
+      // when defined relationship assignment below works
       var relationship = {
         from: $scope.newRel.from.id,
         type: $scope.newRel.type,
@@ -121,7 +123,7 @@ angular.module('storyviz.story', [])
             type: $scope.newRel.type,
             target: $scope.newRel.to.index
           };
-
+          // adds to array of all relationships
           $scope.data.links = $scope.data.links.concat(newLink);
         })
         .catch(function(err) {
