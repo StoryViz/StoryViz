@@ -170,9 +170,7 @@ angular.module('storyviz.directives', ['d3'])
           };
 
           // watchGroup a part angular beta
-          // scope.$watchGroup(['data','data.nodes', 'data.links'], function(newValue) {
-          // TODO: Fix this. Using a watch workaround that we might not need anymore.
-          scope.$watch('data.renderChart', function(newValue) {
+          scope.$watchGroup(['data','data.nodes', 'data.links'], function(newValue) {
             if (newValue !== undefined) {
               // remove all children of svg
               d3.selectAll("svg > *").remove();
