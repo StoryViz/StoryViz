@@ -45,7 +45,6 @@ angular.module('storyviz.story', [])
       } else {
         $scope.selectedRelTypes.splice(relIndex, 1);
       }
-      console.log($scope.selectedRelTypes);
     };
 
     // Get all characters and relationships
