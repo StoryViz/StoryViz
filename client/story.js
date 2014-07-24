@@ -10,8 +10,8 @@ angular.module('storyviz.story', [])
     // nodes and links organized by chapter
     $scope.dataByChapter = {};
 
+    // create list of chapters to iterate over in dropdown
     $scope.chapters = [];
-
 
     // node data for character being added
     $scope.newChar= {};

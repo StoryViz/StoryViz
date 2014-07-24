@@ -31,17 +31,21 @@
         <!-- Add Character -->
         <form name="addCharForm">
           <div class="large-3 columns" id="addChar">
-
+              
               <div class="small-12 columns">
                 <input ng-model="newChar.name" type="text" placeholder="New character..." required >
-                <select ng-model="newChar.chapter" ng-options="number for number in chapters" required >
-                  <option value="">First Chapter Appearance:</option>
-                </select>
-                <!-- <input ng-model="newChar.chapter" type="text" placeholder="First chapter appearance..." required > -->
+                <div class="row collapse">
+                  <div class="small-4 columns">
+                    <span class="prefix radius">Chapter</span>
+                  </div>
+                  <div class="small-8 columns">
+                    <select ng-model="newChar.chapter" ng-options="number for number in chapters" required >
+                      <option value="Chapter">First Appearance:</option>
+                    </select>
+                  </div>
+                </div>
               </div>
-
               <button id='addCharButton' ng-click="addChar()" ng-disabled="addCharForm.$invalid" >Add Character</button>
-
           </div>
         </form>
         <!-- Add Relationship -->
