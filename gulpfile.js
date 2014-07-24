@@ -2,21 +2,24 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 var concat = require('gulp-concat');
 var nodemon = require('gulp-nodemon');
+var shell = require('gulp-shell');
+
+gulp.task('install', shell.task([
+          'npm i',
+          'bower i'
+          ]));
 
 var paths = {
   bower: [
   'bower_components/jquery/dist/jquery.js',
   'bower_components/angular/angular.js',
   'bower_components/angular-ui-router/release/angular-ui-router.js',
-  'bower_components/foundation/js/foundation.min.js',
+  'bower_components/foundation/js/foundation.js',
   'bower_components/d3/d3.js',
   ],
-  npm: ['node_modules/**/*js'],
   app: ['client/*.js']
 };
 
-
-// compiles angular and other dependencies
 gulp.task('clientBuild', function(){
   gulp.src(paths.bower)
     .pipe(concat('clientCompiled.js'))
@@ -43,4 +46,10 @@ gulp.task('serve', function(){
   });
 });
 
-gulp.task('default', ['compile','serve']);
+gulp.task('default', ['compile'], function(){
+  gulp.start('serve');
+});
+
+gulp.task('init', ['install'], function(){
+  gulp.start('default');
+});
