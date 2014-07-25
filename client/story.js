@@ -37,13 +37,22 @@ angular.module('storyviz.story', [])
 
     // $('.range-slider').foundation('slider', 'set_value', $scope.selectedChapter);
 
+    // toggle whether or not rel type should be in selectedRelTypes
+    $scope.toggleRel = function(relString){
+      var relIndex = $scope.selectedRelTypes.indexOf(relString);
+      if(relIndex === -1){
+        $scope.selectedRelTypes.push(relString);
+      } else {
+        $scope.selectedRelTypes.splice(relIndex, 1);
+      }
+    };
+
     // Get all characters and relationships
     $scope.getAll = function() {
       var params = {};
       if ($scope.selectedChar.id) {
         params.id = $scope.selectedChar.id;
       }
-
       if ($scope.selectedRelTypes.length > 0) {
         params.type = $scope.selectedRelTypes;
       }

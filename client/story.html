@@ -13,14 +13,14 @@
         </div>
 
          <ul class="button-group">
-          <button class='relType' ng-click="selectedRelTypes.push('Allies')">Allies</button>
-          <button class='relType' ng-click="selectedRelTypes.push('Enemies')">Enemies</button>
-          <button class='relType' ng-click="selectedRelTypes.push('Mutual')">Mutual</button>
-          <button class='relType' ng-click="selectedRelTypes.push('Near')">Near</button>
-          <button class='relType' ng-click="selectedRelTypes.push('Kills')">Kills</button>
-          <button class='relType' ng-click="selectedRelTypes.push('ParentChild')">ParentChild</button>
-          <button class='relType' ng-click="selectedRelTypes.push('Siblings')">Sibling</button>
-          <button class='relType' ng-click="selectedRelTypes.push('Unrequited')">Unrequited</button>
+          <button class='relType' ng-click="toggleRel('Allies')">Allies</button>
+          <button class='relType' ng-click="toggleRel('Enemies')">Enemies</button>
+          <button class='relType' ng-click="toggleRel('Mutual')">Mutual</button>
+          <button class='relType' ng-click="toggleRel('Near')">Near</button>
+          <button class='relType' ng-click="toggleRel('Kills')">Kills</button>
+          <button class='relType' ng-click="toggleRel('ParentChild')">ParentChild</button>
+          <button class='relType' ng-click="toggleRel('Siblings')">Sibling</button>
+          <button class='relType' ng-click="toggleRel('Unrequited')">Unrequited</button>
           <button id='filterRels' ng-click="getAll()">Filter</button>
           <button id='viewAllRels' ng-click="selectedChar={};selectedRelTypes=[];getAll()">View All</button>
         </ul>
