@@ -99,7 +99,8 @@
     });
   });
   $(".relType").on('click', function() {
-    $(this).css('background-color', '#CC1422');
+    $(this).toggleClass('typeSelected');    
+    // $(this).css('background-color', '#CC1422');
   });
   $("#viewAllRels, #filterRels").on('click', function() {
     $(".relType").css('background-color', '#FF5840');

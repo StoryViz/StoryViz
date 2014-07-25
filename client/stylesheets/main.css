@@ -155,6 +155,10 @@ button.relType {
 
 }
 
+button.typeSelected {
+  background-color: #CC1422;
+}
+
 .button-group {
   background-color: AliceBlue;
   padding-left: 6%;
@@ -198,3 +202,5 @@ svg {
   margin-top: 15%;
   width: 10em;
 }
+
+
