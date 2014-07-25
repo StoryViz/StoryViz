@@ -36,7 +36,7 @@ angular.module('storyviz.story', [])
     $scope.button = 'Play';
 
 
-    // this describes active selections
+    // maps buttons to 'typeSelected' class
     $scope.relationships = {
       'Allies': '',
       'Enemies': '',
