@@ -13,16 +13,18 @@
         </div>
 
          <ul class="button-group">
-          <button class='relType' ng-click="toggleRel('Allies')">Allies</button>
+<!--           <button class='relType' ng-click="toggleRel('Allies')">Allies</button>
           <button class='relType' ng-click="toggleRel('Enemies')">Enemies</button>
           <button class='relType' ng-click="toggleRel('Mutual')">Mutual</button>
           <button class='relType' ng-click="toggleRel('Near')">Near</button>
           <button class='relType' ng-click="toggleRel('Kills')">Kills</button>
           <button class='relType' ng-click="toggleRel('ParentChild')">ParentChild</button>
           <button class='relType' ng-click="toggleRel('Siblings')">Sibling</button>
-          <button class='relType' ng-click="toggleRel('Unrequited')">Unrequited</button>
-          <button id='filterRels' ng-click="getAll()">Filter</button>
-          <button id='viewAllRels' ng-click="selectNone()">View All</button>
+          <button class='relType' ng-click="toggleRel('Unrequited')">Unrequited</button> -->
+          <li ng-repeat="(key, value) in relationships">
+            <button class='relType' ng-class="relationships[key]" ng-click="toggleRel(key)">{{ key }}</button> 
+          </li>
+
         </ul>
     </div>
 
@@ -98,11 +100,12 @@
       return text === "Edit Network" ? "Done" : "Edit Network";
     });
   });
-  $(".relType").on('click', function() {
-    $(this).toggleClass('typeSelected');
-  });
-  $("#viewAllRels, #filterRels").on('click', function() {
-    $(".relType").css('background-color', '#FF5840');
-  });
+  // $(".relType").on('click', function() {
+  //   $(this).toggleClass('typeSelected');
+
+  // });
+  // $("#viewAllRels, #filterRels").on('click', function() {
+  //   $(".relType").css('background-color', '#FF5840');
+  // });
 
 </script>

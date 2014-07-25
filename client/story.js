@@ -35,16 +35,38 @@ angular.module('storyviz.story', [])
     // play/pause button text
     $scope.button = 'Play';
 
+
+    // this describes active selections
+    $scope.relationships = {
+      'Allies': '',
+      'Enemies': '',
+      'Mutual': '',
+      'Near': '',
+      'Kills': '',
+      'ParentChild': '',
+      'Siblings': '',
+      'Unrequited': ''
+    };
     // $('.range-slider').foundation('slider', 'set_value', $scope.selectedChapter);
+
+    $scope.changeClass = function(string){
+      if ($scope.relationships[string] === ''){
+        $scope.relationships[string] = 'typeSelected';
+      } else {
+        $scope.relationships[string] = '';
+      }
+    };
 
     // toggle whether or not rel type should be in selectedRelTypes
     $scope.toggleRel = function(relString){
+      $scope.changeClass(relString);
       var relIndex = $scope.selectedRelTypes.indexOf(relString);
       if(relIndex === -1){
         $scope.selectedRelTypes.push(relString);
       } else {
         $scope.selectedRelTypes.splice(relIndex, 1);
       }
+      $scope.getAll();
     };
 
     $scope.selectNone = function(){
