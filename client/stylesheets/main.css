@@ -107,9 +107,16 @@ div.row#hey {
   padding: 1%;
   background-color: AliceBlue;
   margin-top: 2%;
-  margin-left: 3%;
-  display: inline-block;
+  margin-left: auto;
+  display: flex; /*block*/
+  justify-content: space-between;
  /* position: absolute;*/
+}
+
+
+div.large-3.columns {
+  margin-top:12%;
+  width:100%;
 }
 /*
 #addChar {
@@ -152,7 +159,8 @@ button.relType {
   border: 1px solid;
   border-radius: 10px;
   background-color: #FF5840;
-
+  margin-top: 17%;
+  left: 17%;
 }
 
 button.typeSelected {
@@ -161,7 +169,14 @@ button.typeSelected {
 
 .button-group {
   background-color: AliceBlue;
-  padding-left: 6%;
+  padding-left: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+ul.button-group > li{
+  flex: 1;
 }
 
 .mainInput {
@@ -179,7 +194,7 @@ button.typeSelected {
   -webkit-transform:rotate(90deg);
   left: -2em;
   position: absolute;
-  margin-top: -3.5%;
+  top: 20%;
   display: inline;
   font-size: 10px;
 }
