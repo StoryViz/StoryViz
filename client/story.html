@@ -26,57 +26,65 @@
         </ul>
     </div>
 
-    <!-- Input Form -->
-    <form>
+    <!-- Input Form(s) -->
+    <div class="mainInput">
       <div class="row" id='hey'>
         <!-- Add Character -->
-        <div class="large-3 columns" id="addChar">
-
-            <div class="small-12 columns">
-              <input ng-model="newChar.name" type="text" placeholder="New character...">
-              <input ng-model="newChar.chapter" type="text" placeholder="First chapter appearance...">
-            </div>
-
-            <button id='addCharButton' ng-click="addChar()">Add Character</button>
-
-        </div>
+        <form name="addCharForm">
+          <div class="large-3 columns" id="addChar">
+              <div class="small-12 columns">
+                <input ng-model="newChar.name" type="text" placeholder="New character..." required >
+                <div class="row collapse">
+                  <div class="small-4 columns">
+                    <span class="prefix radius">Chapter</span>
+                  </div>
+                  <div class="small-8 columns character">
+                    <select ng-model="newChar.chapter" ng-options="number for number in chapters" required >
+                      <option value="">Number</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <button id='addCharButton' ng-click="addChar()" ng-disabled="addCharForm.$invalid" >Add Character</button>
+          </div>
+        </form>
         <!-- Add Relationship -->
-        <div class="large-3 columns" id='addRel'>
-          <!-- From -->
-          <div class="row collapse">
-            <div class="small-4 columns">
-              <span class="prefix radius">From</span>
+        <form name="addRelForm">
+          <div class="large-3 columns" id='addRel'>
+            <!-- From -->
+            <div class="row collapse">
+              <div class="small-4 columns">
+                <span class="prefix radius">From</span>
+              </div>
+              <div class="small-8 columns">
+                <select ng-model="newRel.from" ng-options="node.name for node in data.nodes" required >
+                  <option value="">Choose person</option>
+                </select>
+              </div>
             </div>
-            <div class="small-8 columns">
-              <select ng-model="newRel.from" ng-options="node.name for node in data.nodes" required>
-                <option value="">Choose person</option>
-              </select>
+            <!-- Type -->
+            <select ng-model="newRel.type" ng-options="type for type in relationshipTypes" required >
+              <option value="">Choose relationship</option>
+            </select>
+            <!-- To -->
+            <div class="row collapse">
+              <div class="small-4 columns">
+                <span class="prefix radius">To</span>
+              </div>
+              <div class="small-8 columns">
+                <select ng-model="newRel.to" ng-options="node.name for node in data.nodes" required >
+                  <option value="">Choose person</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="large-6 columns">
+              <button id="addRelButton" ng-click="addRel()" ng-disabled="addRelForm.$invalid" >Add Relationship</button>
             </div>
           </div>
-          <!-- Type -->
-          <select ng-model="newRel.type" ng-options="type for type in relationshipTypes" required>
-            <option value="">Choose relationship</option>
-          </select>
-
-          <!-- To -->
-          <div class="row collapse">
-            <div class="small-4 columns">
-              <span class="prefix radius">To</span>
-            </div>
-            <div class="small-8 columns">
-              <select ng-model="newRel.to" ng-options="node.name for node in data.nodes" required>
-                <option value="">Choose person</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="large-6 columns">
-            <button id="addRelButton" ng-click="addRel()">Add Relationship</button>
-          </div>
-
-        </div>
+        </form>
       </div>
-    </form>
+    </div>
 
   <button class="edit">Edit Network</button>
   <story-graph data='data' on-click="onClick(nodeId)"></story-graph>
@@ -84,8 +92,8 @@
 <script>
   //toggle edit form and range slider
   $(".edit").on('click', function() {
-    $('form').toggle(); 
-    $('#rangeslider').toggle();; 
+    $('.mainInput').toggle(); 
+    $('#rangeslider').toggle();
     $(this).text(function(i, text) {
       return text === "Edit Network" ? "Done" : "Edit Network";
     });
