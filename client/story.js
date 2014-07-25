@@ -174,10 +174,17 @@ angular.module('storyviz.story', [])
         });
     };
 
+    $scope.reset = function(){
+      $('.range-slider').foundation('slider', 'set_value', 1);
+      $scope.updateChapter();
+      clearInterval($scope.play);
+      $scope.getAll();
+    };
+
     $scope.playChapters = function() {
       console.log('Playing chapters');
       console.log($scope.selectedRelTypes);
-      var currentChapter = 1;
+      var currentChapter = $scope.selectedChapter || 1;
       if(!$scope.playing){
         $scope.button = 'Pause';
         $scope.playing = true;
@@ -189,12 +196,12 @@ angular.module('storyviz.story', [])
         $scope.play = setInterval(function() {
           //console.log('Current chapter: ', $scope.selectedChapter);
           $('.range-slider').foundation('slider', 'set_value', currentChapter);
-          //$scope.getAll();
           currentChapter++;
+          //$scope.getAll();
           if (currentChapter > $scope.numChapters) {
             clearInterval($scope.play);
           }
-        }, 1000);
+        }, 800);
       } else {
         $scope.button = 'Play';
         $scope.playing = false;
