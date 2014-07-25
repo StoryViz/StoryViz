@@ -107,9 +107,16 @@ div.row#hey {
   padding: 1%;
   background-color: AliceBlue;
   margin-top: 2%;
-  margin-left: 3%;
-  display: inline-block;
+  margin-left: auto;
+  display: flex; /*block*/
+  justify-content: space-between;
  /* position: absolute;*/
+}
+
+
+div.large-3.columns {
+  margin-top:12%;
+  width:100%;
 }
 /*
 #addChar {
@@ -187,7 +194,7 @@ ul.button-group > li{
   -webkit-transform:rotate(90deg);
   left: -2em;
   position: absolute;
-  margin-top: -3.5%;
+  top: 20%;
   display: inline;
   font-size: 10px;
 }
