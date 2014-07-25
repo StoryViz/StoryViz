@@ -133,7 +133,11 @@ angular.module('storyviz.directives', ['d3'])
               .attr("dy", ".3em")
               .text(function(d) {
                 return d.name;
-              });
+              })
+              .on('dblclick', function(d, i){
+                return scope.onClick({nodeId: d.id});
+              })
+              .call(force.drag);
 
             // Use elliptical arc path segments to doubly-encode directionality.
             function tick() {
