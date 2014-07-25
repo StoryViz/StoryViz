@@ -3,6 +3,7 @@ angular.module('storyviz.directives', ['d3'])
     return {
       restrict: 'E',
       scope: {
+        ngModel: '=',
         data: '=data',
         onClick: '&'
       },
@@ -27,6 +28,10 @@ angular.module('storyviz.directives', ['d3'])
             .linkDistance(150)
             .size([width, height]);
 
+          var graphData = {};
+          graphData.nodes = [];
+          graphData.links = [];
+
           // not sure what this is is here for,
           // should it do something down the line?
           // var labelForce = d3.layout.force()
@@ -35,7 +40,65 @@ angular.module('storyviz.directives', ['d3'])
           //   .linkStrength(8)
           //   .size([width, height]);
 
-          var render = function(graphData) {
+          var render = function(newData) {
+
+            // format new data to work with existing chart
+            var isNodeIDInChart = function(id){
+              for (var i =0; i < graphData.nodes.length; i++){
+                if (graphData.nodes[i].id === id){
+                  return true;
+                }
+              }
+              return false;
+            };
+
+            var isIDinNewData = function(id){
+              for (var i =0; i < newData.nodes.length; i++){
+                if (newData.nodes[i].id === id){
+                  return true;
+                }
+              }
+              return false;
+            };
+
+            var syncNewData = function(){
+              for (var i = 0; i < newData.nodes.length; i++){
+                if(!isNodeIDInChart(newData.nodes[i].id)){
+                  graphData.nodes.push(newData.nodes[i]);
+                }
+              }
+              for (var j = 0; j < graphData.nodes.length; j++){
+                if(!isIDinNewData(graphData.nodes[j].id)){
+                  graphData.nodes.splice(j, 1);
+                }
+              }
+            };
+
+            var getIndexOfChartNode = function(id){
+              for(var i = 0; i < graphData.nodes.length; i++){
+                if(graphData.nodes[i].id === id){
+                  return i;
+                }
+              }
+            }
+
+            var syncNewLinks = function(){
+              for(var i = 0; i < newData.links.length; i++){
+                var currLink = newData.links[i];
+                currLink.sourceID = currLink.source;
+                currLink.targetID = currLink.target;
+                currLink.source = getIndexOfChartNode(currLink.sourceID);
+                currLink.target = getIndexOfChartNode(currLink.targetID);
+                graphData.links.push(currLink);
+              }
+            };
+
+            graphData.links = [];
+            syncNewData();
+            syncNewLinks();
+
+            scope.$parent.test++;
+
             // stores number of relationships between a source and target
             var numRels = {};
 
@@ -44,13 +107,10 @@ angular.module('storyviz.directives', ['d3'])
               for (var i = 0; i < graphData.links.length; i++) {
                 var source;
                 var target;
-                if (graphData.links[i].source.id === undefined) {
-                  source = graphData.links[i].source;
-                  target = graphData.links[i].target;
-                } else {
-                  source = graphData.links[i].source.index;
-                  target = graphData.links[i].target.index;
-                }
+
+                source = graphData.links[i].source;
+                target = graphData.links[i].target;
+
                 var key1 = source + ',' + target;
                 var key2 = target + ',' + source;
 
@@ -83,8 +143,17 @@ angular.module('storyviz.directives', ['d3'])
               .on("tick", tick)
               .start();
 
-            var path = svg.append("svg:g").selectAll("path")
-              .data(force.links())
+            if ( scope.$parent.test === 1){
+              var paths = svg.append("svg:g").selectAll("path")
+                .data(force.links());
+            }else {
+              var paths = svg.selectAll("g:first-of-type").selectAll("path")
+                .data(force.links()); 
+            }
+
+              paths.exit().remove();
+
+              var path = paths
               .enter().append("svg:path")
               .attr("fill", "none")
               .attr("class", "link")
@@ -111,8 +180,12 @@ angular.module('storyviz.directives', ['d3'])
                 .append("svg:path")
                   .attr("d", "M0,-5L10,0L0,5");
 
-            var gnodes = svg.selectAll('g.gnode')
-              .data(graphData.nodes)
+            var nodes = svg.selectAll('g.gnode')
+              .data(graphData.nodes, function(d){return d.id});
+
+            nodes.exit().remove();
+
+            var gnodes = nodes
               .enter().append('g')
               .classed('gnode', true);
 
@@ -127,6 +200,8 @@ angular.module('storyviz.directives', ['d3'])
               })
               .call(force.drag);
 
+            var nodeCircles = nodes.selectAll('circle');
+
             var labels = gnodes.append("text")
               .attr("text-anchor", "middle")
               .attr("class", "nodeLabels")
@@ -139,9 +214,11 @@ angular.module('storyviz.directives', ['d3'])
               })
               .call(force.drag);
 
+            var textLabels = svg.selectAll("text");
+
             // Use elliptical arc path segments to doubly-encode directionality.
             function tick() {
-              path.attr("d", function(d) {
+              paths.attr("d", function(d) {
                 var dx = d.target.x - d.source.x,
                     dy = d.target.y - d.source.y,
                     dr = Math.sqrt(dx * dx + dy * dy);
@@ -162,11 +239,11 @@ angular.module('storyviz.directives', ['d3'])
                   // "A" + dr + "," + dr + " 0 0 0," + d.source.x + "," + d.source.y;
               });
                 
-              node.attr("transform", function(d) {
+              nodeCircles.attr("transform", function(d) {
                   return "translate(" + d.x + "," + d.y + ")";
               });
 
-              labels.attr("transform", function(d) {
+              textLabels.attr("transform", function(d) {
                   return "translate(" + d.x + "," + d.y + ")";
               });
             }
@@ -176,8 +253,7 @@ angular.module('storyviz.directives', ['d3'])
           // watchGroup a part angular beta
           scope.$watchGroup(['data','data.nodes', 'data.links'], function(newValue) {
             if (newValue !== undefined) {
-              // remove all children of svg
-              d3.selectAll("svg > *").remove();
+
               //figure out how to make this better
               if (scope.data.links){
                 render(scope.data);

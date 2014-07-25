@@ -56,25 +56,25 @@ angular.module('storyviz.services', [])
             var links = data.data[chapter].links;
             var linkStorage = [];
 
-            //Create a lookup for find the array position of a node.id
-            // (Used by D3 force graph)
-            for (var i = 0; i < nodes.length; i++) {
-              nodeIndexStorage[nodes[i].id] = i;
-            }
+            // //Create a lookup for find the array position of a node.id
+            // // (Used by D3 force graph)
+            // for (var i = 0; i < nodes.length; i++) {
+            //   nodeIndexStorage[nodes[i].id] = i;
+            // }
 
-            for (var j = 0; j < links.length; j++) {
-              var newLink = {};
+            // for (var j = 0; j < links.length; j++) {
+            //   var newLink = {};
 
-              // Change source to refer to array index instead of character id
-              var charIDSource = links[j].source;
-              var charIDTarget = links[j].target;
-              newLink.source = nodeIndexStorage[charIDSource];
-              newLink.target = nodeIndexStorage[charIDTarget];
-              newLink.type = links[j].type;
-              linkStorage.push(newLink);
-            }
+            //   // Change source to refer to array index instead of character id
+            //   var charIDSource = links[j].source;
+            //   var charIDTarget = links[j].target;
+            //   newLink.source = nodeIndexStorage[charIDSource];
+            //   newLink.target = nodeIndexStorage[charIDTarget];
+            //   newLink.type = links[j].type;
+            //   linkStorage.push(newLink);
+            // }
 
-            dataByChapter[chapter] = {nodes: nodes, links: linkStorage};
+            dataByChapter[chapter] = {nodes: nodes, links: links};
         }
         return dataByChapter;
     }
