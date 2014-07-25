@@ -152,7 +152,8 @@ button.relType {
   border: 1px solid;
   border-radius: 10px;
   background-color: #FF5840;
-
+  margin-top: 17%;
+  left: 17%;
 }
 
 button.typeSelected {
@@ -161,7 +162,14 @@ button.typeSelected {
 
 .button-group {
   background-color: AliceBlue;
-  padding-left: 6%;
+  padding-left: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+ul.button-group > li{
+  flex: 1;
 }
 
 .mainInput {
