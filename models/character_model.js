@@ -97,7 +97,7 @@ Character.getAll = function(params, callback) {
       // 'MATCH (source:CHARACTER)-[:CHAPTER]->(chap:CHAPTER)',
       // 'OPTIONAL MATCH (chap)-[t]->(target:CHARACTER)',
       'MATCH (source:CHARACTER)-[:CHAPTER]->(chap:CHAPTER)-[t]->(target:CHARACTER)',
-      'WHERE type(t)=\'' + params.type + '\'',
+      'WHERE '+ params.type,
       'RETURN source, type(t), target, chap.num'
     ].join('\n');
   }
