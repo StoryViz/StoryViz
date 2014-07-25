@@ -47,6 +47,12 @@ angular.module('storyviz.story', [])
       }
     };
 
+    $scope.selectNone = function(){
+      $scope.selectedChar={};
+      $scope.selectedRelTypes=[];
+      $scope.getAll();
+    };
+
     // Get all characters and relationships
     $scope.getAll = function() {
       var params = {};
