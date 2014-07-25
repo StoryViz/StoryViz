@@ -17,14 +17,15 @@ apiRouter.get('/', function(req, res) {
 
 // validations for ID and type parameters
 .param('id', /^\d+$/) // IDs are digits only
-.param('type', /^[a-zA-Z]+$/) // types are strings only
+.param('type', /^[a-zA-Z,]+$/) // types are strings only
+
 
 .get('/names/:id?', function(req, res) {
   handleIdAndType(req, res);
 })
 
 .get('/names/:id?/type/:type?', function(req, res) {
- handleIdAndType(req, res);
+  handleIdAndType(req, res);
 });
 
 function handleIdAndType(req, res) {
@@ -48,7 +49,14 @@ function handleIdAndType(req, res) {
   } else if (req.params.type !== undefined) {
     // if I only specify type, return all IDs
     //  GET /api/names/type/:type
-    params.type = req.params.type[0];
+    // params.type = req.params.type[0];
+
+    var temp = req.params.type[0].split(',');
+    var result = [];
+    for (var i = 0; i < temp.length; i++){
+      result.push('type(t)=\'' + temp[i] + '\'');
+    }
+    params.type = result.join(' OR ');
   } else {
     // if I specify neither, return all types and IDs
     //  GET /api/names
