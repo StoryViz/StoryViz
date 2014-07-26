@@ -110,8 +110,6 @@ angular.module('storyviz.story', [])
     $scope.updateChapter = function() {
       if($('#sliderInput')[0].value !== $scope.selectedChapter && $('#sliderInput')[0].value){
         $scope.selectedChapter = $('#sliderInput')[0].value;
-        console.log("Slider: ", $('#sliderInput')[0].value);
-        console.log("Current chapter: ", $scope.selectedChapter);
         $scope.getAll();
       }
     };
