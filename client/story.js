@@ -188,7 +188,6 @@ angular.module('storyviz.story', [])
       if(!$scope.playing){
         $scope.button = 'Pause';
         $scope.playing = true;
-        // $scope.data = {nodes: [], links: []};
         $('.range-slider').foundation('slider', 'set_value', currentChapter);
 
         $scope.play = setInterval(function() {
