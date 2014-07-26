@@ -56,6 +56,9 @@ angular.module('storyviz.services', [])
             var links = data.data[chapter].links;
             var linkStorage = [];
 
+            //in the refactored method, we no longer need to point to source or target indexes.  
+            //Thye now point to the unique id.
+
             // //Create a lookup for find the array position of a node.id
             // // (Used by D3 force graph)
             // for (var i = 0; i < nodes.length; i++) {
