@@ -104,14 +104,16 @@ function saveNewCharacter(params, chapter, callback) {
 function saveRelationship(params, callback) {
   if (params.from !== undefined 
       && params.to !== undefined 
-      && params.type !== undefined) {
+      && params.type !== undefined
+      && params.chapter !== undefined
+      ) {
 
     var toDef   = q.defer();
     var fromDef = q.defer();
     
     q.all([toDef.promise, fromDef.promise])
       .then(function(result) {
-        result[1].relateTo(result[0], params.type, 1, function(err, result) {
+        result[1].relateTo(result[0], params.type, params.chapter, function(err, result) {
           if (err) { return callback(err); }
           callback(null, result);
         });

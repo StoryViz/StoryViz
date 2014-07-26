@@ -154,6 +154,7 @@ angular.module('storyviz.story', [])
         from: $scope.newRel.from.id,
         type: $scope.newRel.type,
         to: $scope.newRel.to.id,
+        chapter: $scope.selectedChapter
       };
 
       Story.addRel(relationship)
