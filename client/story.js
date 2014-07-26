@@ -159,9 +159,9 @@ angular.module('storyviz.story', [])
       Story.addRel(relationship)
         .then(function(response) {
           var newLink = {
-            source: $scope.newRel.from.index,
+            source: $scope.newRel.from.id,
             type: $scope.newRel.type,
-            target: $scope.newRel.to.index
+            target: $scope.newRel.to.id
           };
           // adds to array of all relationships
           $scope.data.links = $scope.data.links.concat(newLink);
