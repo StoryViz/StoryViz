@@ -109,8 +109,6 @@ angular.module('storyviz.story', [])
 
     $scope.updateChapter = function() {
       if($('#sliderInput')[0].value !== $scope.selectedChapter && $('#sliderInput')[0].value){
-        console.log("Slider: ", $('#sliderInput')[0].value);
-        console.log("Current chapter: ", $scope.selectedChapter);
         $scope.selectedChapter = $('#sliderInput')[0].value;
         $scope.getAll();
       }
@@ -174,27 +172,33 @@ angular.module('storyviz.story', [])
         });
     };
 
+    $scope.reset = function(){
+      $('.range-slider').foundation('slider', 'set_value', 1);
+      $scope.updateChapter();
+      clearInterval($scope.play);
+      $scope.getAll();
+    };
+
     $scope.playChapters = function() {
-      console.log('Playing chapters');
-      console.log($scope.selectedRelTypes);
-      var currentChapter = 1;
+      $scope.numChapters = Object.keys($scope.dataByChapter).length;
+      var currentChapter = $scope.selectedChapter < $scope.numChapters ? $scope.selectedChapter : 1;
+
       if(!$scope.playing){
         $scope.button = 'Pause';
         $scope.playing = true;
-        // clear screen
-        $scope.data = {nodes: [], links: []};
-        $scope.numChapters = Object.keys($scope.dataByChapter).length;
-        // $scope.selectedChapter = 1;
-        $('.range-slider').foundation('slider', 'set_value', 1);
+        $('.range-slider').foundation('slider', 'set_value', currentChapter);
+
         $scope.play = setInterval(function() {
-          //console.log('Current chapter: ', $scope.selectedChapter);
-          $('.range-slider').foundation('slider', 'set_value', currentChapter);
-          //$scope.getAll();
           currentChapter++;
-          if (currentChapter > $scope.numChapters) {
+          if (currentChapter <= $scope.numChapters){
+            $('.range-slider').foundation('slider', 'set_value', currentChapter);
+          }
+          if (currentChapter >= $scope.numChapters) {
+            $scope.playing = false;
+            $scope.button = 'Play';
             clearInterval($scope.play);
           }
-        }, 1000);
+        }, 800);
       } else {
         $scope.button = 'Play';
         $scope.playing = false;
