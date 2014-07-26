@@ -62,14 +62,19 @@ angular.module('storyviz.directives', ['d3'])
             };
 
             var syncNewData = function(){
-              for (var i = 0; i < newData.nodes.length; i++){
-                if(!isNodeIDInChart(newData.nodes[i].id)){
-                  graphData.nodes.push(newData.nodes[i]);
-                }
-              }
+              //Remove nodes that are not in the new data set.
+              var indexesToRemove = [];
               for (var j = 0; j < graphData.nodes.length; j++){
                 if(!isIDinNewData(graphData.nodes[j].id)){
                   graphData.nodes.splice(j, 1);
+                  j--;
+                  indexesToRemove.push(j);
+                }
+              }
+              //Add nodes that are not already in the chart
+              for (var i = 0; i < newData.nodes.length; i++){
+                if(!isNodeIDInChart(newData.nodes[i].id)){
+                  graphData.nodes.push(newData.nodes[i]);
                 }
               }
             };
@@ -85,8 +90,12 @@ angular.module('storyviz.directives', ['d3'])
             var syncNewLinks = function(){
               for(var i = 0; i < newData.links.length; i++){
                 var currLink = newData.links[i];
-                currLink.sourceID = currLink.source;
-                currLink.targetID = currLink.target;
+                // Nodes that already went through the force layout have the
+                // source and target changed to an object.
+                if(typeof currLink.source === "number"){
+                  currLink.sourceID = currLink.source;
+                  currLink.targetID = currLink.target;
+                }
                 currLink.source = getIndexOfChartNode(currLink.sourceID);
                 currLink.target = getIndexOfChartNode(currLink.targetID);
                 graphData.links.push(currLink);
@@ -140,20 +149,21 @@ angular.module('storyviz.directives', ['d3'])
             // Also adds 'tick' trigger for animating the force graph as nodes are added.
             force.nodes(graphData.nodes)
               .links(graphData.links)
-              .on("tick", tick)
-              .start();
+              .on("tick", tick);
+
+              force.start();
 
             if ( scope.$parent.test === 1){
               var paths = svg.append("svg:g").selectAll("path")
-                .data(force.links());
+                .data(force.links(), function(d){return '' + d.sourceID + '-' + d.targetID + '-' + d.type});
             }else {
               var paths = svg.selectAll("g:first-of-type").selectAll("path")
-                .data(force.links()); 
+                .data(force.links(), function(d){return '' + d.sourceID + '-' + d.targetID + '-' + d.type}); 
             }
 
-              paths.exit().remove();
+            paths.exit().remove();
 
-              var path = paths
+            var path = paths
               .enter().append("svg:path")
               .attr("fill", "none")
               .attr("class", "link")
@@ -162,7 +172,7 @@ angular.module('storyviz.directives', ['d3'])
               })
               .attr("stroke-width", 3);
 
-              svg.selectAll('#unrequited, #parentchild, #kills')
+            svg.selectAll('#unrequited, #parentchild, #kills')
               .attr("marker-end", "url(#end)");
 
             svg.append("svg:defs").selectAll("marker")
@@ -255,7 +265,7 @@ angular.module('storyviz.directives', ['d3'])
             if (newValue !== undefined) {
 
               //figure out how to make this better
-              if (scope.data.links){
+              if (scope.data && scope.data.links){
                 render(scope.data);
               }
             }
