@@ -181,13 +181,28 @@ angular.module('storyviz.story', [])
 
     $scope.playChapters = function() {
       $scope.numChapters = Object.keys($scope.dataByChapter).length;
+      if ($scope.selectedChapter >= $scope.numChapters){
+        var resetPlay = true;
+      }
       var currentChapter = $scope.selectedChapter < $scope.numChapters ? $scope.selectedChapter : 1;
 
-      if(!$scope.playing){
+      if (!$scope.playing){
         $scope.button = 'Pause';
         $scope.playing = true;
         $('.range-slider').foundation('slider', 'set_value', currentChapter);
 
+      if (!resetPlay){
+        currentChapter++;
+      }
+      
+      if (currentChapter <= $scope.numChapters){
+        $('.range-slider').foundation('slider', 'set_value', currentChapter);
+      }
+      if (currentChapter >= $scope.numChapters) {
+        $scope.playing = false;
+        $scope.button = 'Play';
+      }
+            
         $scope.play = setInterval(function() {
           currentChapter++;
           if (currentChapter <= $scope.numChapters){
