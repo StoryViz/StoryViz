@@ -31,14 +31,7 @@ angular.module('storyviz.directives', ['d3'])
           var graphData = {};
           graphData.nodes = [];
           graphData.links = [];
-
-          // not sure what this is is here for,
-          // should it do something down the line?
-          // var labelForce = d3.layout.force()
-          //   .charge(-100)
-          //   .linkDistance(0)
-          //   .linkStrength(8)
-          //   .size([width, height]);
+          var renderNumber = 0;
 
           var render = function(newData) {
 
@@ -106,8 +99,6 @@ angular.module('storyviz.directives', ['d3'])
             syncNewData();
             syncNewLinks();
 
-            scope.$parent.test++;
-
             // stores number of relationships between a source and target
             var numRels = {};
 
@@ -153,13 +144,15 @@ angular.module('storyviz.directives', ['d3'])
 
               force.start();
 
-            if ( scope.$parent.test === 1){
+            if (renderNumber === 0){
               var paths = svg.append("svg:g").selectAll("path")
                 .data(force.links(), function(d){return '' + d.sourceID + '-' + d.targetID + '-' + d.type});
             }else {
               var paths = svg.selectAll("g:first-of-type").selectAll("path")
                 .data(force.links(), function(d){return '' + d.sourceID + '-' + d.targetID + '-' + d.type}); 
             }
+
+            renderNumber++;
 
             paths.exit().remove();
 
